@@ -197,6 +197,38 @@ button.chip{cursor:pointer}
  .kan{grid-template-columns:repeat(4,minmax(240px,82%));scroll-snap-type:x mandatory}.col{scroll-snap-align:start}
  .seg{flex-wrap:nowrap;overflow-x:auto}.seg button{white-space:nowrap}.syncl{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* demo assistant */
+.ai-fab{position:fixed;z-index:70;right:max(18px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:9px;border:0;border-radius:999px;background:var(--side);color:#fff;font:700 14px var(--body);padding:12px 18px 12px 12px;cursor:pointer;box-shadow:0 10px 28px rgba(18,61,29,.35)}
+.ai-fab .dot{width:30px;height:30px;border-radius:50%;background:var(--lime);color:var(--side);display:grid;place-items:center;font-size:15px;font-weight:800}
+.ai-fab:hover{background:var(--side-2)}
+.ai-panel{position:fixed;right:18px;bottom:18px;z-index:110;width:410px;max-width:calc(100% - 24px);height:min(640px,calc(100dvh - 36px));background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.22);display:none;flex-direction:column;overflow:hidden}
+.ai-panel.on{display:flex}
+.ai-head{background:var(--side);color:#fff;padding:14px 16px;display:flex;gap:10px;align-items:center}
+.ai-head .dot{width:34px;height:34px;border-radius:50%;background:var(--lime);color:var(--side);display:grid;place-items:center;font-weight:800;flex:none}
+.ai-head b{font-family:Montserrat,sans-serif;font-size:15px;display:block}
+.ai-head small{color:#cfe0cf;font-size:12px}
+.ai-head button{margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;flex:none}
+.ai-note{background:var(--sage-soft);color:var(--muted);font-size:12px;padding:8px 16px;border-bottom:1px solid var(--line)}
+.ai-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.ai-msg{max-width:92%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.5}
+.ai-msg.me{align-self:flex-end;background:var(--green);color:#fff;border-bottom-right-radius:4px}
+.ai-msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.ai-msg.bot ul{margin:6px 0 2px 18px;padding:0}.ai-msg.bot li{margin:2px 0}
+.ai-msg .src{display:block;margin-top:7px;font-size:11.5px;color:var(--muted)}
+.ai-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ai-acts button{border:1px solid var(--green-2);color:var(--green);background:#fff;border-radius:999px;padding:5px 11px;font:600 12.5px var(--body);cursor:pointer}
+.ai-acts button:hover{background:var(--sage-soft)}
+.ai-typing{display:inline-flex;gap:4px}.ai-typing i{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:aib 1s infinite}.ai-typing i:nth-child(2){animation-delay:.15s}.ai-typing i:nth-child(3){animation-delay:.3s}
+@keyframes aib{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.ai-chips{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 4px;scrollbar-width:none;border-top:1px solid var(--line)}
+.ai-chips::-webkit-scrollbar{display:none}
+.ai-chips button{flex:none;border:1px solid var(--line);background:var(--sage-soft);color:var(--side);border-radius:999px;padding:6px 11px;font:600 12.5px var(--body);cursor:pointer;white-space:nowrap}
+.ai-form{display:flex;gap:8px;padding:10px 14px max(14px,env(safe-area-inset-bottom,0px))}
+.ai-form input{flex:1;min-width:0;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:16px var(--body)}
+.ai-form input:focus{outline:2px solid var(--green-3);border-color:transparent}
+.ai-form button{border:0;background:var(--green);color:#fff;border-radius:12px;padding:0 16px;font:700 14px var(--body);cursor:pointer}
+@media (max-width:640px){.ai-panel{right:0;bottom:0;left:0;width:100%;max-width:100%;height:100dvh;border-radius:0;border:0}.ai-fab .lbl{display:none}.ai-fab{padding:12px}}
+@media print{.ai-fab,.ai-panel{display:none!important}}
 </style></head>
 <body>
 <div class="app">
@@ -365,6 +397,14 @@ button.chip{cursor:pointer}
 
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="Details"><div class="dh"><div><div class="kl" id="dK"></div><h3 id="dT"></h3></div><button class="x" id="dX" aria-label="Close">×</button></div><div class="db" id="dB"></div><div class="df" id="dF"></div></aside>
+<button class="ai-fab" id="aiFab" type="button" aria-controls="aiPanel" aria-expanded="false"><span class="dot">✦</span><span class="lbl">Ask your data</span></button>
+<section class="ai-panel" id="aiPanel" role="dialog" aria-modal="false" aria-labelledby="aiTitle">
+ <div class="ai-head"><span class="dot">✦</span><div><b id="aiTitle">JEG Assistant</b><small id="aiSub">Reads your dashboard · Aruba</small></div><button type="button" id="aiClose" aria-label="Close assistant">×</button></div>
+ <div class="ai-note">Preview: answers come from this demo's sample data. In the build it reads your live orders, stock and QuickBooks.</div>
+ <div class="ai-log" id="aiLog" aria-live="polite"></div>
+ <div class="ai-chips" id="aiChips"></div>
+ <form class="ai-form" id="aiForm" autocomplete="off"><input id="aiIn" placeholder="Ask anything about your business" aria-label="Your question"><button type="submit">Ask</button></form>
+</section>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -595,6 +635,62 @@ function quickbooks(){$('#books').innerHTML=['aw','cw'].map(k=>{const x=J.ISLAND
   $('#log').innerHTML=LOG.map(l=>`<li><span>${l[0]}</span><span class="muted">${l[1]}</span></li>`).join('')}
 $('#checkBtn').onclick=()=>{const b=$('#checkBtn');b.innerHTML='<span class="spin">⟳</span> Checking';setTimeout(()=>{b.textContent='✓ All good';D().inv.forEach(x=>x.qb=true);LOG.unshift(['Full check · no differences','just now']);quickbooks();toast('Checked: this system and QuickBooks '+I().name+' agree')},1300)};
 
+/* ---------- demo assistant: answers from the sample data on this page ---------- */
+(function(){
+const fab=$('#aiFab'),pan=$('#aiPanel'),log=$('#aiLog'),inp=$('#aiIn');
+const CH={aw:['How are sales this month?','Who owes us money?','What is running low?','Which shops went quiet?','How is the kiosk doing today?','What can\'t Odoo do for us?'],
+ cw:['How are sales this month?','Who owes us money?','What is running low?','Which shops went quiet?','What is on the water?','What can\'t Odoo do for us?']};
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const li=a=>'<ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+const has=(q,...w)=>w.some(x=>['hi','vs','eta','pos','hey','low'].includes(x)?new RegExp('\\b'+x+'\\b').test(q):q.includes(x));
+function chips(){$('#aiChips').innerHTML=CH[isl].map(c=>`<button type="button">${esc(c)}</button>`).join('');
+ $$('#aiChips button').forEach(b=>b.onclick=()=>ask(b.textContent));$('#aiSub').textContent='Reads your dashboard · '+I().name}
+function open(){pan.classList.add('on');fab.setAttribute('aria-expanded','true');chips();
+ if(!log.children.length)bot({h:`Bon dia ${esc(J.OWNER.first)}. Ask me about sales, stock, invoices, customers, routes or the kiosk, in plain words. I answer from the numbers on this dashboard for <b>${esc(I().company)}</b>.`});
+ setTimeout(()=>inp.focus(),50)}
+function close(){pan.classList.remove('on');fab.setAttribute('aria-expanded','false');fab.focus()}
+fab.onclick=open;$('#aiClose').onclick=close;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&pan.classList.contains('on'))close()});
+function add(cls,html){const d=document.createElement('div');d.className='ai-msg '+cls;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight;return d}
+function bot(a){let h=a.h;if(a.src)h+=`<span class="src">From: ${a.src}</span>`;const d=add('bot',h);
+ if(a.acts&&a.acts.length){const w=document.createElement('div');w.className='ai-acts';a.acts.forEach(([t,f])=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.onclick=()=>{if(window.matchMedia('(max-width:900px)').matches)close();f()};w.appendChild(b)});d.appendChild(w)}
+ log.scrollTop=log.scrollHeight}
+function ask(q){q=String(q).trim();if(!q)return;add('me',esc(q));inp.value='';
+ const t=add('bot','<span class="ai-typing" aria-label="Thinking"><i></i><i></i><i></i></span>');
+ setTimeout(()=>{t.remove();let a;try{a=answer(q)}catch(e){a={h:'I could not read that one. Try one of the suggestions below.'}}bot(a)},650+Math.random()*500)}
+$('#aiForm').onsubmit=e=>{e.preventDefault();ask(inp.value)};
+setInterval(()=>{if(pan.classList.contains('on')&&!$('#aiSub').textContent.endsWith(I().name))chips()},800);
+
+function answer(raw){const q=raw.toLowerCase(),d=D(),act=d.custs.filter(c=>c.active),cur=I().cur;
+ const other=isl==='aw'?'cw':'aw';
+ if(has(q,'odoo','different','why custom','why not','off the shelf','erp'))return {h:`Odoo is a big general system. To fit JEG you pay per user, add modules and bend your way of working around its screens. Out of the box it will not:`+li(['Turn a WhatsApp, email or phone order into an order in one click','Keep QuickBooks as your books (Odoo wants to replace them)','Show Aruba and Curaçao side by side, in Afl. and Cg','Price one kiosk sale for tourists in dollars and locals in florin','Talk to your shops in Papiamento'])+`This system is built around how JEG already works, and changes when your business does.`,src:'How this system is built'};
+ if(has(q,'compare','vs','versus','both islands','aruba and cura','islands')){const r=k=>sum(DATA[k].custs,c=>c.rev30);return {h:`Last 30 days:`+li([`<b>Aruba</b>: ${J.fmt(r('aw'),'Afl.',0)} across ${DATA.aw.custs.filter(c=>c.active).length} active shops`,`<b>Curaçao</b>: ${J.fmt(r('cw'),'Cg',0)} across ${DATA.cw.custs.filter(c=>c.active).length} active shops`])+`Low stock lines: Aruba ${DATA.aw.stock.filter(p=>p.stock<p.min).length}, Curaçao ${DATA.cw.stock.filter(p=>p.stock<p.min).length}.`,src:'Customers and inventory, both QuickBooks files',acts:[['Switch to '+J.ISLANDS[other].name,()=>setIsl(other)]]}}
+ if(has(q,'debe','owe','overdue','unpaid','outstanding','collect','receivable','pay us')){const ov=d.inv.filter(x=>x.status==='over'),op=d.inv.filter(x=>x.status==='open');const top=[...d.custs].filter(c=>c.bal).sort((a,b)=>b.bal-a.bal).slice(0,4);
+  return {h:`Unpaid invoices: <b>${m(sum(op,x=>x.total)+sum(ov,x=>x.total))}</b> across ${op.length+ov.length} invoices, of which <b>${m(sum(ov,x=>x.total))}</b> is overdue (${ov.length}).<br>Biggest balances:`+li(top.map(c=>`${esc(c.name)}, ${esc(c.area)}: ${m(c.bal)}${c.overdue?' · '+m(c.overdue)+' overdue':''}`)),src:`Invoices · ${d.inv.length} this month`,acts:[['Open invoices',()=>go('invoices')],...top.slice(0,2).map(c=>['Open '+c.name,()=>openCust(c)])]}}
+ if(has(q,'out of stock','sold out')){const o=d.stock.filter(p=>p.stock===0);return {h:o.length?`Out of stock right now:`+li(o.map(p=>`${esc(p.name)} · ${esc(p.supplier)}`)):'Nothing is out of stock right now.',src:'Inventory',acts:[['Open inventory',()=>go('inventory')]]}}
+ if(has(q,'low','running out','reorder','re-order','stock','restock','inventory')&&!J.PRODUCTS.some(p=>q.includes(p.name.toLowerCase()))){const lo=d.stock.filter(p=>p.stock<p.min).sort((a,b)=>a.stock/a.min-b.stock/b.min);
+  return {h:`${lo.length} lines are under their minimum:`+li(lo.slice(0,6).map(p=>`${esc(p.name)}: ${p.stock} cases, minimum ${p.min} · ${esc(p.supplier)}`))+`Suggested: order ${sum(lo,p=>p.min*3-p.stock)} cases across ${new Set(lo.map(p=>p.supplier)).size} suppliers.`,src:'Inventory, live from QuickBooks',acts:[['Open inventory',()=>go('inventory')],['Draft purchase orders',()=>go('purchase')]]}}
+ const prod=J.PRODUCTS.find(p=>q.includes(p.name.toLowerCase())||q.includes(p.name.toLowerCase().split(' ').slice(0,2).join(' ')));
+ if(prod){const s=d.stock[prod.i];return {h:`<b>${esc(prod.name)}</b> (${esc(prod.brand)}): ${s.stock} cases on hand, minimum ${s.min}. ${prod.perCase} units a case, shelf price ${m(prod.srp)}. Supplier: ${esc(prod.supplier)}.${s.stock<s.min?' <b>Below minimum, time to reorder.</b>':''}`,src:'Inventory',acts:[['Open inventory',()=>go('inventory')]]}}
+ if(has(q,'kiosk','cruise','port','tourist','register','pos')){const s=DATA.aw.ksales,tot=sum(s,x=>x.usd),t=s.filter(x=>x.tour);
+  return {h:`Kiosk at the cruise port, today so far: <b>$${tot.toFixed(2)}</b> from ${s.length} sales (${J.fmt(tot*J.USD,'Afl.')}). ${t.length} were tourists, ${s.length-t.length} locals. ${s.filter(x=>x.cash).length} paid cash. Register 1: ${s.filter(x=>x.reg===1).length} sales, register 2: ${s.filter(x=>x.reg===2).length}.`+(isl==='cw'?'<br>The kiosk is in Aruba.':''),src:'Kiosk POS · 2 registers',acts:[['Open kiosk',()=>go('kiosk')],['Open the POS',()=>location.href='/pos/']]}}
+ if(has(q,'water','container','shipment','arriv','eta','purchase order','supplier')){const w=d.pos.filter(p=>p.status==='water'),c=d.pos.filter(p=>p.status==='confirmed'||p.status==='sent');
+  return {h:`On the water: ${w.length} purchase orders.`+li(w.map(p=>`${p.no} · ${esc(p.sup.name)}${p.container?' · '+p.container:''} · ETA ${p.eta.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`))+`${c.length} more sent or confirmed, not shipped yet.`,src:'Purchasing',acts:[['Open purchasing',()=>go('purchase')]]}}
+ if(has(q,'quiet','inactive','stopped','not ordered','haven','lost','churn','sleeping')){const qq=[...d.custs].filter(c=>c.last>21).sort((a,b)=>b.ytd-a.ytd).slice(0,5);
+  return {h:`${d.custs.filter(c=>c.last>21).length} shops have not ordered in 3 weeks. Worth a call first:`+li(qq.map(c=>`${esc(c.name)}, ${esc(c.area)}: last order ${c.last} days ago · ${m(c.ytd,0)} this year · rep ${esc(c.rep)}`)),src:'Customers',acts:qq.slice(0,2).map(c=>['Open '+c.name,()=>openCust(c)])}}
+ if(has(q,'inbox','message','whatsapp','email','unread')){const u=d.msgs.filter(x=>!x.done);return {h:`${u.length} messages waiting to become orders:`+li(u.map(x=>`${esc(x.from.name)} · ${esc(x.subject)} · ${x.time}`)),src:'Order inbox',acts:[['Open inbox',()=>go('inbox')]]}}
+ if(has(q,'order','deliver','route','truck','today')){const by=s=>d.orders.filter(o=>o.status===s).length;return {h:`Orders: ${by('new')} new, ${by('pick')} being picked, ${by('route')} on the truck, ${by('done')} delivered and signed.`,src:'Orders',acts:[['Open orders',()=>go('orders')],['Open routes',()=>go('map')]]}}
+ const rep=I().reps.find(r=>q.includes(r.toLowerCase()));
+ if(rep){const cs=act.filter(c=>c.rep===rep);return {h:`<b>${esc(rep)}</b> looks after ${cs.length} active shops, ${m(sum(cs,c=>c.rev30),0)} in the last 30 days. Biggest: ${cs.sort((a,b)=>b.rev30-a.rev30).slice(0,3).map(c=>esc(c.name)).join(', ')}.`,src:'Customers by rep',acts:[['Plan the route',()=>go('map')]]}}
+ const cust=d.custs.find(c=>q.includes(c.name.toLowerCase()))||d.custs.find(c=>c.name.split(' ').slice(1).some(w=>w.length>3&&q.includes(w.toLowerCase())));
+ if(cust)return {h:`<b>${esc(cust.name)}</b>, ${esc(cust.area)} · ${J.TYPES[cust.t][0]}, price list ${cust.tier}, ${esc(cust.terms)}.`+li([`Last 30 days: ${m(cust.rev30)}`,`This year: ${m(cust.ytd,0)}`,`Last order: ${cust.last} days ago, usually via ${esc(cust.via)}`,`Balance: ${cust.bal?m(cust.bal):'nothing open'}`,`Rep: ${esc(cust.rep)} · contact ${esc(cust.contact)}`]),src:'Customer file',acts:[['Open '+cust.name,()=>openCust(cust)]]};
+ if(has(q,'top','best','biggest','largest')&&has(q,'customer','shop','client','store')){const t=[...act].sort((a,b)=>b.rev30-a.rev30).slice(0,5);return {h:`Top shops, last 30 days:`+li(t.map(c=>`${esc(c.name)}, ${esc(c.area)}: ${m(c.rev30,0)}`)),src:'Customers',acts:[['Open customers',()=>go('customers')]]}}
+ if(has(q,'sell','sold','sales','revenue','turnover','omzet','bende','month','30 days','how are we doing')){const r=sum(d.custs,c=>c.rev30);const byT=Object.keys(J.TYPES).filter(t=>t!=='jeg').map(t=>[J.TYPES[t][1],sum(d.custs.filter(c=>c.t===t),c=>c.rev30)]).sort((a,b)=>b[1]-a[1]);const t=[...act].sort((a,b)=>b.rev30-a.rev30).slice(0,3);
+  const mo=isl==='aw'?184260:96410,pv=isl==='aw'?163900:91280,ks=isl==='aw'?21480:0;
+  return {h:`October so far in ${esc(I().name)}: <b>${m(mo,0)}</b>, ${Math.round((mo/pv-1)*100)}% up on September.${ks?` Wholesale ${m(mo-ks,0)}, kiosk ${m(ks,0)}.`:''} ${act.length} shops ordering. Wholesale by type:`+li(byT.map(([n,v])=>`${n}: ${Math.round(v/r*100)}%`))+`Top shops: ${t.map(c=>esc(c.name)).join(', ')}.`,src:`Invoices and customers · ${cur}`,acts:[['Open overview',()=>go('overview')],['Top customers',()=>ask('Who are my top customers?')]]}}
+ if(has(q,'hello','hi','bon dia','hey'))return {h:`Bon dia! Try asking: “Who owes us money?” or “What is running low?”`};
+ return {h:`In this preview I can answer about sales, top shops, quiet shops, invoices and who owes, stock and reorders, a product or shop by name, reps, shipments, the kiosk and both islands. In the build you can ask anything about your business, in English, Papiamento, Dutch or Spanish.`,src:'Preview assistant'}}
+})();
 badges();go(location.hash.slice(1)||'overview');
 </script>
 </body></html>
