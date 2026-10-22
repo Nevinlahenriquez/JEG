@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>JEG Trading · Wholesale Portal (demo)</title>
+<link rel="icon" href="/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--green:#1d5b2c;--green-2:#2f7a42;--green-3:#4f9a62;--sage:#a8c3a8;--sage-soft:#eef4ee;--bg:#f7f5ef;--ink:#16211a;--muted:#5f6d62;--line:#e1e7e1;--warn:#b4630a;--warn-bg:#fdf1e2;--bad:#b3261e;--bad-bg:#fbe9e7;
+--display:"Montserrat",system-ui,sans-serif;--body:"Inter",system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:var(--body);font-size:14px;color:var(--ink);background:var(--bg);line-height:1.45}
+button,select,input{font:inherit}
+.demo{background:var(--warn-bg);color:#7a4306;font-size:13px;text-align:center;padding:7px 12px}
+.demo a{color:inherit;font-weight:700}
+header{background:#123d1d;color:#fff;position:sticky;top:0;z-index:20}
+.hin{max-width:1320px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{background:#fff;border-radius:10px;padding:6px 10px;display:flex}
+.logo img{height:32px}
+.ht{font:700 15px var(--display)}
+.ht small{display:block;font:500 12px var(--body);color:#bcd6bf}
+.hr{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.who{display:flex;align-items:center;gap:8px;background:#1b4d27;border-radius:12px;padding:6px 10px}
+.who label{font-size:12px;color:#bcd6bf}
+.who select{background:#fff;border:0;border-radius:8px;padding:6px 8px;font-weight:600;color:var(--ink);max-width:230px}
+.rep{font-size:12.5px;color:#cfe0cf}
+.cartbtn{background:#e9f27a;color:#123d1d;border:0;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;display:flex;gap:8px;align-items:center}
+.cartbtn b{background:#123d1d;color:#e9f27a;border-radius:999px;padding:0 8px;font-size:12px}
+.wrap{max-width:1320px;margin:0 auto;padding:18px 20px 60px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+.acct{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.acct h1{font:800 20px var(--display);margin:0}
+.acct .m{color:var(--muted);font-size:13px}
+.acct .st{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+.acct .st div{font-size:12px;color:var(--muted)}
+.acct .st b{display:block;font:700 15px var(--display);color:var(--ink)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.search{flex:1;min-width:220px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 14px;font-size:15px}
+.cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.cats button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-weight:600;font-size:13px;cursor:pointer;color:var(--ink)}
+.cats button.on{background:var(--green);border-color:var(--green);color:#fff}
+.toggle{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.again{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:16px}
+.again h2,.cart h2{font:700 15px var(--display);margin:0 0 10px;display:flex;justify-content:space-between;align-items:center}
+.again .row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.again .row button{flex:none;border:1px solid var(--line);background:var(--sage-soft);border-radius:12px;padding:8px 12px;cursor:pointer;text-align:left;font-size:12.5px}
+.again .row button b{display:block;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.p{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.p .img{height:150px;display:grid;place-items:center;position:relative}
+.p .img svg{height:110px}
+.badge{position:absolute;top:10px;left:10px;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 9px}
+.b-in{background:#fff;color:var(--green)}.b-low{background:var(--warn-bg);color:var(--warn)}.b-out{background:var(--bad-bg);color:var(--bad)}
+.promo{position:absolute;top:10px;right:10px;background:#e9f27a;color:#123d1d;font-size:11px;font-weight:800;border-radius:6px;padding:3px 7px}
+.p .bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.p .nm{font-weight:700;font-size:14px;line-height:1.3}
+.p .br{font-size:12px;color:var(--muted)}
+.p .pr{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}
+.p .pr b{font:800 18px var(--display);color:var(--green)}
+.p .pr span{font-size:12px;color:var(--muted)}
+.p .srp{font-size:12px;color:var(--muted)}
+.add{display:flex;gap:8px;margin-top:10px;align-items:center}
+.step{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.step button{border:0;background:#f2f4f2;width:32px;height:36px;cursor:pointer;font-size:16px;font-weight:700}
+.step input{width:38px;border:0;text-align:center;font-weight:700;height:36px}
+.add .go{flex:1;border:0;background:var(--green);color:#fff;border-radius:10px;height:38px;font-weight:700;cursor:pointer}
+.add .go:disabled{background:#c9d3ca;cursor:not-allowed}
+.add .go.ok{background:var(--green-3)}
+.cart{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;position:sticky;top:76px}
+.cart ul{list-style:none;margin:0;padding:0;max-height:330px;overflow:auto}
+.cart li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.cart li .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0;text-align:left}
+.cart .empty{color:var(--muted);padding:18px 0;text-align:center}
+.tot{display:flex;justify-content:space-between;padding:4px 0;font-size:13px;color:var(--muted)}
+.tot.big{font:800 20px var(--display);color:var(--ink);padding-top:10px}
+.cart label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 4px}
+.cart select,.cart textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:14px;background:#fff}
+.place{width:100%;margin-top:14px;border:0;background:var(--green);color:#fff;border-radius:12px;padding:13px;font:700 15px var(--body);cursor:pointer}
+.place:disabled{background:#c9d3ca;cursor:not-allowed}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+.done{position:fixed;inset:0;background:rgba(10,30,15,.55);display:none;place-items:center;z-index:50;padding:16px}
+.done.on{display:grid}
+.dbox{background:#fff;border-radius:20px;max-width:440px;width:100%;padding:26px;text-align:center}
+.dbox .ck{width:58px;height:58px;border-radius:50%;background:var(--sage-soft);color:var(--green);display:grid;place-items:center;margin:0 auto 12px;font-size:28px}
+.dbox h3{font:800 22px var(--display);margin:0 0 6px}
+.dbox ol{text-align:left;color:var(--muted);font-size:13.5px;padding-left:20px}
+.dbox button{border:0;background:var(--green);color:#fff;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer}
+:focus-visible{outline:2px solid var(--green-3);outline-offset:2px}
+@media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr)}.cart{position:static}.who select{max-width:170px}}
+@media (max-width:560px){.hin{padding:10px 14px}.wrap{padding:14px 14px 60px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.p .img{height:120px}.p .img svg{height:86px}.add{flex-wrap:wrap}.add .go{flex-basis:100%}.search{font-size:16px}.rep{display:none}}
+</style></head>
+<body>
+<div class="demo"><b>Demo</b> with sample products, prices and customers. Nothing is ordered for real. · <a href="/">Website</a> · <a href="/dashboard/">Team dashboard</a></div>
+<header><div class="hin">
+  <a class="logo" href="/"><img src="/logo.jpg" alt="JEG Trading"></a>
+  <div class="ht">Wholesale Portal<small>Catalog and ordering</small></div>
+  <div class="hr">
+    <div class="who"><label for="cust">Showing to</label><select id="cust"></select></div>
+    <span class="rep">Merchandiser: Ricardo · tablet</span>
+    <a class="cartbtn" href="#cart">Order <b id="cc">0</b></a>
+  </div>
+</div></header>
+
+<div class="wrap">
+<main>
+  <div class="acct" id="acct"></div>
+  <div class="again"><h2>Ordered before by this customer <span class="note" style="margin:0">Tap to add one case</span></h2><div class="row" id="again"></div></div>
+  <div class="tools"><input class="search" id="q" placeholder="Search by product, brand or UPC" aria-label="Search the catalog"><label class="toggle"><input type="checkbox" id="instock"> In stock only</label></div>
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="grid"></div>
+</main>
+<aside class="cart" id="cart">
+  <h2>Order <span class="note" style="margin:0" id="cust-short"></span></h2>
+  <ul id="lines"></ul>
+  <div class="tot"><span>Subtotal</span><span id="sub">Afl. 0.00</span></div>
+  <div class="tot"><span>Cases</span><span id="cases">0</span></div>
+  <div class="tot big"><span>Total</span><span id="tot">Afl. 0.00</span></div>
+  <label for="deliv">Delivery</label>
+  <select id="deliv"><option>Friday 23 Oct · morning route</option><option>Friday 23 Oct · afternoon route</option><option>Monday 26 Oct · morning route</option><option>Pick up at the warehouse</option></select>
+  <label for="po">Customer PO number (optional)</label>
+  <select id="po"><option>None</option><option>PO-4471</option></select>
+  <button class="place" id="place" disabled>Place order</button>
+  <p class="note">The order goes straight to the warehouse order screen. The invoice is created in QuickBooks when it ships.</p>
+</aside>
+</div>
+
+<div class="done" id="done" role="dialog" aria-modal="true" aria-labelledby="dh"><div class="dbox">
+  <div class="ck">✓</div><h3 id="dh">Order placed</h3><p id="dmsg" style="color:var(--muted);margin:0 0 10px"></p>
+  <ol><li>It appears on the warehouse order screen as <b>New</b>.</li><li>The team picks and packs it, and stock updates.</li><li>On delivery the invoice goes to QuickBooks and to the customer by email.</li></ol>
+  <p class="note">Demo only, no real order was created.</p>
+  <button id="dclose">New order</button>
+</div></div>
+
+<script>
+const CUR='Afl.',fmt=n=>CUR+' '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const CUSTS=[['Botica Oranjestad','Pharmacy','Oranjestad','Tier A',1],['Supermarket Noord','Supermarket','Noord','Tier A',1],['Resort Gift Shop Palm Beach','Hotel shop','Palm Beach','Tier B',.97],['Beach Shop Eagle Beach','Hotel shop','Eagle Beach','Tier B',.97],['Botica San Nicolas','Pharmacy','San Nicolas','Tier A',1],['Mini Market Santa Cruz','Mini market','Santa Cruz','Tier C',.94],['Food Market Paradera','Supermarket','Paradera','Tier B',.97],['Toko Savaneta','Mini market','Savaneta','Tier C',.94]];
+const CAT={sun:'Sun care',gum:'Confectionery',ess:'Everyday essentials',snk:'Snacks & drinks'};
+// [name, brand, cat, shape, color, perCase, unitWholesale, srp, stockCases, upc]
+const P=[
+['Sunscreen Lotion SPF 50, 8 oz','SunGuard','sun','bottle','#f2a623',24,14.50,29.00,38],
+['Sunscreen Spray SPF 30, 6 oz','SunGuard','sun','spray','#f07c2a',24,16.75,33.00,4],
+['Kids Sunscreen Stick SPF 50','SunGuard Kids','sun','stick','#3aa0d8',24,9.80,19.00,3],
+['Sport Sunscreen SPF 70','SunGuard Sport','sun','bottle','#e0473a',24,17.20,34.00,14],
+['After-Sun Aloe Gel, 16 oz','Caribe Care','sun','tube','#4f9a62',12,11.90,23.00,22],
+['Tanning Oil SPF 15','Caribe Care','sun','bottle','#b4630a',24,12.40,25.00,0],
+['Lip Balm SPF 15','Caribe Care','sun','stick','#d6488b',48,2.10,5.00,30],
+['Face Sunscreen SPF 50 Mineral','SunGuard','sun','tube','#f2d06b',12,19.50,38.00,9],
+['Mint Chewing Gum, 12 pieces','Fresh Co.','gum','gum','#2fa59a',96,1.10,2.75,61],
+['Fruit Gum 5-pack','Fresh Co.','gum','gum','#e8505b',48,2.40,5.50,9],
+['Sugar-Free Gum Bottle','Fresh Co.','gum','jar','#4a7fd4',24,5.60,11.00,18],
+['Bubble Gum Tub','Candy Island','gum','jar','#f07fb0',12,8.90,17.00,12],
+['Hard Candy Bag','Candy Island','gum','bag','#f2a623',24,3.20,6.50,26],
+['Sour Gummies Bag','Candy Island','gum','bag','#7cc242',24,2.90,6.00,0],
+['Insect Repellent Spray','Caribe Care','ess','spray','#5c7a3a',24,7.40,15.00,5],
+['Hand Sanitizer Gel, 2 oz','Caribe Care','ess','tube','#5fb8d6',48,1.90,4.00,40],
+['Wet Wipes Travel Pack','Clean Isle','ess','bag','#8fc6e8',48,1.60,3.50,33],
+['Pain Relief Tablets, 24 ct','Caribe Health','ess','box','#c43c3c',24,4.80,9.50,15],
+['Antacid Chewables, 30 ct','Caribe Health','ess','box','#7a5bc4',24,4.20,8.50,11],
+['Bottled Water 500 ml','Aqua Aruba','snk','water','#3aa0d8',24,0.55,1.50,90],
+['Energy Drink 250 ml','Volt','snk','can','#1d1d1d',24,1.70,3.75,28],
+['Plantain Chips','Isla Snacks','snk','bag','#e8b923',36,1.30,3.00,20],
+['Peanut Bar','Isla Snacks','snk','box','#b4630a',48,0.90,2.25,0],
+['Coconut Water 330 ml','Aqua Aruba','snk','can','#6ab04c',24,1.45,3.25,17]];
+P.forEach((p,i)=>p.push('0 '+(41100+i*731)+' '+(10000+i*2371)+' '+(i%10)));
+const PROMO=new Set([0,8,19]);
+const PAST=[[0,3],[8,2],[4,1],[12,2],[19,4]];
+let cust=0,cat='all',cart={},qty={};
+const $=s=>document.querySelector(s);
+function price(i){return +(P[i][6]*CUSTS[cust][4]*(PROMO.has(i)?.92:1)).toFixed(2)}
+function shape(t,c){const s={
+bottle:`<rect x="38" y="8" width="24" height="14" rx="3" fill="#333"/><rect x="28" y="20" width="44" height="78" rx="14" fill="${c}"/><rect x="34" y="44" width="32" height="30" rx="4" fill="#fff" opacity=".9"/><text x="50" y="63" text-anchor="middle" font-size="11" font-weight="800" fill="${c}" font-family="Montserrat">SPF</text>`,
+spray:`<rect x="40" y="4" width="20" height="16" rx="3" fill="#333"/><rect x="46" y="0" width="14" height="6" fill="#555"/><rect x="30" y="18" width="40" height="82" rx="10" fill="${c}"/><rect x="36" y="42" width="28" height="34" rx="4" fill="#fff" opacity=".9"/>`,
+stick:`<rect x="40" y="10" width="20" height="22" rx="4" fill="#333"/><rect x="38" y="30" width="24" height="70" rx="6" fill="${c}"/><rect x="42" y="50" width="16" height="30" rx="3" fill="#fff" opacity=".85"/>`,
+tube:`<path d="M30 14h40l-4 76H34z" fill="${c}"/><rect x="40" y="88" width="20" height="12" rx="2" fill="#333"/><rect x="38" y="34" width="24" height="30" rx="3" fill="#fff" opacity=".9"/>`,
+gum:`<rect x="16" y="34" width="68" height="36" rx="8" fill="${c}"/><rect x="16" y="34" width="68" height="10" rx="5" fill="#fff" opacity=".35"/><text x="50" y="62" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="Montserrat">GUM</text>`,
+jar:`<rect x="30" y="16" width="40" height="14" rx="4" fill="#333"/><rect x="26" y="28" width="48" height="70" rx="12" fill="${c}"/><circle cx="50" cy="62" r="14" fill="#fff" opacity=".85"/>`,
+bag:`<path d="M24 20h52l6 78H18z" fill="${c}"/><path d="M24 20h52v8H24z" fill="#000" opacity=".15"/><ellipse cx="50" cy="60" rx="18" ry="14" fill="#fff" opacity=".85"/>`,
+box:`<rect x="22" y="26" width="56" height="64" rx="6" fill="${c}"/><rect x="22" y="26" width="56" height="14" rx="6" fill="#fff" opacity=".3"/><rect x="32" y="52" width="36" height="20" rx="3" fill="#fff" opacity=".9"/>`,
+water:`<rect x="42" y="4" width="16" height="10" rx="2" fill="#2a6fb0"/><path d="M40 14h20l6 14v66a6 6 0 0 1-6 6H40a6 6 0 0 1-6-6V28z" fill="${c}" opacity=".55"/><rect x="34" y="48" width="32" height="20" fill="#fff" opacity=".9"/>`,
+can:`<rect x="32" y="12" width="36" height="86" rx="8" fill="${c}"/><rect x="34" y="12" width="32" height="6" rx="3" fill="#ccc"/><rect x="36" y="46" width="28" height="24" rx="3" fill="#fff" opacity=".85"/>`}[t];
+return `<svg viewBox="0 0 100 104" aria-hidden="true">${s}</svg>`}
+function stock(i){const s=P[i][8];return s===0?['b-out','Out of stock']:s<10?['b-low','Low · '+s+' cases']:['b-in','In stock · '+s+' cases']}
+function renderCust(){const c=CUSTS[cust];$('#acct').innerHTML=`<div><h1>${c[0]}</h1><div class="m">${c[1]} · ${c[2]} · Price list ${c[3]}</div></div><div class="st"><div>Last order<b>12 Oct</b></div><div>This year<b>${fmt([48200,61400,27800,22100,35600,9800,41300,12600][cust])}</b></div><div>Open balance<b>${cust===2?fmt(1240):'None'}</b></div></div>`;
+ $('#cust-short').textContent=c[0];
+ $('#again').innerHTML=PAST.map(([i,n],k)=>{i=(i+cust*3)%P.length;return `<button data-i="${i}"><b>${P[i][0]}</b>Usually ${n+(k+cust)%2} cases · ${fmt(price(i)*P[i][5])}/case</button>`}).join('')}
+function renderCats(){$('#cats').innerHTML=[['all','All products'],...Object.entries(CAT)].map(([k,n])=>`<button data-c="${k}" class="${cat===k?'on':''}">${n} <span style="opacity:.6">${k==='all'?P.length:P.filter(p=>p[2]===k).length}</span></button>`).join('')}
+function renderGrid(){const q=$('#q').value.toLowerCase().trim(),only=$('#instock').checked;
+ const list=P.map((p,i)=>i).filter(i=>(cat==='all'||P[i][2]===cat)&&(!only||P[i][8]>0)&&(!q||(P[i][0]+' '+P[i][1]+' '+P[i][9]).toLowerCase().includes(q)));
+ $('#grid').innerHTML=list.length?list.map(i=>{const p=P[i],[sc,st]=stock(i),out=p[8]===0,u=price(i);qty[i]=qty[i]||1;
+ return `<div class="p"><div class="img" style="background:${p[4]}1a">${shape(p[3],p[4])}<span class="badge ${sc}">${st}</span>${PROMO.has(i)?'<span class="promo">8% OFF</span>':''}</div>
+ <div class="bd"><div class="nm">${p[0]}</div><div class="br">${p[1]} · ${p[5]} per case · UPC ${p[9]}</div>
+ <div class="pr"><b>${fmt(u*p[5])}</b><span>${fmt(u)} / unit</span></div><div class="srp">Suggested shelf price ${fmt(p[7])}</div>
+ <div class="add"><div class="step"><button data-m="${i}" aria-label="Fewer cases">−</button><input value="${qty[i]}" data-q="${i}" inputmode="numeric" aria-label="Cases"><button data-p="${i}" aria-label="More cases">+</button></div><button class="go${cart[i]?' ok':''}" data-a="${i}" ${out?'disabled':''}>${out?'Back soon':cart[i]?'✓ '+cart[i]+' in order':'Add cases'}</button></div></div></div>`}).join(''):'<p style="color:var(--muted)">No products match.</p>'}
+function renderCart(){const ids=Object.keys(cart).map(Number);let sub=0,cs=0;
+ $('#lines').innerHTML=ids.length?ids.map(i=>{const l=price(i)*P[i][5]*cart[i];sub+=l;cs+=cart[i];return `<li><span><b>${P[i][0]}</b><br><span style="color:var(--muted)">${cart[i]} × ${P[i][5]} units</span></span><span style="text-align:right">${fmt(l)}</span><button class="x" data-r="${i}">Remove</button></li>`}).join(''):'<li class="empty">Nothing added yet</li>';
+ $('#sub').textContent=fmt(sub);$('#tot').textContent=fmt(sub);$('#cases').textContent=cs;$('#cc').textContent=cs;$('#place').disabled=!ids.length}
+function all(){renderCust();renderCats();renderGrid();renderCart()}
+$('#cust').innerHTML=CUSTS.map((c,i)=>`<option value="${i}">${c[0]}</option>`).join('');
+$('#cust').onchange=e=>{cust=+e.target.value;cart={};all()};
+$('#cats').onclick=e=>{const b=e.target.closest('button');if(!b)return;cat=b.dataset.c;renderCats();renderGrid()};
+$('#q').oninput=renderGrid;$('#instock').onchange=renderGrid;
+$('#grid').onclick=e=>{const t=e.target;let i;
+ if((i=t.dataset.m)!==undefined){qty[i]=Math.max(1,(qty[i]||1)-1);renderGrid()}
+ else if((i=t.dataset.p)!==undefined){qty[i]=(qty[i]||1)+1;renderGrid()}
+ else if((i=t.dataset.a)!==undefined){cart[i]=(cart[i]||0)+qty[i];renderGrid();renderCart()}};
+$('#grid').onchange=e=>{const i=e.target.dataset.q;if(i!==undefined){qty[i]=Math.max(1,parseInt(e.target.value)||1);renderGrid()}};
+$('#again').onclick=e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i;if(P[i][8]===0)return;cart[i]=(cart[i]||0)+1;renderGrid();renderCart()};
+$('#lines').onclick=e=>{const i=e.target.dataset.r;if(i===undefined)return;delete cart[i];renderGrid();renderCart()};
+$('#place').onclick=()=>{$('#dmsg').innerHTML=`Order <b>SO-${1061+Math.floor(Math.random()*30)}</b> for ${CUSTS[cust][0]}, ${$('#cases').textContent} cases, ${$('#tot').textContent}. Delivery: ${$('#deliv').value}.`;$('#done').classList.add('on');$('#dclose').focus()};
+$('#dclose').onclick=()=>{$('#done').classList.remove('on');cart={};renderGrid();renderCart()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#done').classList.remove('on')});
+all();
+</script>
+</body></html>
