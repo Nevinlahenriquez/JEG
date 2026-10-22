@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>JEG Kiosk · Cruise Port POS (Demo)</title>
+<link rel="icon" href="/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<script src="/assets/demo.js"></script>
+<style>
+:root{--green:#1d5b2c;--green-2:#2f7a42;--green-3:#4f9a62;--sage:#a8c3a8;--sage-soft:#eef4ee;--dark:#123d1d;--lime:#e9f27a;--bg:#f7f5ef;--ink:#16211a;--muted:#5f6d62;--line:#e1e7e1;--sea:#1f5f9e;--sea-bg:#e7f0fa;--warn:#9a5208;--warn-bg:#fdf1e2;
+--display:"Montserrat",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:var(--body);font-size:14px;color:var(--ink);background:var(--bg);display:flex;flex-direction:column;-webkit-text-size-adjust:100%}
+button,input,select{font-family:inherit;font-size:16px}
+.top{background:var(--dark);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap}
+.top .brand{display:flex;align-items:center;gap:10px;font:800 16px var(--display)}
+.top .brand img{height:34px;border-radius:8px;background:#fff;padding:2px}
+.top .brand small{display:block;font:500 12px var(--body);color:#bcd6bf}
+.seg{display:inline-flex;background:rgba(255,255,255,.1);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:#cfe0cf;font:700 13px var(--body);padding:8px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.seg button.on{background:#fff;color:var(--dark)}
+.top .sp{flex:1}
+.who{display:flex;align-items:center;gap:8px;font-size:13px;color:#cfe0cf}
+.who select{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:9px;padding:7px 8px}
+.who select option{color:#000}
+.online{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#cfe0cf;white-space:nowrap}
+.online i{width:8px;height:8px;border-radius:50%;background:#7ee08f;display:inline-block}
+.ships{background:var(--sea-bg);color:var(--sea);padding:8px 16px;font-size:13px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.ships b{color:#123c66}
+.main{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 380px;min-height:0}
+.left{display:flex;flex-direction:column;min-height:0;padding:14px 16px;gap:12px;overflow:auto}
+.bar1{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.bar1 .lbl{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.lt{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:3px}
+.lt button{border:0;background:none;font:700 14px var(--body);padding:9px 14px;border-radius:9px;cursor:pointer;color:var(--muted);white-space:nowrap}
+.lt button.on{background:var(--green);color:#fff}
+.lt button.on.loc{background:var(--warn);}
+.cats{display:flex;gap:8px;overflow-x:auto;flex:none;padding-bottom:2px}
+.left>*{flex:none}
+[hidden]{display:none!important}
+.cats button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 15px;font:600 14px var(--body);cursor:pointer}
+.cats button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.t{border:1px solid var(--line);background:#fff;border-radius:14px;padding:0;cursor:pointer;text-align:left;overflow:hidden;display:flex;flex-direction:column;min-height:170px;position:relative;font:inherit;color:inherit}
+.t .im{height:84px;display:grid;place-items:center}.t .im svg{height:68px}
+.t .b{padding:8px 10px 10px;display:flex;flex-direction:column;gap:2px;flex:1}
+.t .n{font:700 13px var(--display);line-height:1.25}
+.t .pz{margin-top:auto;font:800 16px var(--display);color:var(--green)}
+.t .c{position:absolute;right:8px;top:8px;background:var(--green);color:#fff;border-radius:999px;font:800 12px var(--body);padding:2px 8px}
+.t:active{transform:scale(.98)}
+.t[disabled]{opacity:.45;cursor:default}
+.right{background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.rh{padding:14px 16px 8px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rh h2{font:800 17px var(--display);margin:0}
+.lines{flex:1;overflow:auto;padding:0 16px;list-style:none;margin:0}
+.lines li{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.lines .q{display:flex;align-items:center;gap:6px}
+.lines .q button{width:34px;height:34px;border:1px solid var(--line);background:#f4f6f3;border-radius:9px;font-size:17px;cursor:pointer}
+.lines .empty{color:var(--muted);text-align:center;display:block;padding:40px 0;border:0}
+.sum{padding:12px 16px;border-top:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;padding:3px 0;color:var(--muted);gap:10px}
+.row.big{color:var(--ink);font:800 24px var(--display);padding-top:8px}
+.alt{font-size:12.5px;color:var(--muted);text-align:right}
+.pay{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px}
+.pay button{border:0;border-radius:14px;padding:16px;font:800 16px var(--display);cursor:pointer}
+.card{background:var(--green);color:#fff}.cash{background:var(--lime);color:var(--dark)}
+.pay button:disabled{background:#dde2dd;color:#6b736c;cursor:default}
+.clear{border:0;background:none;color:var(--muted);font:600 13px var(--body);cursor:pointer;text-decoration:underline}
+.view{display:none;padding:16px;overflow:auto;flex:1}
+.k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.kpi span{font-size:12px;color:var(--muted)}.kpi b{display:block;font:800 22px var(--display);margin-top:4px}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px}
+.box h3{font:700 15px var(--display);margin:0 0 8px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:7px;border-bottom:1px solid var(--line)}
+td{padding:9px 7px;border-bottom:1px solid var(--line)}.r{text-align:right}
+.tw{overflow-x:auto}
+.pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--sage-soft);color:var(--green);white-space:nowrap}
+.pill.l{background:var(--warn-bg);color:var(--warn)}
+.dlg{position:fixed;inset:0;background:rgba(14,30,18,.5);display:none;place-items:center;z-index:90;padding:14px}
+.dlg.on{display:grid}
+.dbox{background:#fff;border-radius:20px;padding:22px;max-width:420px;width:100%;max-height:92vh;overflow:auto}
+.dbox h3{font:800 20px var(--display);margin:0 0 4px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.quick button{border:1px solid var(--line);background:#f7f9f7;border-radius:12px;padding:14px 6px;font:800 16px var(--display);cursor:pointer}
+.tend{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:800 20px var(--display);text-align:right}
+.chg{display:flex;justify-content:space-between;font:800 20px var(--display);margin:12px 0;padding:12px;border-radius:12px;background:var(--sage-soft)}
+.acts{display:flex;gap:10px;margin-top:12px}
+.acts button{flex:1;border:0;border-radius:12px;padding:14px;font:800 15px var(--display);cursor:pointer;background:var(--green);color:#fff}
+.acts button.ghost{background:#eef1ee;color:var(--ink)}
+.acts button:disabled{background:#dde2dd;color:#6b736c}
+.rcpt{font:500 13px ui-monospace,Menlo,monospace;background:#fbfaf6;border:1px dashed var(--sage);border-radius:12px;padding:14px;margin:12px 0}
+.rcpt .c{text-align:center}.rcpt .l{display:flex;justify-content:space-between;gap:8px}
+.cartbar{display:none}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--dark);color:#fff;padding:11px 16px;border-radius:12px;font-weight:600;z-index:120;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1}
+@media (max-width:1023px){.main{grid-template-columns:minmax(0,1fr) 320px}.k{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+ .main{grid-template-columns:minmax(0,1fr)}
+ .right{position:fixed;inset:auto 0 0 0;max-height:88vh;border-radius:20px 20px 0 0;z-index:80;transform:translateY(105%);visibility:hidden;transition:transform .2s;box-shadow:0 -10px 30px rgba(0,0,0,.2);border-left:0;padding-bottom:env(safe-area-inset-bottom,0px)}
+ .right.open{transform:none;visibility:visible}
+ .cartbar{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--dark);color:#fff;border:0;border-radius:14px;padding:12px 14px;align-items:center;gap:10px;font:inherit;cursor:pointer;text-align:left}
+ .cartbar b{font:800 17px var(--display);flex:1}.cartbar span{background:var(--lime);color:var(--dark);border-radius:10px;padding:8px 12px;font-weight:800}
+ .left{padding-bottom:90px}
+ .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .top{padding:10px 12px}.who{width:100%;flex-wrap:wrap}.top .sp{display:none}
+ .hide-s{display:none}
+ .k{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi b{font-size:18px}
+}
+</style></head>
+<body>
+<div class="top">
+ <div class="brand"><img src="/logo.jpg" alt=""><div>JEG Kiosk<small>Cruise port terminal, Oranjestad</small></div></div>
+ <div class="seg" id="views"><button data-v="sell" class="on">Sell</button><button data-v="shift">Shift report</button></div>
+ <span class="sp"></span>
+ <div class="who"><select id="reg" aria-label="Register"><option value="1">Register 1</option><option value="2">Register 2</option></select><select id="cashier" aria-label="Cashier"><option>Shanella</option><option>Ricardo</option></select><span class="online"><i></i><span id="sync">Synced with QuickBooks Aruba</span></span></div>
+</div>
+<div class="ships" id="ships"></div>
+<div class="main" id="sellView">
+ <div class="left">
+  <div class="bar1">
+   <div><div class="lbl">Customer</div><div class="lt" id="who"><button data-w="tourist" class="on">Tourist</button><button data-w="local" class="loc">Local</button></div></div>
+   <div><div class="lbl">Show prices in</div><div class="lt" id="cur"><button data-c="USD" class="on">USD $</button><button data-c="AWG">Afl.</button></div></div>
+   <div class="note" id="rule" style="font-size:12.5px;color:var(--muted);max-width:340px"></div>
+  </div>
+  <div class="cats" id="cats"></div>
+  <div class="tiles" id="tiles"></div>
+ </div>
+ <div class="right" id="right">
+  <div class="rh"><h2>Sale <span id="saleNo" style="color:var(--muted);font-size:13px;font-weight:600"></span></h2><button class="clear" id="clr">Clear</button></div>
+  <ul class="lines" id="lines"></ul>
+  <div class="sum">
+   <div class="row"><span>Items</span><span id="nItems">0</span></div>
+   <div class="row" id="locRow" hidden><span>Local price saves</span><span id="locSave"></span></div>
+   <div class="row big"><span>Total</span><span id="total">$0.00</span></div>
+   <div class="alt" id="alt">Afl. 0.00</div>
+  </div>
+  <div class="pay"><button class="card" id="pCard" disabled>Card</button><button class="cash" id="pCash" disabled>Cash</button></div>
+ </div>
+</div>
+<div class="view" id="shiftView"></div>
+<button class="cartbar" id="cartbar"><b id="cbT">$0.00</b><small id="cbN" style="color:#bcd6bf">0 items</small><span>Pay</span></button>
+
+<div class="dlg" id="cashDlg" role="dialog" aria-modal="true" aria-labelledby="ch"><div class="dbox">
+ <h3 id="ch">Cash payment</h3><div style="color:var(--muted)">To pay: <b id="due"></b> <span id="due2"></span></div>
+ <div class="lt" id="tcur" style="margin-top:12px"><button data-c="USD" class="on">Paid in USD</button><button data-c="AWG">Paid in Afl.</button></div>
+ <div class="quick" id="quick"></div>
+ <label for="tend" style="font-weight:600;font-size:13px">Amount received</label>
+ <input class="tend" id="tend" inputmode="decimal" autocomplete="off">
+ <div class="chg"><span>Change</span><span id="chg">0.00</span></div>
+ <div class="acts"><button class="ghost" id="cBack">Back</button><button id="cOk" disabled>Complete sale</button></div>
+</div></div>
+<div class="dlg" id="rDlg" role="dialog" aria-modal="true" aria-labelledby="rh"><div class="dbox">
+ <h3 id="rh">Sale complete</h3><div class="rcpt" id="rcpt"></div>
+ <p style="font-size:12.5px;color:var(--muted);margin:0">Stock is taken off the kiosk location and the sale is posted to QuickBooks Aruba. Demo only, nothing was charged.</p>
+ <div class="acts"><button class="ghost" id="rMail">Email receipt</button><button id="rNew">New sale</button></div>
+</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const J=JEG;J.demoBar('/pos/');
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const R=J.USD;let who='tourist',cur='USD',cat='all',cart={},saleNo=1047,tcur='USD';
+const kioskCats={sun:'Sun care',snk:'Drinks and snacks',gum:'Candy',ess:'Travel essentials'};
+const items=J.PRODUCTS.filter(p=>p.usd);
+const KST=p=>Math.max(0,Math.round(p.stock/2)+((p.i*7)%11)-(p.stock?0:99));
+/* tourist price is the USD tag; local price is the Aruban shelf price in Afl. */
+const priceAWG=p=>who==='tourist'?p.usd*R:p.srp;
+const show=a=>cur==='USD'?'$'+(a/R).toFixed(2):J.fmt(a,'Afl.');
+const other=a=>cur==='USD'?J.fmt(a,'Afl.'):'$'+(a/R).toFixed(2);
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove('on'),2400)}
+$('#ships').innerHTML='<span>🚢 In port today: <b>Celebrity Beyond</b> until 17:00 · <b>Carnival Firenze</b> until 22:00</span><span>About 7,400 guests</span><span class="hide-s">Busiest hour last time: 10:00 to 11:00</span>';
+function renderRule(){$('#rule').textContent=who==='tourist'?'Tourist price: the USD tag on the shelf. Card or cash, USD or Afl.':'Local price: Aruban shelf price in Afl. Ask for an Aruban ID or cedula.'}
+function renderCats(){$('#cats').innerHTML=[['all','All'],...Object.entries(kioskCats)].map(([k,n])=>`<button data-c="${k}" class="${cat===k?'on':''}">${n}</button>`).join('')}
+function renderTiles(){$('#tiles').innerHTML=items.filter(p=>cat==='all'||p.cat===cat).map(p=>{const s=KST(p);return `<button class="t" data-i="${p.i}" ${s>0?'':'disabled'}><div class="im" style="background:${p.color}1a">${J.shape(p.shape,p.color)}</div>${cart[p.i]?`<span class="c">${cart[p.i]}</span>`:''}<div class="b"><div class="n">${p.name}</div><div style="font-size:11.5px;color:var(--muted)">${s>0?s+' on hand':'Sold out at kiosk'}</div><div class="pz">${show(priceAWG(p))}</div></div></button>`}).join('')}
+function tot(){let a=0,n=0,full=0;for(const i in cart){const p=J.PRODUCTS[i];a+=priceAWG(p)*cart[i];full+=p.usd*R*cart[i];n+=cart[i]}return {a,n,save:full-a}}
+function renderCart(){const ids=Object.keys(cart),{a,n,save}=tot();
+ $('#saleNo').textContent='#R'+$('#reg').value+'-'+saleNo;
+ $('#lines').innerHTML=ids.length?ids.map(i=>{const p=J.PRODUCTS[i];return `<li><span><b>${p.name}</b><br><span style="color:var(--muted);font-size:12.5px">${show(priceAWG(p))} each</span></span><span style="text-align:right;font-weight:700">${show(priceAWG(p)*cart[i])}</span><span class="q"><button data-d="${i}" aria-label="One less">−</button><b>${cart[i]}</b><button data-u="${i}" aria-label="One more">+</button></span></li>`}).join(''):'<li class="empty">Tap a product to start a sale</li>';
+ $('#nItems').textContent=n;$('#total').textContent=show(a);$('#alt').textContent=other(a);
+ $('#locRow').hidden=who!=='local'||!n;$('#locSave').textContent=show(save);
+ $('#pCard').disabled=$('#pCash').disabled=!n;$('#cbT').textContent=show(a);$('#cbN').textContent=n+' items'}
+function all(){renderRule();renderCats();renderTiles();renderCart()}
+$('#who').onclick=e=>{const b=e.target.closest('button');if(!b)return;who=b.dataset.w;$$('#who button').forEach(x=>x.classList.toggle('on',x===b));if(who==='local'){cur='AWG';$$('#cur button').forEach(x=>x.classList.toggle('on',x.dataset.c==='AWG'))}all();toast(who==='tourist'?'Tourist prices':'Local prices for residents')};
+$('#cur').onclick=e=>{const b=e.target.closest('button');if(!b)return;cur=b.dataset.c;$$('#cur button').forEach(x=>x.classList.toggle('on',x===b));all()};
+$('#cats').onclick=e=>{const b=e.target.closest('button');if(!b)return;cat=b.dataset.c;renderCats();renderTiles()};
+$('#tiles').onclick=e=>{const b=e.target.closest('.t');if(!b||b.disabled)return;const i=b.dataset.i;cart[i]=(cart[i]||0)+1;renderTiles();renderCart()};
+$('#lines').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.u)cart[b.dataset.u]++;if(b.dataset.d){const i=b.dataset.d;if(--cart[i]<=0)delete cart[i]}renderTiles();renderCart()};
+$('#clr').onclick=()=>{cart={};renderTiles();renderCart()};
+$('#reg').onchange=()=>{renderCart();toast('Register '+$('#reg').value+' open')};
+$('#cashier').onchange=()=>toast($('#cashier').value+' is on the register');
+const openR=()=>$('#right').classList.add('open'),closeR=()=>$('#right').classList.remove('open');
+$('#cartbar').onclick=()=>{$('#right').classList.contains('open')?closeR():openR()};
+/* payments */
+const LOG=[];J.reseed(77);for(let k=0;k<64;k++){const r=J.rnd();LOG.push({reg:r<.55?1:2,who:J.rnd()<.82?'tourist':'local',how:J.rnd()<.68?'Card':'Cash',cur:J.rnd()<.8?'USD':'AWG',amt:(8+Math.floor(J.rnd()*60))*R,t:9*60+Math.floor(k*7.4),items:[Math.floor(J.rnd()*items.length)]})}
+function finish(how){const {a,n}=tot();const lines=Object.keys(cart).map(i=>[J.PRODUCTS[i],cart[i]]);
+ LOG.push({reg:+$('#reg').value,who,how,cur,amt:a,t:13*60+12,items:lines.map(l=>items.indexOf(l[0]))});
+ const now=new Date();$('#rcpt').innerHTML=`<div class="c"><b>JEG TRADING · KIOSK</b><br>Cruise port terminal, Oranjestad<br>+297 586 8181</div><br>${lines.map(([p,q])=>`<div class="l"><span>${q} × ${p.name}</span><span>${show(priceAWG(p)*q)}</span></div>`).join('')}<br><div class="l"><b>TOTAL</b><b>${show(a)}</b></div><div class="l"><span>Same in ${cur==='USD'?'Afl.':'USD'}</span><span>${other(a)}</span></div><div class="l"><span>Paid by</span><span>${how}</span></div><br><div class="c">#R${$('#reg').value}-${saleNo} · ${$('#cashier').value} · ${now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}<br>${who==='tourist'?'Masha danki! Enjoy Aruba.':'Masha danki!'}</div>`;
+ closeR();$('#cashDlg').classList.remove('on');$('#rDlg').classList.add('on');$('#rNew').focus()}
+$('#pCard').onclick=()=>{const b=$('#pCard');b.disabled=true;b.textContent='Tap card on reader…';setTimeout(()=>{b.textContent='Card';finish('Card')},1100)};
+$('#pCash').onclick=()=>{tcur=cur;$$('#tcur button').forEach(x=>x.classList.toggle('on',x.dataset.c===tcur));openCash()};
+function due(){const {a}=tot();return tcur==='USD'?a/R:a}
+function openCash(){const d=due(),sym=tcur==='USD'?'$':'Afl. ';$('#due').textContent=sym+d.toFixed(2);$('#due2').textContent='('+(tcur==='USD'?J.fmt(d*R,'Afl.'):'$'+(d/R).toFixed(2))+')';
+ const opts=[Math.ceil(d),Math.ceil(d/5)*5,Math.ceil(d/10)*10,Math.ceil(d/20)*20,Math.ceil(d/50)*50,Math.ceil(d/100)*100].filter((v,i,a)=>a.indexOf(v)===i).slice(0,6);
+ $('#quick').innerHTML=opts.map(v=>`<button data-v="${v}">${sym}${v}</button>`).join('');$('#tend').value='';calc();$('#cashDlg').classList.add('on')}
+function calc(){const t=parseFloat($('#tend').value.replace(',','.'))||0,d=due(),c=t-d;$('#chg').textContent=t?(c>=0?(tcur==='USD'?'$':'Afl. ')+c.toFixed(2):'Not enough'):'0.00';$('#cOk').disabled=!(t&&c>=-0.001)}
+$('#tcur').onclick=e=>{const b=e.target.closest('button');if(!b)return;tcur=b.dataset.c;$$('#tcur button').forEach(x=>x.classList.toggle('on',x===b));openCash()};
+$('#quick').onclick=e=>{const b=e.target.closest('button');if(!b)return;$('#tend').value=b.dataset.v;calc()};
+$('#tend').oninput=calc;$('#cBack').onclick=()=>$('#cashDlg').classList.remove('on');$('#cOk').onclick=()=>finish('Cash');
+$('#rNew').onclick=()=>{$('#rDlg').classList.remove('on');cart={};saleNo++;renderTiles();renderCart()};
+$('#rMail').onclick=()=>toast('Demo: the receipt would be emailed to the guest');
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$$('.dlg').forEach(d=>d.classList.remove('on'));closeR()}});
+/* shift report */
+function renderShift(){const usd=a=>'$'+(a/R).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ const sum=f=>LOG.filter(f).reduce((s,x)=>s+x.amt,0),all=sum(()=>1);
+ const top={};LOG.forEach(x=>x.items.forEach(i=>{if(i>=0)top[i]=(top[i]||0)+1}));
+ const hours=[];for(let h=9;h<18;h++)hours.push([h,LOG.filter(x=>Math.floor(x.t/60)===h).length]);const mx=Math.max(...hours.map(h=>h[1]),1);
+ $('#shiftView').innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline"><h2 style="font:800 20px var(--display);margin:0">Today at the kiosk · Thu 22 Oct</h2><span class="pill">Both registers posted to QuickBooks Aruba at 13:15</span></div>
+ <div class="k" style="margin-top:12px"><div class="kpi"><span>Sales today</span><b>${usd(all)}</b><span>${J.fmt(all,'Afl.')}</span></div><div class="kpi"><span>Receipts</span><b>${LOG.length}</b><span>Avg ${usd(all/LOG.length)}</span></div><div class="kpi"><span>Tourists</span><b>${Math.round(LOG.filter(x=>x.who==='tourist').length/LOG.length*100)}%</b><span>Locals ${LOG.filter(x=>x.who==='local').length}</span></div><div class="kpi"><span>Card vs cash</span><b>${Math.round(sum(x=>x.how==='Card')/all*100)}% card</b><span>Cash ${usd(sum(x=>x.how==='Cash'))}</span></div></div>
+ <div class="box"><h3>By register</h3><div class="tw"><table><thead><tr><th>Register</th><th>Cashier</th><th class="r">Receipts</th><th class="r">Card</th><th class="r">Cash USD</th><th class="r">Cash Afl.</th><th class="r">Total</th></tr></thead><tbody>${[1,2].map(r=>`<tr><td><b>Register ${r}</b></td><td>${r===1?'Shanella':'Ricardo'}</td><td class="r">${LOG.filter(x=>x.reg===r).length}</td><td class="r">${usd(sum(x=>x.reg===r&&x.how==='Card'))}</td><td class="r">${usd(sum(x=>x.reg===r&&x.how==='Cash'&&x.cur==='USD'))}</td><td class="r">${J.fmt(sum(x=>x.reg===r&&x.how==='Cash'&&x.cur==='AWG'),'Afl.')}</td><td class="r"><b>${usd(sum(x=>x.reg===r))}</b></td></tr>`).join('')}</tbody></table></div><p style="font-size:12.5px;color:var(--muted);margin:8px 0 0">Cash drawer count at close is checked against these numbers. A difference shows up here in red.</p></div>
+ <div class="box"><h3>Busy hours</h3><div style="display:flex;gap:6px;align-items:flex-end;height:120px">${hours.map(([h,n])=>`<div style="flex:1;text-align:center;font-size:11px;color:var(--muted)"><div style="height:${Math.round(n/mx*90)}px;background:${n===mx?'var(--green)':'var(--sage)'};border-radius:6px 6px 0 0"></div>${h}h</div>`).join('')}</div></div>
+ <div class="box"><h3>Best sellers today</h3><div class="tw"><table><thead><tr><th>Product</th><th class="r">Sold</th><th class="r">Left at kiosk</th></tr></thead><tbody>${Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([i,n])=>{const p=items[i];const s=KST(p);return `<tr><td>${p.name}</td><td class="r">${n}</td><td class="r">${s<8?`<span class="pill l">${s}, refill from warehouse</span>`:s}</td></tr>`}).join('')}</tbody></table></div></div>`}
+$('#views').onclick=e=>{const b=e.target.closest('button');if(!b)return;$$('#views button').forEach(x=>x.classList.toggle('on',x===b));const s=b.dataset.v==='shift';$('#sellView').style.display=s?'none':'';$('#cartbar').style.visibility=s?'hidden':'';$('#shiftView').style.display=s?'block':'none';if(s)renderShift()};
+all();
+</script>
+</body></html>

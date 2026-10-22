@@ -1,412 +1,600 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex">
-<title>JEG Trading · Business System</title>
+<meta name="robots" content="noindex,nofollow">
+<title>JEG Trading · Business Dashboard (Demo)</title>
 <link rel="icon" href="/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/assets/demo.js"></script>
 <style>
-:root{--green:#1d5b2c;--green-2:#2f7a42;--green-3:#4f9a62;--sage:#a8c3a8;--sage-soft:#eef4ee;--side:#123d1d;--side-2:#1b4d27;
---bg:#f7f5ef;--card:#fff;--ink:#16211a;--muted:#5f6d62;--line:#e1e7e1;--warn:#b4630a;--warn-bg:#fdf1e2;--bad:#b3261e;--bad-bg:#fbe9e7;--blue:#1f5f9e;--blue-bg:#e7f0fa;--violet:#6b4fa3;--violet-bg:#f0ebf8;
+:root{--green:#1d5b2c;--green-2:#2f7a42;--green-3:#4f9a62;--sage:#a8c3a8;--sage-soft:#eef4ee;--side:#123d1d;--side-2:#1b4d27;--lime:#e9f27a;
+--bg:#f7f5ef;--card:#fff;--ink:#16211a;--muted:#5f6d62;--line:#e1e7e1;--warn:#9a5208;--warn-bg:#fdf1e2;--bad:#b3261e;--bad-bg:#fbe9e7;--blue:#1f5f9e;--blue-bg:#e7f0fa;--violet:#6b4fa3;--violet-bg:#f0ebf8;
 --display:"Montserrat",system-ui,sans-serif;--body:"Inter",system-ui,-apple-system,sans-serif}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%}
-body{font-family:var(--body);font-size:14px;color:var(--ink);background:var(--bg);line-height:1.45}
-.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}
-aside{background:var(--side);color:#cfe0cf;padding:18px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
-.brand{background:#fff;border-radius:12px;padding:10px 12px;margin-bottom:14px}
-.brand img{height:40px;display:block}
-.co{display:flex;background:var(--side-2);border-radius:10px;padding:3px;margin-bottom:14px}
-.co button{flex:1;border:0;background:none;color:#cfe0cf;font:600 12px var(--body);padding:7px 4px;border-radius:8px;cursor:pointer}
+html,body{margin:0}
+body{font-family:var(--body);font-size:14px;color:var(--ink);background:var(--bg);line-height:1.45;-webkit-text-size-adjust:100%}
+button,input,select,textarea{font-family:inherit}
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+#side{background:var(--side);color:#cfe0cf;padding:16px 12px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow-y:auto}
+.brand{background:#fff;border-radius:12px;padding:8px 10px;margin-bottom:12px}
+.brand img{height:42px;display:block}
+.co-l{font:700 10.5px var(--body);letter-spacing:.12em;color:#8fb39a;margin:2px 10px 6px}
+.co{display:flex;background:var(--side-2);border-radius:10px;padding:3px;margin-bottom:6px}
+.co button{flex:1;border:0;background:none;color:#cfe0cf;font:600 12.5px var(--body);padding:8px 4px;border-radius:8px;cursor:pointer;display:flex;gap:6px;align-items:center;justify-content:center}
 .co button.on{background:#fff;color:var(--green)}
-.nav a{display:flex;align-items:center;gap:10px;color:#cfe0cf;text-decoration:none;padding:9px 12px;border-radius:9px;font-weight:500}
+.co-note{font-size:11.5px;color:#8fb39a;margin:0 10px 8px}
+.nav .sec{font:700 10.5px var(--body);letter-spacing:.12em;color:#8fb39a;margin:14px 10px 4px}
+.nav a{display:flex;align-items:center;gap:10px;color:#d7e6d7;text-decoration:none;padding:8px 10px;border-radius:9px;font-weight:500}
 .nav a svg{width:18px;height:18px;flex:none;opacity:.85}
 .nav a:hover{background:var(--side-2);color:#fff}
 .nav a.on{background:var(--green-2);color:#fff}
-.nav .badge{margin-left:auto;background:var(--sage);color:var(--side);font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px}
-.side-foot{margin-top:auto;font-size:12px;color:#8fae95;border-top:1px solid #2a5233;padding-top:12px}
-.side-foot .ok{display:flex;align-items:center;gap:8px;color:#cfe0cf}
+.nav .badge{margin-left:auto;background:var(--lime);color:var(--side);font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px}
+.side-foot{margin-top:auto;padding-top:14px;border-top:1px solid #2a5233;font-size:12px;color:#9fbea5}
+.side-foot .ok{display:flex;gap:8px;align-items:center;color:#d7e6d7;margin-bottom:4px}
 .dot{width:8px;height:8px;border-radius:50%;background:#5fd07a;box-shadow:0 0 0 3px rgba(95,208,122,.2);flex:none}
-main{min-width:0;padding:22px 28px 40px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
-.top h1{font:800 24px var(--display);margin:0}
+main{min-width:0;padding:20px 28px 48px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.top-l{display:flex;align-items:center;gap:12px;min-width:0}
+.top h1{font:800 23px var(--display);margin:0;letter-spacing:-.01em}
 .top .sub{color:var(--muted);font-size:13px}
-.top-r{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.search{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;font:14px var(--body);width:230px}
-.user{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-weight:600}
-.user i{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-style:normal;font-size:12px}
-.demo{background:var(--warn-bg);color:#7a4306;border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:16px}
+.top-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;font-size:14px;width:260px;max-width:100%}
+.user{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-weight:600;font-size:13px;white-space:nowrap}
+.user i{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-style:normal;font-size:12px}
+.user small{display:block;color:var(--muted);font-weight:500;font-size:11px;line-height:1.1}
+.menu-btn{display:none;border:1px solid var(--line);background:#fff;border-radius:10px;width:42px;height:42px;align-items:center;justify-content:center;cursor:pointer;flex:none}
 .g{display:grid;gap:16px}
-.k5{grid-template-columns:repeat(5,minmax(0,1fr))}
 .k4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.k3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .c21{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.c12{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
 .c11{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.mt{margin-top:16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
-.card h2{font:700 15px var(--display);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card h2{font:700 15px var(--display);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .card h2 small{font:500 12px var(--body);color:var(--muted)}
-.kl{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.kv{font:800 25px var(--display);margin-top:6px;font-variant-numeric:tabular-nums}
+.kl{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.kv{font:800 24px var(--display);margin-top:6px;font-variant-numeric:tabular-nums}
 .kd{font-size:12px;margin-top:4px;color:var(--muted)}
 .up{color:var(--green-2);font-weight:700}.dn{color:var(--bad);font-weight:700}
-.spark{height:34px;margin-top:8px}
-.tw{overflow-x:auto}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
 tr:last-child td{border-bottom:0}
+tbody tr.click{cursor:pointer}
 tbody tr:hover{background:#fafcf9}
 .r{text-align:right}
+.muted{color:var(--muted)}
 .pill{display:inline-block;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
-.p-new{background:var(--blue-bg);color:var(--blue)}.p-pick{background:var(--warn-bg);color:var(--warn)}.p-pack{background:var(--violet-bg);color:var(--violet)}.p-ready{background:var(--green);color:#fff}.p-done{background:#eceeec;color:var(--muted)}.p-low{background:var(--bad-bg);color:var(--bad)}.p-ok{background:var(--sage-soft);color:var(--green)}
-.btn{font:600 13px var(--body);border:1px solid var(--green);background:#fff;color:var(--green);border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap}
-.btn.solid{background:var(--green);color:#fff}
-.btn.sm{padding:4px 10px;font-size:12px}
-.btn:focus-visible,.nav a:focus-visible,.co button:focus-visible{outline:2px solid var(--green-3);outline-offset:2px}
+.p-new{background:var(--blue-bg);color:var(--blue)}.p-pick{background:var(--warn-bg);color:var(--warn)}.p-route{background:var(--violet-bg);color:var(--violet)}.p-done{background:var(--sage-soft);color:var(--green)}
+.p-paid{background:var(--sage-soft);color:var(--green)}.p-open{background:var(--blue-bg);color:var(--blue)}.p-over{background:var(--bad-bg);color:var(--bad)}.p-low{background:var(--warn-bg);color:var(--warn)}.p-out{background:var(--bad-bg);color:var(--bad)}.p-in{background:var(--sage-soft);color:var(--green)}.p-grey{background:#eef0ee;color:var(--muted)}
+.btn{font:600 13px var(--body);border:1px solid var(--green);background:#fff;color:var(--green);border-radius:9px;padding:8px 14px;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--sage-soft)}
+.btn.solid{background:var(--green);color:#fff}.btn.solid:hover{background:var(--green-2)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn.ghost{border-color:var(--line);color:var(--ink)}
+.btn[disabled]{opacity:.55;cursor:default}
+:focus-visible{outline:2px solid var(--green-3);outline-offset:2px}
 .bar{height:6px;background:#edf1ed;border-radius:99px;overflow:hidden;min-width:70px}
 .bar span{display:block;height:100%;border-radius:99px;background:var(--green-3)}
-.bar span.low{background:var(--bad)}
-.view{display:none}.view.on{display:block}
-/* kanban */
-.kan{display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
+.bar span.low{background:var(--warn)}.bar span.out{background:var(--bad)}
+.view{display:none}.view.on{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}
+.chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:600 12.5px var(--body);color:var(--ink);white-space:nowrap}
+button.chip{cursor:pointer}
+.hello{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
+.hero{background:radial-gradient(120% 140% at 0% 0%,#2f7a42 0%,#1d5b2c 42%,#0e2c16 100%);color:#fff;border-radius:20px;padding:22px 24px;box-shadow:0 10px 30px rgba(18,61,29,.18);display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-width:0}
+.hero .hi{font:800 26px var(--display);margin:0}
+.hero p{color:#cfe0cf;margin:6px 0 0;max-width:560px}
+.hero .kl{color:#bcd6bf}
+.hero .big{font:800 40px var(--display);margin:4px 0 2px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.hero .delta{display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.13);border-radius:999px;padding:4px 10px;font-weight:600;font-size:12.5px}
+.hero .split{display:flex;gap:22px;flex-wrap:wrap}
+.hero .split div{font-size:12px;color:#bcd6bf}
+.hero .split b{display:block;color:#fff;font:700 16px var(--display);margin-top:2px}
+.needs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.need{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;transition:border-color .15s,transform .15s}
+.need:hover{border-color:var(--green-3);transform:translateY(-1px)}
+.need .q{font-size:12px;color:var(--muted);font-style:italic}
+.need b{display:block;font:700 13.5px var(--display);margin:6px 0 4px}
+.need .go{font-size:12px;color:var(--green);font-weight:700}
+.need .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--lime);color:var(--side);font:800 12px var(--display);margin-right:6px}
+.att{list-style:none;margin:0;padding:0}
+.att li{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.att li:last-child{border:0}
+.att .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;font-size:15px}
+.att .t{flex:1;min-width:0}.att .t b{display:block;font-size:13px}.att .t span{color:var(--muted);font-size:12px}
+.wkc{position:relative;height:220px}
+.donut{position:relative;height:220px}
+.minimap{height:300px;border-radius:12px;z-index:0}
+.bigmap{height:600px;border-radius:12px;z-index:0}
+.kan{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
 .col{background:#eaefe9;border-radius:14px;padding:10px;min-height:300px}
 .col h3{font:700 13px var(--display);margin:2px 4px 10px;display:flex;justify-content:space-between}
-.oc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:9px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.oc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:9px;box-shadow:0 1px 2px rgba(0,0,0,.04);cursor:pointer}
+.oc:hover{border-color:var(--green-3)}
+.oc.fresh{animation:pop 1.2s ease}
+@keyframes pop{0%{box-shadow:0 0 0 0 rgba(233,242,122,.9)}100%{box-shadow:0 0 0 12px rgba(233,242,122,0)}}
 .oc b{font-size:13px}.oc .m{color:var(--muted);font-size:12px;margin:3px 0 8px}
 .oc .f{display:flex;justify-content:space-between;align-items:center;gap:6px}
-.src{font-size:11px;font-weight:600;color:var(--muted);background:#f2f4f2;border-radius:6px;padding:2px 6px}
-/* map */
-#bigmap{height:560px;border-radius:12px;z-index:0}
-#minimap{height:300px;border-radius:12px;z-index:0}
+.src{font-size:11px;font-weight:600;color:var(--muted);background:#f2f4f2;border-radius:6px;padding:2px 6px;display:inline-flex;gap:4px;align-items:center}
+.inbox{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px}
+.msgs{list-style:none;margin:0;padding:0}
+.msgs li{display:flex;gap:11px;padding:12px;border-radius:12px;cursor:pointer;border:1px solid transparent}
+.msgs li:hover{background:#fafcf9}
+.msgs li.on{background:var(--sage-soft);border-color:#cfe0cf}
+.msgs li.done{opacity:.55}
+.ch{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;color:#fff;font-weight:800;font-size:12px}
+.ch-wa{background:#25a35a}.ch-em{background:#1f5f9e}.ch-ph{background:#9a5208}.ch-me{background:#6b4fa3}
+.msgs .t{flex:1;min-width:0}.msgs .t b{font-size:13.5px}.msgs .t p{margin:2px 0 0;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msgs .tm{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.bubble{background:#f4f6f3;border-radius:14px;padding:14px;white-space:pre-wrap;font-size:14px;margin:8px 0 14px}
+.bubble.wa{background:#e7f6ec}
+.parse{list-style:none;margin:0 0 14px;padding:0}
+.parse li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.scrim{position:fixed;inset:0;background:rgba(14,30,18,.35);z-index:80;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(480px,100%);background:#fff;z-index:90;transform:translateX(100%);transition:transform .22s ease;display:flex;flex-direction:column;box-shadow:-10px 0 30px rgba(0,0,0,.12)}
+.drawer.on{transform:none}
+.dh{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--line)}
+.dh h3{font:800 18px var(--display);margin:0}
+.dh .x{border:0;background:#f2f4f2;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;flex:none}
+.db{padding:18px 20px;overflow-y:auto;flex:1}
+.df{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.df:empty{display:none}
+.kvs{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;margin:0 0 16px}
+.kvs dt{color:var(--muted)}.kvs dd{margin:0;font-weight:600}
+.steps{display:flex;gap:4px;margin:6px 0 16px}
+.steps span{flex:1;height:6px;border-radius:9px;background:#e6ebe6}.steps span.on{background:var(--green-3)}
+.sig{border:1px dashed var(--sage);border-radius:12px;padding:12px;background:#fafcf9;margin-top:10px}
+.sig svg{width:180px;height:50px;display:block}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--side);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;z-index:120;opacity:0;transition:all .2s;pointer-events:none;max-width:calc(100% - 32px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.on{opacity:1;transform:translateX(-50%)}
 .legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.legend button{font:600 12px var(--body);border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;cursor:pointer;display:flex;gap:6px;align-items:center;color:var(--ink)}
+.legend button{font:600 12px var(--body);border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;cursor:pointer;display:flex;gap:6px;align-items:center;color:var(--ink)}
 .legend button[aria-pressed=false]{opacity:.4}
 .legend i{width:10px;height:10px;border-radius:50%}
-.plist{max-height:560px;overflow:auto;margin:0;padding:0;list-style:none}
+.plist{max-height:600px;overflow:auto;margin:0;padding:0;list-style:none}
 .plist li{display:flex;justify-content:space-between;gap:10px;padding:9px 8px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:8px}
 .plist li:hover{background:var(--sage-soft)}
 .leaflet-popup-content{font-family:var(--body);font-size:13px}
 .leaflet-popup-content b{font-family:var(--display)}
-/* pos */
-.pos{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
-.tile{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;cursor:pointer;text-align:left;font:inherit}
-.tile:hover{border-color:var(--green-3)}
-.tile b{display:block;font-size:13px;margin-bottom:4px}
-.tile span{color:var(--green);font-weight:700}
-.seg{display:inline-flex;background:#eaefe9;border-radius:10px;padding:3px}
-.seg button{border:0;background:none;font:600 12px var(--body);padding:6px 12px;border-radius:8px;cursor:pointer;color:var(--muted)}
+.seg{display:inline-flex;background:#eaefe9;border-radius:10px;padding:3px;flex-wrap:wrap;max-width:100%}
+.seg button{border:0;background:none;font:600 12.5px var(--body);padding:7px 12px;border-radius:8px;cursor:pointer;color:var(--muted)}
 .seg button.on{background:#fff;color:var(--green);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-.ticket li{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
-.ticket{list-style:none;margin:0 0 12px;padding:0;min-height:120px}
-.tot{display:flex;justify-content:space-between;font:800 22px var(--display);margin:8px 0 14px}
-/* qb */
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .flow{display:grid;grid-template-columns:minmax(0,1fr) 70px minmax(0,1fr);align-items:center;gap:8px}
 .fbox{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fafcf9}
 .fbox b{font:700 15px var(--display);display:block;margin-bottom:6px}
 .fbox ul{margin:0;padding-left:18px;color:var(--muted)}
 .qb{display:inline-flex;align-items:center;gap:8px;background:#2ca01c;color:#fff;font-weight:700;border-radius:8px;padding:4px 10px;font-size:13px}
 .arrows{text-align:center;color:var(--green-3);font-size:26px;line-height:1}
-.spin{display:inline-block;animation:sp 1s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.log li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
-.log{list-style:none;margin:0;padding:0}
-.menu-btn{display:none}
-.nav .sec{font:700 10.5px var(--body);letter-spacing:.12em;color:#8fb39a;margin:14px 12px 4px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:600 12.5px var(--body);color:var(--ink);cursor:default;white-space:nowrap}
-button.chip{cursor:pointer}button.chip:hover{border-color:var(--green-3)}
-.chip.live{background:var(--sage-soft);color:var(--green);border-color:#cfe0cf}
-.chip svg{width:14px;height:14px}
-.tabsbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 12px}
-.tabs{display:inline-flex;background:#ebe8df;border-radius:12px;padding:4px}
-.tabs a{font:600 13px var(--body);color:var(--muted);text-decoration:none;padding:8px 16px;border-radius:9px}
-.tabs a.on{background:#fff;color:var(--green);box-shadow:0 1px 3px rgba(0,0,0,.08)}
-select.sel{font:600 13px var(--body);border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;color:var(--ink)}
-.filters{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin-bottom:16px;font-size:13px;color:var(--muted)}
-.filters b{color:var(--ink)}
-.hero{background:radial-gradient(120% 140% at 0% 0%,#2f7a42 0%,#1d5b2c 40%,#0e2c16 100%);color:#fff;border-radius:20px;padding:24px 26px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px;align-items:end;box-shadow:0 10px 30px rgba(18,61,29,.18)}
-.hero .kl{color:#bcd6bf}
-.hero .big{font:800 44px var(--display);letter-spacing:-.01em;margin:6px 0 4px;font-variant-numeric:tabular-nums}
-.hero .delta{display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.12);border-radius:999px;padding:4px 10px;font-weight:600;font-size:13px}
-.hero .split{display:flex;gap:22px;margin-top:18px;flex-wrap:wrap}
-.hero .split div{font-size:12.5px;color:#bcd6bf}
-.hero .split b{display:block;color:#fff;font:700 16px var(--display);margin-top:2px}
-.wk{display:flex;align-items:flex-end;gap:12px;height:170px}
-.wk .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
-.wk .b i{width:100%;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,#e9f27a,#a8c3a8)}
-.wk .b.so i{background:repeating-linear-gradient(135deg,rgba(233,242,122,.85) 0 6px,rgba(168,195,168,.35) 6px 12px)}
-.wk .b span{font-size:11px;color:#bcd6bf;white-space:nowrap}
-.wk .b em{font-style:normal;font-size:11px;font-weight:700;color:#fff}
-.k3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.ik{display:flex;gap:14px;align-items:flex-start}
-.ik .ic{width:42px;height:42px;border-radius:12px;background:var(--sage-soft);color:var(--green);display:grid;place-items:center;flex:none}
-.ik .ic svg{width:20px;height:20px}
-.leg{list-style:none;margin:10px 0 0;padding:0}
-.leg li{display:flex;justify-content:gap;align-items:center;gap:8px;padding:5px 0;font-size:13px}
-.leg li i{width:10px;height:10px;border-radius:3px;flex:none}
-.leg li b{margin-left:auto;font-variant-numeric:tabular-nums}
-@media (max-width:1180px){.hero{grid-template-columns:minmax(0,1fr)}.k5{grid-template-columns:repeat(3,minmax(0,1fr))}.c21{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:900px){.app{grid-template-columns:minmax(0,1fr)}aside{position:fixed;left:0;top:0;z-index:50;width:260px;transform:translateX(-100%);transition:transform .2s}aside.open{transform:none}.menu-btn{display:inline-flex}main{padding:16px max(16px,env(safe-area-inset-left,0px)) 40px}.k4,.k5{grid-template-columns:repeat(2,minmax(0,1fr))}.k3{grid-template-columns:minmax(0,1fr)}.hero .big{font-size:34px}.wk{gap:6px}.c11,.pos{grid-template-columns:minmax(0,1fr)}.search{width:100%}#bigmap{height:420px}.flow{grid-template-columns:minmax(0,1fr)}.arrows{transform:rotate(90deg)}}
+.spin{display:inline-block;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.log{list-style:none;margin:0;padding:0}.log li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.books{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.book{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+.book.on{border-color:var(--green-3);box-shadow:0 0 0 3px var(--sage-soft)}
+.ship{display:flex;gap:6px;align-items:center;margin:8px 0}
+.ship span{flex:1;height:6px;border-radius:9px;background:#e6ebe6}.ship span.on{background:var(--green-3)}
+.posprev{background:linear-gradient(135deg,#123d1d,#2f7a42);color:#fff;border-radius:18px;padding:22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center}
+.posprev h3{font:800 22px var(--display);margin:0 0 6px}.posprev p{color:#cfe0cf;margin:0}
+.btn.lime{background:var(--lime);border-color:var(--lime);color:var(--side)}
+.empty{color:var(--muted);text-align:center;padding:24px}
+@media (max-width:1180px){.k4{grid-template-columns:repeat(2,minmax(0,1fr))}.hello,.c21,.c12,.inbox{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:900px){.app{grid-template-columns:minmax(0,1fr)}
+ #side{position:fixed;left:0;top:0;z-index:100;width:280px;max-width:86%;transform:translateX(-102%);transition:transform .22s;box-shadow:10px 0 30px rgba(0,0,0,.25)}
+ #side.open{transform:none}.menu-btn{display:inline-flex}
+ main{padding:14px 16px 40px}.top-r{width:100%}.top-r .search{flex:1;min-width:0;width:auto}
+ .c11,.k3,.books{grid-template-columns:minmax(0,1fr)}.bigmap{height:440px}.flow{grid-template-columns:minmax(0,1fr)}.arrows{transform:rotate(90deg)}
+ .user .nm{display:none}.user{padding:4px}
+ .posprev{grid-template-columns:minmax(0,1fr)}
+ input,select,textarea{font-size:16px!important}}
+@media (max-width:560px){.kv{font-size:20px}.hero .big{font-size:32px}.hero .hi{font-size:22px}.needs{grid-template-columns:minmax(0,1fr)}.top h1{font-size:20px}.card{padding:14px}.hide-s{display:none}
+ .kan{grid-template-columns:repeat(4,minmax(240px,82%));scroll-snap-type:x mandatory}.col{scroll-snap-align:start}
+ .seg{flex-wrap:nowrap;overflow-x:auto}.seg button{white-space:nowrap}.syncl{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>
 <body>
 <div class="app">
-<aside id="side">
+<aside id="side" aria-label="Main menu">
   <div class="brand"><img src="/logo.jpg" alt="JEG Trading"></div>
-  <div class="co" role="group" aria-label="Company"><button id="co-aw" class="on" data-co="aw">Aruba · AWG</button><button id="co-cw" data-co="cw">Curaçao · XCG</button></div>
-  <nav class="nav" id="nav">
-    <div class="sec">OVERVIEW</div><a href="#overview" data-v="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</a>
-    <div class="sec">SALES</div><a href="/portal/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>Wholesale portal ↗</a><a href="#orders" data-v="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg>Warehouse orders<span class="badge" id="b-orders">0</span></a>
-    <a href="#map" data-v="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-12a7 7 0 1 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Distribution map</a>
-    <div class="sec">OPERATIONS</div><a href="#inventory" data-v="inventory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Inventory<span class="badge" id="b-low">0</span></a>
+  <div class="co-l">COMPANY FILE</div>
+  <div class="co" role="group" aria-label="Island">
+    <button data-co="aw" class="on">🇦🇼 Aruba</button><button data-co="cw">🇨🇼 Curaçao</button>
+  </div>
+  <div class="co-note" id="coNote">Separate QuickBooks file · Afl.</div>
+  <nav class="nav" aria-label="Sections">
+    <div class="sec">OVERVIEW</div>
+    <a href="#overview" data-v="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Today</a>
+    <div class="sec">SALES</div>
+    <a href="#inbox" data-v="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/></svg>Order inbox<span class="badge" id="b-inbox">0</span></a>
+    <a href="#orders" data-v="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg>Orders<span class="badge" id="b-orders">0</span></a>
+    <a href="#invoices" data-v="invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Invoices</a>
     <a href="#customers" data-v="customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>Customers</a>
-    <a href="#kiosk" data-v="kiosk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Kiosk POS</a>
-    <div class="sec">BOOKS</div><a href="#quickbooks" data-v="quickbooks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-15.5 6.2M3 12a9 9 0 0 1 15.5-6.2"/><path d="M21 4v5h-5M3 20v-5h5"/></svg>QuickBooks</a>
+    <a href="#map" data-v="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-12a7 7 0 1 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Routes &amp; map</a>
+    <a href="/portal/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>Wholesale portal ↗</a>
+    <div class="sec">STOCK</div>
+    <a href="#inventory" data-v="inventory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>Inventory<span class="badge" id="b-low">0</span></a>
+    <a href="#purchase" data-v="purchase"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="15" height="10" rx="1"/><path d="M17 10h3l2 3v4h-5"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="18" cy="18.5" r="1.8"/></svg>Purchase orders</a>
+    <div class="sec">KIOSK &amp; BOOKS</div>
+    <a href="#kiosk" data-v="kiosk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="12" rx="2"/><path d="M8 21h8M12 15v6"/></svg>Kiosk at the port</a>
+    <a href="#quickbooks" data-v="quickbooks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 8v8M9 8h3a2.5 2.5 0 0 1 0 5H9M15 16v-3"/></svg>QuickBooks sync</a>
   </nav>
-  <div class="side-foot"><div class="ok"><span class="dot"></span><span id="sync-side">QuickBooks synced 2 min ago</span></div><div style="margin-top:6px">Example system by Optimize Your Vibe</div></div>
+  <div class="side-foot">
+    <div class="ok"><span class="dot"></span>QuickBooks connected</div>
+    <div id="syncAgo">Last sync 2 min ago</div>
+    <div style="margin-top:6px">Preview · tailor-made to JEG in the build</div>
+  </div>
 </aside>
 
 <main>
   <div class="top">
-    <div style="display:flex;gap:10px;align-items:center">
-      <button class="btn menu-btn" id="menu" aria-label="Open menu">☰</button>
-      <div><h1 id="title">Overview</h1><div class="sub" id="subtitle"></div></div>
+    <div class="top-l">
+      <button class="menu-btn" id="menu" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div><h1 id="title">Today</h1><div class="sub" id="subtitle"></div></div>
     </div>
-    <div class="top-r"><input class="search" id="q" placeholder="Search items, customers, orders" aria-label="Search"><a class="btn solid" href="#map">View distribution points</a><div class="user"><i>GT</i>Giandric</div></div>
+    <div class="top-r">
+      <input class="search" id="q" type="search" placeholder="Search a shop, order or product" aria-label="Search">
+      <button class="chip" id="syncBtn" title="Pull the latest from QuickBooks">⟳ <span class="syncl">Sync QuickBooks</span></button>
+      <div class="user"><i>GT</i><span class="nm">Giandric Tromp<small>Owner</small></span></div>
+    </div>
   </div>
-  <div class="chips" style="margin-bottom:14px"><span class="chip"><span class="dot"></span>Saved to cloud</span><span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="qb-age">QuickBooks data · 2 min ago</span></span><button class="chip" id="chip-sync">⟳ Sync now</button><button class="chip" id="chip-check">✓ Check vs QuickBooks</button><span class="chip live">● Live from cloud</span></div>
-  <div class="demo"><b>Demo.</b> Every number, customer and order here is sample data, to show how Jeg Trading's own system will look and work.</div>
 
-  <!-- OVERVIEW -->
   <section class="view" id="v-overview">
-    <div class="tabsbar"><div class="tabs"><a href="#overview" class="on">Overview</a><a href="#inventory">Products</a><a href="#customers">Customers</a></div>
-      <select class="sel" id="range" aria-label="Period"><option value="30">Last 30 days</option><option value="7">Last 7 days</option><option value="90">Last 90 days</option></select></div>
-    <div class="filters"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg><b>Filters</b><span>All channels</span>·<span>All areas</span>·<span id="f-pts"></span></div>
-    <div class="hero">
-      <div><div class="kl">Total sales · <span id="h-range">last 30 days</span></div><div class="big" id="h-total"></div><span class="delta" id="h-delta"></span>
-        <div class="split" id="h-split"></div></div>
-      <div><div class="kl" style="margin-bottom:10px">Week by week</div><div class="wk" id="h-weeks"></div></div>
+    <div class="hello">
+      <div class="hero">
+        <div>
+          <h2 class="hi" id="hi">Good morning, Giandric</h2>
+          <p id="hiSub"></p>
+        </div>
+        <div>
+          <div class="kl">Sales this month</div>
+          <div class="big" id="mSales"></div>
+          <span class="delta" id="mDelta"></span>
+          <div class="split" style="margin-top:14px" id="mSplit"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>What we talked about on the call <small>where it lives now</small></h2>
+        <div class="needs">
+          <a class="need" href="/portal/" target="_blank" rel="noopener"><span class="q">"Customers should see what we have in stock."</span><b><span class="n">1</span>Live stock portal</b><span class="go">Open the portal ↗</span></a>
+          <a class="need" href="#inbox"><span class="q">"Orders come in by email, WhatsApp, phone and from the merchandisers."</span><b><span class="n">2</span>One order inbox</b><span class="go">See the inbox →</span></a>
+          <a class="need" href="/pos/" target="_blank" rel="noopener"><span class="q">"Tourists and locals pay different prices at the kiosk."</span><b><span class="n">3</span>Kiosk register at the port</b><span class="go">Open the register ↗</span></a>
+          <a class="need" href="#quickbooks"><span class="q">"Aruba and Curaçao are two separate books."</span><b><span class="n">4</span>Two islands, two files</b><span class="go">See the sync →</span></a>
+        </div>
+      </div>
     </div>
-    <div class="g k3" style="margin-top:16px" id="kpis"></div>
-    <div class="g c21" style="margin-top:16px">
-      <div class="card"><h2>Week by week <small id="wk-sub"></small></h2><div class="tw"><table><thead><tr><th>Week</th><th class="r">Orders</th><th class="r">Wholesale</th><th class="r">Kiosk</th><th class="r">Total</th><th class="r">vs week before</th></tr></thead><tbody id="wk-t"></tbody></table></div></div>
-      <div class="card"><h2>Sales by category</h2><div style="height:190px"><canvas id="ch-cat"></canvas></div><ul class="leg" id="cat-leg"></ul></div>
+    <div class="g k4 mt" id="kpis"></div>
+    <div class="g c21 mt">
+      <div class="card"><h2>Sales by day <small id="daysNote">last 14 days</small></h2><div class="wkc"><canvas id="cDays" aria-label="Sales by day chart" role="img"></canvas></div></div>
+      <div class="card"><h2>Needs your attention</h2><ul class="att" id="att"></ul></div>
     </div>
-    <div class="g c21" style="margin-top:16px">
-      <div class="card"><h2>Delivery points <a class="btn sm" href="#map">Open map</a></h2><div id="minimap"></div></div>
-      <div class="card"><h2>Needs your attention</h2><ul class="log" id="attn"></ul></div>
+    <div class="g c12 mt">
+      <div class="card"><h2>Sales by category</h2><div class="donut"><canvas id="cCat" aria-label="Sales by category chart" role="img"></canvas></div></div>
+      <div class="card"><h2>Where your customers are <a class="btn sm ghost" href="#map">Open map</a></h2><div id="minimap" class="minimap"></div></div>
     </div>
-    <div class="g c11" style="margin-top:16px">
-      <div class="card"><h2>Best sellers <small>This period</small></h2><div class="tw"><table><thead><tr><th>Item</th><th class="r">Units</th><th class="r">Revenue</th><th class="r">Margin</th></tr></thead><tbody id="best"></tbody></table></div></div>
-      <div class="card"><h2>Top customers <small>This period</small></h2><div class="tw"><table><thead><tr><th>Customer</th><th>Area</th><th class="r">Revenue</th></tr></thead><tbody id="topc"></tbody></table></div></div>
+    <div class="g c11 mt">
+      <div class="card"><h2>Top customers <small>last 30 days</small></h2><div class="tw"><table><thead><tr><th>Customer</th><th class="hide-s">Type</th><th class="r">Sales</th></tr></thead><tbody id="topC"></tbody></table></div></div>
+      <div class="card"><h2>Best sellers <small>cases, last 30 days</small></h2><div class="tw"><table><thead><tr><th>Product</th><th class="r">Cases</th><th class="r">Stock</th></tr></thead><tbody id="best"></tbody></table></div></div>
     </div>
   </section>
 
-  <!-- ORDERS -->
+  <section class="view" id="v-inbox">
+    <div class="toolbar"><div class="seg" id="inboxSeg"><button data-f="all" class="on">All</button><button data-f="wa">WhatsApp</button><button data-f="em">Email</button><button data-f="ph">Phone</button><button data-f="me">Merchandisers</button></div><span class="muted" id="inboxCount"></span></div>
+    <div class="inbox">
+      <div class="card" style="padding:8px"><ul class="msgs" id="msgs"></ul></div>
+      <div class="card" id="msgView"></div>
+    </div>
+  </section>
+
   <section class="view" id="v-orders">
-    <div class="card" style="margin-bottom:16px"><h2>Warehouse order screen <small>Portal, merchandiser tablets, WhatsApp and phone orders all land here</small></h2><div class="kan" id="kan"></div></div>
+    <div class="toolbar"><div class="seg" id="ordSrc"><button data-f="all" class="on">All sources</button><button data-f="Portal">Portal</button><button data-f="Merchandiser">Merchandiser</button><button data-f="WhatsApp">WhatsApp</button><button data-f="Email">Email</button><button data-f="Phone">Phone</button></div><a class="btn solid" href="/portal/" target="_blank" rel="noopener">+ New order in the portal</a></div>
+    <div class="kan" id="kan"></div>
   </section>
 
-  <!-- MAP -->
-  <section class="view" id="v-map">
-    <div class="g c21">
-      <div class="card"><h2>Distribution map <small id="map-sub"></small></h2><div class="legend" id="legend"></div><div id="bigmap"></div></div>
-      <div class="card"><h2 id="pl-h">Points</h2><ul class="plist" id="plist"></ul></div>
+  <section class="view" id="v-invoices">
+    <div class="g k4" id="invK"></div>
+    <div class="card mt">
+      <div class="toolbar"><div class="seg" id="invSeg"><button data-f="all" class="on">All</button><button data-f="open">Open</button><button data-f="over">Overdue</button><button data-f="paid">Paid</button></div><span class="muted">The invoice is made in QuickBooks the moment an order is delivered.</span></div>
+      <div class="tw"><table><thead><tr><th>Invoice</th><th>Customer</th><th class="hide-s">Date</th><th class="hide-s">Due</th><th class="r">Amount</th><th>Status</th><th>Delivery note</th><th>QuickBooks</th></tr></thead><tbody id="invT"></tbody></table></div>
     </div>
   </section>
 
-  <!-- INVENTORY -->
-  <section class="view" id="v-inventory">
-    <div class="g k4" id="inv-k"></div>
-    <div class="card" style="margin-top:16px"><h2>Stock by item <span class="seg" id="invf"><button class="on" data-f="all">All</button><button data-f="Sun care">Sun care</button><button data-f="Confectionery">Confectionery</button><button data-f="low">To reorder</button></span></h2>
-      <div class="tw"><table><thead><tr><th>Item</th><th>Supplier</th><th>UPC</th><th class="r">Cases</th><th class="r">Units</th><th>Stock level</th><th class="r">Wholesale</th><th class="r">Local / tourist</th><th></th></tr></thead><tbody id="inv"></tbody></table></div></div>
-  </section>
-
-  <!-- CUSTOMERS -->
   <section class="view" id="v-customers">
-    <div class="card"><h2>Customers <small id="cust-sub"></small></h2>
-      <div class="tw"><table><thead><tr><th>Customer</th><th>Type</th><th>Area</th><th>Orders via</th><th>Merchandiser</th><th>Last order</th><th class="r">30 days</th><th class="r">Open balance</th></tr></thead><tbody id="cust"></tbody></table></div></div>
+    <div class="toolbar"><div class="seg" id="custSeg"><button data-f="all" class="on">All</button><button data-f="pharmacy">Pharmacies</button><button data-f="super">Supermarkets</button><button data-f="hotel">Hotel shops</button><button data-f="mini">Mini markets</button><button data-f="quiet">Gone quiet</button></div><span class="muted" id="custCount"></span></div>
+    <div class="card"><div class="tw"><table><thead><tr><th>Customer</th><th class="hide-s">Area</th><th>Price list</th><th class="hide-s">Merchandiser</th><th class="r">Last 30 days</th><th class="r">Last order</th><th class="r">Balance</th></tr></thead><tbody id="custT"></tbody></table></div></div>
   </section>
 
-  <!-- KIOSK -->
-  <section class="view" id="v-kiosk">
-    <div class="g k4" id="pos-k"></div>
-    <div class="pos" style="margin-top:16px">
-      <div class="card"><h2>Register <span class="seg" id="reg"><button class="on" data-r="1">Register 1</button><button data-r="2">Register 2</button></span></h2><div class="tiles" id="tiles"></div></div>
-      <div class="card"><h2>Sale <span class="seg" id="price"><button class="on" data-p="local">Local price</button><button data-p="tourist">Tourist price</button></span></h2>
-        <ul class="ticket" id="ticket"></ul><div class="tot"><span>Total</span><span id="total">Afl. 0.00</span></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn solid" id="pay-card">Card</button><button class="btn" id="pay-cash">Cash</button><button class="btn" id="pay-clear">Clear</button></div>
-        <p id="pos-msg" class="kd" style="min-height:20px"></p></div>
+  <section class="view" id="v-map">
+    <div class="legend" id="legend"></div>
+    <div class="g c21">
+      <div class="card" style="padding:10px"><div id="bigmap" class="bigmap"></div></div>
+      <div class="card"><h2>Today's route</h2><div class="seg" id="repSeg" style="margin-bottom:10px"></div><ol class="plist" id="route"></ol></div>
     </div>
   </section>
 
-  <!-- QUICKBOOKS -->
+  <section class="view" id="v-inventory">
+    <div class="g k4" id="invKpi"></div>
+    <div class="card mt">
+      <div class="toolbar"><div class="seg" id="stkSeg"><button data-f="all" class="on">All</button><button data-f="sun">Sun care</button><button data-f="gum">Gum &amp; candy</button><button data-f="ess">Essentials</button><button data-f="snk">Snacks &amp; drinks</button><button data-f="low">Low or out</button></div><span class="muted">Live from QuickBooks · the portal shows the same numbers</span></div>
+      <div class="tw"><table><thead><tr><th>Product</th><th class="hide-s">Supplier</th><th class="r">Cases</th><th>Level</th><th class="r hide-s">Wholesale / unit</th><th class="r hide-s">Shelf price</th><th></th></tr></thead><tbody id="stkT"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-purchase">
+    <div class="g k4" id="poK"></div>
+    <div class="g c21 mt">
+      <div class="card"><h2>Purchase orders <small id="poNote"></small></h2><div class="tw"><table><thead><tr><th>PO</th><th>Supplier</th><th class="hide-s">Shipping</th><th class="r">Amount (USD)</th><th>Status</th><th class="hide-s">ETA</th></tr></thead><tbody id="poT"></tbody></table></div></div>
+      <div class="card"><h2>Containers on the way</h2><div id="ctn"></div></div>
+    </div>
+    <div class="card mt"><h2>Your 9 suppliers</h2><div class="tw"><table><thead><tr><th>Supplier</th><th>From</th><th class="hide-s">Products</th><th>Lead time</th><th class="hide-s">Terms</th><th class="hide-s">Shipping</th></tr></thead><tbody id="supT"></tbody></table></div></div>
+  </section>
+
+  <section class="view" id="v-kiosk">
+    <div class="posprev">
+      <div><h3>JEG Kiosk · Oranjestad cruise port</h3><p>Two registers on tablets. Tourist and local prices, US dollars and Afl., and every sale lands in QuickBooks Aruba by itself.</p></div>
+      <a class="btn lime" href="/pos/" target="_blank" rel="noopener">Open the register ↗</a>
+    </div>
+    <div class="g k4 mt" id="kK"></div>
+    <div class="g c11 mt">
+      <div class="card"><h2>Ships in port this week</h2><div class="tw"><table><thead><tr><th>Day</th><th>Ship</th><th class="r">Guests</th><th class="r">Kiosk sales</th></tr></thead><tbody id="shipT"></tbody></table></div></div>
+      <div class="card"><h2>Today's kiosk sales <small>both registers</small></h2><div class="tw"><table><thead><tr><th>Time</th><th>Register</th><th>Price</th><th class="r">Items</th><th class="r">Paid</th></tr></thead><tbody id="kSales"></tbody></table></div></div>
+    </div>
+  </section>
+
   <section class="view" id="v-quickbooks">
-    <div class="card"><h2>Linked with QuickBooks Online <button class="btn solid sm" id="syncnow">Sync now</button></h2>
+    <div class="books" id="books"></div>
+    <div class="card mt"><h2>How it flows</h2>
       <div class="flow">
-        <div class="fbox"><b>JEG Business System</b><ul><li>Wholesale portal and merchandiser tablets</li><li>Warehouse order screen and invoicing stations</li><li>Kiosk registers</li><li>Inventory, 645 items</li></ul></div>
-        <div class="arrows" aria-hidden="true">⇄</div>
-        <div class="fbox"><span class="qb">QuickBooks Online</span><ul style="margin-top:10px"><li>Jeg Trading Aruba (AWG)</li><li>Jeg Trading Curaçao (XCG), separate books</li><li>Invoices, receipts, payments, stock value</li></ul></div>
-      </div></div>
-    <div class="g c11" style="margin-top:16px">
-      <div class="card"><h2>What syncs</h2><div class="tw"><table><thead><tr><th>Record</th><th>Direction</th><th>When</th><th>Status</th></tr></thead><tbody>
-        <tr><td>Items, prices, stock</td><td>Both ways</td><td>Every 5 min</td><td><span class="pill p-ok">In sync</span></td></tr>
-        <tr><td>Customers</td><td>Both ways</td><td>Every 5 min</td><td><span class="pill p-ok">In sync</span></td></tr>
-        <tr><td>Invoices (wholesale)</td><td>To QuickBooks</td><td>When sent</td><td><span class="pill p-ok">In sync</span></td></tr>
-        <tr><td>Sales receipts (kiosk)</td><td>To QuickBooks</td><td>Every sale</td><td><span class="pill p-ok">In sync</span></td></tr>
-        <tr><td>Payments received</td><td>From QuickBooks</td><td>Every 5 min</td><td><span class="pill p-ok">In sync</span></td></tr>
-        <tr><td>Purchase orders</td><td>To QuickBooks</td><td>When approved</td><td><span class="pill p-pick">1 waiting</span></td></tr>
-      </tbody></table></div></div>
-      <div class="card"><h2>Sync activity</h2><ul class="log" id="qblog"></ul></div>
+        <div class="fbox"><b>This system</b><ul><li>Portal and merchandiser orders</li><li>The order inbox</li><li>Kiosk sales, both registers</li><li>Signed delivery notes</li></ul></div>
+        <div class="arrows">⇄</div>
+        <div class="fbox"><b><span class="qb">QuickBooks</span></b><ul><li>Items and stock (the source of truth)</li><li>Customers and price lists</li><li>Invoices and payments</li><li>Aruba and Curaçao as two company files</li></ul></div>
+      </div>
+    </div>
+    <div class="g c11 mt">
+      <div class="card"><h2>Sync health <button class="btn sm" id="checkBtn">Check against QuickBooks</button></h2><div class="tw"><table><tbody id="health"></tbody></table></div></div>
+      <div class="card"><h2>Sync log</h2><ul class="log" id="log"></ul></div>
     </div>
   </section>
 </main>
 </div>
 
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="Details"><div class="dh"><div><div class="kl" id="dK"></div><h3 id="dT"></h3></div><button class="x" id="dX" aria-label="Close">×</button></div><div class="db" id="dB"></div><div class="df" id="dF"></div></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
-// ---------- sample data ----------
-const CO={aw:{name:'Aruba',cur:'Afl.',f:1,center:[12.515,-69.975],zoom:12},cw:{name:'Curaçao',cur:'Cg',f:.62,center:[12.16,-68.95],zoom:11}};
-let co='aw';
-const money=(n,d=0)=>CO[co].cur+' '+(n*CO[co].f).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
-let seed=7;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
-const TYPES={pharmacy:['Pharmacies','#1d5b2c'],super:['Supermarkets','#1f5f9e'],hotel:['Hotel & resort shops','#b4630a'],mini:['Mini markets & snacks','#6b4fa3'],jeg:['JEG warehouse & kiosk','#b3261e']};
-const AREAS_AW={'Oranjestad':[12.5185,-70.030],'Noord':[12.578,-70.028],'Palm Beach':[12.572,-70.042],'Eagle Beach':[12.553,-70.050],'Druif':[12.540,-70.045],'Santa Cruz':[12.506,-69.985],'Paradera':[12.533,-70.008],'San Nicolas':[12.437,-69.910],'Savaneta':[12.456,-69.952],'Tanki Leendert':[12.556,-70.020],'Pos Chiquito':[12.473,-69.962],'Sabana Basora':[12.545,-70.000],'Malmok':[12.592,-70.043],'Brasil':[12.462,-69.928],'Seroe Blanco':[12.523,-70.018]};
-const AREAS_CW={'Willemstad':[12.110,-68.930],'Punda':[12.106,-68.934],'Otrobanda':[12.110,-68.940],'Mambo Beach':[12.085,-68.895],'Santa Rosa':[12.125,-68.880],'Westpunt':[12.360,-69.150],'Barber':[12.300,-69.080]};
-const NAMES={pharmacy:['Botica','Pharmacy','Apotheek'],super:['Supermarket','Food Market','Grocery'],hotel:['Resort Gift Shop','Hotel Boutique','Beach Shop'],mini:['Mini Market','Snack','Toko']};
-const REPS=['Ricardo','Shanella','Jurgen'];
-function mkPoints(areas,counts,island){const out=[];const keys=Object.keys(areas);
-  Object.entries(counts).forEach(([t,n])=>{for(let i=0;i<n;i++){let a=keys[Math.floor(rnd()*keys.length)];if(t==='hotel')a=island==='aw'?['Palm Beach','Eagle Beach','Druif','Malmok','Savaneta'][i%5]:['Mambo Beach','Willemstad','Westpunt'][i%3];
-    const c=areas[a];const nm=NAMES[t][i%3]+' '+a;out.push({t,name:nm,area:a,lat:c[0]+(rnd()-.5)*.009,lng:c[1]+(rnd()-.5)*.009,active:rnd()>.22,rev:Math.round(400+rnd()*(t==='super'?7000:t==='hotel'?4500:2600)),last:Math.ceil(rnd()*28),via:['Portal','Merchandiser','Portal','WhatsApp','Phone'][Math.floor(rnd()*5)],rep:REPS[Math.floor(rnd()*3)],bal:rnd()>.7?Math.round(rnd()*3200):0,island})}});return out}
-const PTS=[{t:'jeg',name:'JEG Warehouse',area:'Oranjestad',lat:12.5225,lng:-70.012,island:'aw',active:1},{t:'jeg',name:'JEG Kiosk',area:'Oranjestad',lat:12.5205,lng:-70.037,island:'aw',active:1},
- ...mkPoints(AREAS_AW,{pharmacy:19,super:11,hotel:10,mini:12},'aw'),
- {t:'jeg',name:'JEG Warehouse Curaçao',area:'Willemstad',lat:12.125,lng:-68.915,island:'cw',active:1},
- ...mkPoints(AREAS_CW,{pharmacy:9,super:6,hotel:5,mini:6},'cw')];
-const ITEMS=[['Sunscreen SPF 50 lotion 8oz','Sun care','SunGuard Labs',38,24,912,1100,14.5,24,29],['Sunscreen spray SPF 30','Sun care','SunGuard Labs',4,24,96,700,16.75,27,33],['Kids sunscreen stick SPF 50','Sun care','SunGuard Labs',3,24,72,400,9.8,16,19],['After-sun aloe gel 16oz','Sun care','Caribe Care',22,12,264,300,11.9,19,23],['Sport sunscreen SPF 70','Sun care','SunGuard Labs',14,24,336,350,17.2,28,34],['Lip balm SPF 15','Sun care','Caribe Care',30,48,1440,800,2.1,4,5],['Mint chewing gum 12ct','Confectionery','Fresh Co.',61,96,5856,3000,1.1,2.25,2.75],['Fruit gum 5-pack','Confectionery','Fresh Co.',9,48,432,900,2.4,4.5,5.5],['Sugar-free gum bottle','Confectionery','Fresh Co.',18,24,432,300,5.6,9,11],['Bubble gum tub','Confectionery','Candy Island',12,12,144,200,8.9,14,17],['Hard candy bag','Confectionery','Candy Island',26,24,624,400,3.2,5.5,6.5],['Insect repellent spray','Essentials','Caribe Care',5,24,120,300,7.4,12,15]];
-const ST=['New','Picking','Packed','Ready','Delivered'],SC={New:'p-new',Picking:'p-pick',Packed:'p-pack',Ready:'p-ready',Delivered:'p-done'},NX={New:'Start picking',Picking:'Packed',Packed:'Ready',Ready:'Delivered'};
-const custAw=PTS.filter(p=>p.island==='aw'&&p.t!=='jeg');
-let ORD=[];
-function mkOrders(){seed=31;const list=PTS.filter(p=>p.island===co&&p.t!=='jeg');ORD=[];for(let i=0;i<16;i++){const c=list[Math.floor(rnd()*list.length)];ORD.push({id:'SO-'+(co==='aw'?1060:560)-i,c,lines:3+Math.floor(rnd()*20),tot:Math.round(300+rnd()*6000),st:ST[Math.min(4,Math.floor(rnd()*5.6))],via:c.via,eta:['09:30','11:00','13:30','15:00'][i%4]})}}
-// ---------- helpers ----------
-const $=s=>document.querySelector(s);
-const charts={};
-function line(id,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),cfg)}
-Chart.defaults.font.family='Inter, system-ui, sans-serif';Chart.defaults.color='#5f6d62';
-// ---------- overview ----------
-let RANGE=30;
-function overview(){
- seed=co==='aw'?11:23;
- const sum=a=>a.reduce((x,y)=>x+y,0),f=CO[co].f;
- const nW=RANGE===7?7:RANGE===90?13:5;const so=RANGE===7?0:1;
- const weeks=[...Array(nW)].map((_,i)=>{const end=new Date(2026,9,22-7*(nW-1-i));const st=new Date(end);st.setDate(end.getDate()-6);
-   const lbl=RANGE===7?end.toLocaleDateString('en-US',{weekday:'short'}):st.toLocaleDateString('en-US',{day:'numeric',month:'short'});
-   const part=(so&&i===nW-1)?4/7:1;const base=RANGE===7?(new Date(2026,9,16+i).getDay()===0?2200:7600):38000;
-   const w=Math.round(base*(0.85+rnd()*.35)*part),k=co==='aw'?Math.round((RANGE===7?1650:11200)*(0.85+rnd()*.3)*part):0;
-   return {lbl,w,k,o:Math.round((w+k)/(RANGE===7?520:540)),so:so&&i===nW-1}});
- const tot=sum(weeks.map(x=>x.w+x.k)),totW=sum(weeks.map(x=>x.w)),totK=sum(weeks.map(x=>x.k)),orders=sum(weeks.map(x=>x.o));
- const pts=PTS.filter(p=>p.island===co&&p.t!=='jeg'),buying=pts.filter(p=>p.active).length;
- $('#h-range').textContent=$('#range').selectedOptions[0].text.toLowerCase();
- $('#h-total').textContent=money(tot,2);
- $('#h-delta').innerHTML='▲ 8.6% vs the '+RANGE+' days before';
- $('#h-split').innerHTML=`<div>QuickBooks invoices<b>${money(totW*.58)}</b></div><div>Ordering portal<b>${money(totW*.42)}</b></div>`+(co==='aw'?`<div>Kiosk registers<b>${money(totK)}</b></div>`:'');
- const mx=Math.max(...weeks.map(x=>(x.w+x.k)/(x.so?4/7:1)));
- $('#h-weeks').innerHTML=weeks.map(x=>`<div class="b${x.so?' so':''}"><em>${((x.w+x.k)*f/1000).toFixed(0)}k</em><i style="height:${Math.max(6,Math.round((x.w+x.k)/mx*120))}px"></i><span>${x.so?'so far':x.lbl}</span></div>`).join('');
- $('#f-pts').textContent=pts.length+' sales points';
- const IC={o:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>',a:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="M8 15l4-4 3 3 5-6"/></svg>',p:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-12a7 7 0 1 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>'};
- const K=[[IC.o,'Orders',orders.toLocaleString(),'<span class="up">▲ 5.1%</span> vs previous period'],[IC.a,'Average order',money(tot/orders,2),'<span class="up">▲ 3.3%</span> vs previous period'],[IC.p,'Sales points buying',`${buying} <span style="font-size:16px;color:var(--muted)">/ ${pts.length}</span>`,'<span class="dn">▼ 2</span> vs previous period']];
- $('#kpis').innerHTML=K.map(k=>`<div class="card ik"><div class="ic">${k[0]}</div><div><div class="kl">${k[1]}</div><div class="kv">${k[2]}</div><div class="kd">${k[3]}</div></div></div>`).join('');
- $('#wk-sub').textContent=RANGE===7?'Day by day':'Last '+nW+' weeks';
- $('#wk-t').innerHTML=weeks.slice().reverse().map((x,i,arr)=>{const prev=arr[i+1];const d=prev?((x.w+x.k)/(prev.w+prev.k)-1)*100:null;return `<tr><td>${x.so?'This week (so far)':(RANGE===7?x.lbl:'Week of '+x.lbl)}</td><td class="r">${x.o}</td><td class="r">${money(x.w)}</td><td class="r">${co==='aw'?money(x.k):'—'}</td><td class="r"><b>${money(x.w+x.k)}</b></td><td class="r">${d===null||x.so?'<span class="kd">—</span>':`<span class="${d>=0?'up':'dn'}">${d>=0?'▲':'▼'} ${Math.abs(d).toFixed(1)}%</span>`}</td></tr>`}).join('');
- const CAT=[['Sun care',46,'#1d5b2c'],['Confectionery',31,'#4f9a62'],['Everyday essentials',14,'#a8c3a8'],['Kiosk snacks & drinks',9,'#d9c46a']];
- line('ch-cat',{type:'doughnut',data:{labels:CAT.map(c=>c[0]),datasets:[{data:CAT.map(c=>c[1]),backgroundColor:CAT.map(c=>c[2]),borderWidth:2,borderColor:'#fff'}]},options:{maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.label+': '+c.raw+'%'}}}}});
- $('#cat-leg').innerHTML=CAT.map(c=>`<li><i style="background:${c[2]}"></i>${c[0]}<b>${money(tot*c[1]/100)}</b></li>`).join('');
- const low=ITEMS.filter(i=>i[5]<i[6]);
- $('#attn').innerHTML=[[`<span class="pill p-low">${low.length} items</span> below minimum stock`,'<a class="btn sm" href="#inventory">Reorder</a>'],[`<span class="pill p-ready">${ORD.filter(o=>o.st==='Ready').length} orders</span> ready for delivery`,'<a class="btn sm" href="#orders">View</a>'],['<span class="pill p-pick">3 invoices</span> overdue, '+money(6420),'<a class="btn sm" href="#customers">Open</a>'],['<span class="pill p-new">1 purchase order</span> waiting for your OK','<a class="btn sm" href="#quickbooks">Approve</a>'],['<span class="pill p-ok">Container</span> from SunGuard Labs arrives Mon 26 Oct','']].map(a=>`<li><span>${a[0]}</span>${a[1]}</li>`).join('');
- const sc=RANGE/30;
- $('#best').innerHTML=ITEMS.slice().sort((a,b)=>b[6]*b[7]-a[6]*a[7]).slice(0,6).map(i=>`<tr><td>${i[0]}</td><td class="r">${Math.round(i[6]*sc).toLocaleString()}</td><td class="r">${money(i[6]*i[7]*sc)}</td><td class="r">${(30+((i[0].length*7)%14))}%</td></tr>`).join('');
- $('#topc').innerHTML=pts.slice().sort((a,b)=>b.rev-a.rev).slice(0,6).map(p=>`<tr><td>${p.name}</td><td>${p.area}</td><td class="r">${money(p.rev*sc)}</td></tr>`).join('');
- setTimeout(()=>{mini.invalidateSize();drawMini()},50);
+const J=JEG;J.demoBar('/dashboard/');
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let isl=new URLSearchParams(location.search).get('island')==='cw'?'cw':'aw';
+const I=()=>J.ISLANDS[isl];
+const m=(n,d=0)=>J.fmt(n,I().cur,d);
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove('on'),2800)}
+
+/* ---------- data per island ---------- */
+const DATA={};
+function priceFor(p,c){return p.unit*p.perCase*J.TIER[c.tier]}
+function build(k){
+  J.reseed(k==='aw'?101:211);const r=J.rnd;
+  const custs=J.CUSTOMERS.filter(c=>c.island===k);
+  const stock=J.PRODUCTS.map(p=>({...p,stock:k==='aw'?p.stock:Math.max(0,Math.round(p.stock*.55+(p.i%3))*(p.stock?1:0)),min:k==='aw'?p.min:Math.max(4,Math.round(p.min*.6))}));
+  const mkLines=()=>{const n=2+Math.floor(r()*4),s=new Set();while(s.size<n)s.add(Math.floor(r()*stock.length));return [...s].map(i=>({p:i,cases:1+Math.floor(r()*(stock[i].cat==='snk'?6:4))}))};
+  const total=(c,lines)=>lines.reduce((a,l)=>a+priceFor(J.PRODUCTS[l.p],c)*l.cases,0);
+  const statuses=['new','new','new','new','pick','pick','pick','pick','route','route','route','route','done','done','done','done','done','done'];
+  const times=['07:42','08:05','08:31','08:54','09:12','09:40','10:05','10:26','Yesterday','Yesterday','Yesterday','Yesterday','Yesterday','Mon','Mon','Mon','Mon','Mon'];
+  const active=custs.filter(c=>c.active);
+  const orders=statuses.map((st,i)=>{const c=active[(i*7+3)%active.length],lines=mkLines();return {id:'SO-'+(k==='aw'?'2614':'3482')+String(i+10).padStart(2,'0'),cust:c,lines,total:total(c,lines),status:st,via:c.via,when:times[i],rep:c.rep,po:c.t==='super'||c.t==='hotel'?'PO '+(4400+i*13):''}});
+  const inv=[];const base=k==='aw'?26118:31042;
+  for(let i=0;i<26;i++){const c=active[(i*5+1)%active.length],lines=mkLines(),t=total(c,lines),age=Math.floor(i*1.6);
+    const net=c.terms==='Net 30';let st=!net?'paid':age<3?'open':(i%4===1&&age>8)?'over':age>14?'paid':'open';
+    const d=new Date(J.TODAY);d.setDate(d.getDate()-age);const dd=new Date(d);dd.setDate(dd.getDate()+(net?30:0));
+    if(st==='over'){dd.setDate(d.getDate()-2)}
+    inv.push({no:'INV-'+(base+26-i),cust:c,lines,total:t,date:d,due:dd,status:st,pod:i>1,qb:i>1,order:'SO-'+(k==='aw'?'2613':'3481')+String(40+i)})}
+  const sups=k==='aw'?J.SUPPLIERS:J.SUPPLIERS.filter(s=>s.name!=='Aqua Aruba');
+  const pst=['draft','sent','confirmed','water','water','arrived','arrived','confirmed','sent'];
+  const etaD=[18,11,7,4,9,-3,-6,12,15];
+  const pos=sups.map((s,i)=>{const items=stock.filter(p=>p.supplier===s.name);const lines=items.slice(0,4).map(p=>({p:p.i,cases:p.min*3}));
+    const amt=lines.reduce((a,l)=>a+J.PRODUCTS[l.p].unit*J.PRODUCTS[l.p].perCase*l.cases*.62,0);const eta=new Date(J.TODAY);eta.setDate(eta.getDate()+etaD[i]);
+    return {no:'PO-26-'+(k==='aw'?'0':'1')+String(141+i*3),sup:s,lines,amt,status:pst[i],eta,container:/container/i.test(s.ship)?['MSKU 482119-3','TGHU 730551-0','CMAU 118402-7','MSCU 664210-9'][i%4]:''}});
+  const pick=t=>active.find(c=>c.t===t)||active[0];
+  const msgs=[
+   {ch:'wa',from:pick('mini'),time:'07:58',text:"Bon dia! Pa mañan por fabor:\n3 case mint gum\n2 case awa\n1 case peanut bar\nDanki!",lines:[{p:8,cases:3},{p:19,cases:2},{p:22,cases:1}]},
+   {ch:'em',from:pick('hotel'),time:'07:31',subject:'Order for Friday delivery',text:"Hi team,\n\nPlease send for Friday:\n- Sunscreen lotion SPF 50 x 4 cases\n- After-sun aloe gel x 2 cases\n- Lip balm x 1 case\n\nPO number 88213 attached.\n\nThanks,\nFront office shop",lines:[{p:0,cases:4},{p:4,cases:2},{p:6,cases:1}]},
+   {ch:'ph',from:pick('pharmacy'),time:'08:12',text:"Call taken by Giandric, 3 min.\nNeeds 2 cases kids sunscreen stick, 2 cases insect repellent, 1 case pain relief. Asked if the SPF 70 is back in stock.",lines:[{p:2,cases:2},{p:14,cases:2},{p:17,cases:1}]},
+   {ch:'me',from:active[5],time:'08:40',text:"Shelf check done by "+J.ISLANDS[k].reps[0]+".\nLow on sunscreen spray and fruit gum. Suggested order below, the store manager agreed.",lines:[{p:1,cases:2},{p:9,cases:3},{p:12,cases:2}]},
+   {ch:'wa',from:active[9],time:'09:05',text:"Hi, do you still have the sour gummies? If yes 4 cases, plus 2 energy drink",lines:[{p:13,cases:4},{p:20,cases:2}]},
+   {ch:'em',from:pick('super'),time:'Yesterday',subject:'Weekly order',text:"Good afternoon,\n\nOur weekly order:\nBottled water 500 ml, 10 cases\nPlantain chips, 4 cases\nCoconut water, 3 cases\nHand sanitizer, 2 cases\n\nRegards, purchasing",lines:[{p:19,cases:10},{p:21,cases:4},{p:23,cases:3},{p:15,cases:2}]}];
+  msgs.forEach((x,i)=>{x.id=i;x.done=i===5;x.subject=x.subject||(x.ch==='wa'?'WhatsApp message':x.ch==='ph'?'Phone order':'Shelf check')});
+  J.reseed(k==='aw'?501:601);
+  const ksales=[];let tt=8*60+40;for(let i=0;i<14;i++){tt+=Math.floor(8+r()*24);const tour=r()>.28;const items=1+Math.floor(r()*4);const amt=items*(tour?(10+r()*12):(5+r()*8));ksales.unshift({time:String(Math.floor(tt/60)).padStart(2,'0')+':'+String(tt%60).padStart(2,'0'),reg:1+(i%2),tour,items,usd:amt,cash:r()>.6})}
+  DATA[k]={custs,stock,orders,inv,pos,msgs,ksales};
 }
-$('#range').addEventListener('change',e=>{RANGE=+e.target.value;overview()});
-// ---------- maps ----------
-const TILE='https://tile.openstreetmap.org/{z}/{x}/{y}.png',ATTR='© OpenStreetMap contributors';
-const mini=L.map('minimap',{zoomControl:false,attributionControl:false,scrollWheelZoom:false}).setView(CO.aw.center,11);L.tileLayer(TILE).addTo(mini);
-let miniLayer=L.layerGroup().addTo(mini);
-function marker(p,r){return L.circleMarker([p.lat,p.lng],{radius:r||(p.t==='jeg'?9:6),color:'#fff',weight:2,fillColor:TYPES[p.t][1],fillOpacity:p.active?1:.45})}
-function popup(p){return p.t==='jeg'?`<b>${p.name}</b><br>${p.area}`:`<b>${p.name}</b><br>${TYPES[p.t][0].replace(/s$|es$/,'')} · ${p.area}<br>Last order: ${p.last} days ago<br>30 days: ${money(p.rev)}<br>Orders via ${p.via} · ${p.rep}${p.bal?`<br><span style="color:#b3261e">Open balance ${money(p.bal)}</span>`:''}`}
-function drawMini(){miniLayer.clearLayers();PTS.filter(p=>p.island===co).forEach(p=>marker(p,p.t==='jeg'?7:4).bindPopup(popup(p)).addTo(miniLayer));mini.setView(CO[co].center,CO[co].zoom-1)}
-let big,bigLayer,routeLayer;const on=new Set(Object.keys(TYPES));
-function drawBig(){
- if(!big){big=L.map('bigmap').setView(CO[co].center,CO[co].zoom);L.tileLayer(TILE,{attribution:ATTR,maxZoom:19}).addTo(big);bigLayer=L.layerGroup().addTo(big);routeLayer=L.layerGroup().addTo(big)}
- big.invalidateSize();bigLayer.clearLayers();routeLayer.clearLayers();
- const pts=PTS.filter(p=>p.island===co);
- $('#legend').innerHTML=Object.entries(TYPES).map(([k,[n,c]])=>`<button id="lg-${k}" data-k="${k}" aria-pressed="${on.has(k)}"><i style="background:${c}"></i>${n} (${pts.filter(p=>p.t===k).length})</button>`).join('')+`<button id="lg-route" data-k="route" aria-pressed="${on.has('route')}"><i style="background:#111;border-radius:2px"></i>Today's delivery route</button>`;
- const vis=pts.filter(p=>on.has(p.t));
- vis.forEach(p=>{p._m=marker(p).bindPopup(popup(p)).addTo(bigLayer)});
- if(on.has('route')){const wh=pts.find(p=>p.t==='jeg');const stops=ORD.filter(o=>o.st==='Ready'||o.st==='Packed').map(o=>o.c);const path=[wh,...stops.sort((a,b)=>b.lng-a.lng),wh].map(p=>[p.lat,p.lng]);L.polyline(path,{color:'#16211a',weight:3,dashArray:'6 6',opacity:.75}).addTo(routeLayer);stops.forEach((s,i)=>L.marker([s.lat,s.lng],{icon:L.divIcon({className:'',html:`<div style="background:#16211a;color:#fff;font:700 11px Inter;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;transform:translate(8px,-22px)">${i+1}</div>`})}).addTo(routeLayer))}
- $('#map-sub').textContent=`${CO[co].name} · ${pts.filter(p=>p.t!=='jeg').length} customers · ${pts.filter(p=>p.t!=='jeg'&&p.active).length} ordered in 30 days`;
- $('#pl-h').textContent=vis.length+' points shown';
- $('#plist').innerHTML=vis.map((p,i)=>`<li data-i="${PTS.indexOf(p)}"><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${TYPES[p.t][1]};margin-right:8px"></i>${p.name}</span><span class="kd" style="margin:0">${p.t==='jeg'?'JEG':p.active?money(p.rev):'No order 30d'}</span></li>`).join('');
-}
-$('#legend').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;on.has(k)?on.delete(k):on.add(k);drawBig()});
-$('#plist').addEventListener('click',e=>{const li=e.target.closest('li');if(!li)return;const p=PTS[+li.dataset.i];big.setView([p.lat,p.lng],15);p._m&&p._m.openPopup()});
-on.add('route');
-// ---------- orders ----------
-function orders(){
- $('#kan').innerHTML=ST.map(s=>{const os=ORD.filter(o=>o.st===s);return `<div class="col"><h3>${s}<span class="pill ${SC[s]}">${os.length}</span></h3>${os.map(o=>`<div class="oc"><div class="f"><b>${o.id}</b><span class="src">${o.via}</span></div><div class="m">${o.c.name}<br>${o.lines} lines · ${money(o.tot)}${s==='Ready'?' · delivery '+o.eta:''}</div><div class="f">${NX[s]?`<button class="btn sm ${s==='Packed'?'solid':''}" data-id="${o.id}">${NX[s]} →</button>`:'<span class="kd" style="margin:0">Invoice sent · QuickBooks ✓</span>'}</div></div>`).join('')}</div>`}).join('');
- $('#b-orders').textContent=ORD.filter(o=>o.st!=='Delivered').length;
-}
-$('#kan').addEventListener('click',e=>{const b=e.target.closest('button[data-id]');if(!b)return;const o=ORD.find(x=>x.id===b.dataset.id);o.st=ST[ST.indexOf(o.st)+1];orders()});
-// ---------- inventory ----------
-let invF='all';const drafted=new Set();
-function inventory(){
- const low=ITEMS.filter(i=>i[5]<i[6]);$('#b-low').textContent=low.length;
- $('#inv-k').innerHTML=[['Active items','645','12 shown below'],['Stock value',money(312400),'warehouse + kiosk'],['Below minimum',low.length,'reorder suggested'],['Incoming','2 containers','Mon 26 Oct, Tue 3 Nov']].map(k=>`<div class="card"><div class="kl">${k[0]}</div><div class="kv">${k[1]}</div><div class="kd">${k[2]}</div></div>`).join('');
- const q=$('#q').value.toLowerCase();
- $('#inv').innerHTML=ITEMS.filter(i=>(invF==='all'||i[1]===invF||(invF==='low'&&i[5]<i[6]))&&(!q||i[0].toLowerCase().includes(q))).map((i,k)=>{const pct=Math.min(100,Math.round(i[5]/(i[6]*2)*100)),isLow=i[5]<i[6];const upc='0 '+(41100+k*731)+' '+(10000+k*2371)+' '+(k%10);
- return `<tr><td>${i[0]}</td><td>${i[2]}</td><td>${upc}</td><td class="r">${i[3]}</td><td class="r">${i[5].toLocaleString()}</td><td><div class="bar"><span class="${isLow?'low':''}" style="width:${pct}%"></span></div></td><td class="r">${money(i[7],2)}</td><td class="r">${money(i[8])} / ${money(i[9])}</td><td>${isLow?(drafted.has(i[0])?'<span class="pill p-ok">PO drafted</span>':`<button class="btn sm" data-po="${i[0]}">Reorder</button>`):'<span class="pill p-ok">OK</span>'}</td></tr>`}).join('');
-}
-$('#invf').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;invF=b.dataset.f;[...$('#invf').children].forEach(x=>x.classList.toggle('on',x===b));inventory()});
-$('#inv').addEventListener('click',e=>{const b=e.target.closest('[data-po]');if(!b)return;drafted.add(b.dataset.po);inventory()});
-// ---------- customers ----------
-function customers(){const q=$('#q').value.toLowerCase();const list=PTS.filter(p=>p.island===co&&p.t!=='jeg'&&(!q||p.name.toLowerCase().includes(q)||p.area.toLowerCase().includes(q))).sort((a,b)=>b.rev-a.rev);
- $('#cust-sub').textContent=list.length+' accounts · '+list.filter(p=>p.active).length+' ordered in 30 days';
- $('#cust').innerHTML=list.map(p=>`<tr><td><b>${p.name}</b></td><td><span class="pill" style="background:${TYPES[p.t][1]}18;color:${TYPES[p.t][1]}">${TYPES[p.t][0]}</span></td><td>${p.area}</td><td>${p.via}</td><td>${p.rep}</td><td>${p.last} days ago</td><td class="r">${money(p.rev)}</td><td class="r">${p.bal?`<span style="color:var(--bad);font-weight:600">${money(p.bal)}</span>`:'—'}</td></tr>`).join('')}
-// ---------- kiosk ----------
-let price='local',reg='1',cart=[];
-function kiosk(){
- $('#pos-k').innerHTML=[['Kiosk today',money(2140),'86 receipts'],['Register 1',money(1220),'49 receipts'],['Register 2',money(920),'37 receipts'],['Tourist / local','61% / 39%','of today\'s sales']].map(k=>`<div class="card"><div class="kl">${k[0]}</div><div class="kv">${k[1]}</div><div class="kd">${k[2]}</div></div>`).join('');
- $('#tiles').innerHTML=ITEMS.slice(0,10).map((i,k)=>`<button class="tile" data-k="${k}"><b>${i[0]}</b><span>${money(price==='local'?i[8]:i[9],2)}</span></button>`).join('');
- ticket();
-}
-function ticket(){$('#ticket').innerHTML=cart.length?cart.map(c=>`<li><span>${c.q} × ${ITEMS[c.k][0]}</span><span>${money(c.q*(price==='local'?ITEMS[c.k][8]:ITEMS[c.k][9]),2)}</span></li>`).join(''):'<li class="kd">Tap a product to add it</li>';
- $('#total').textContent=money(cart.reduce((s,c)=>s+c.q*(price==='local'?ITEMS[c.k][8]:ITEMS[c.k][9]),0),2)}
-$('#tiles').addEventListener('click',e=>{const b=e.target.closest('.tile');if(!b)return;const k=+b.dataset.k;const c=cart.find(x=>x.k===k);c?c.q++:cart.push({k,q:1});$('#pos-msg').textContent='';ticket()});
-$('#price').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;price=b.dataset.p;[...$('#price').children].forEach(x=>x.classList.toggle('on',x===b));kiosk()});
-$('#reg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;reg=b.dataset.r;[...$('#reg').children].forEach(x=>x.classList.toggle('on',x===b))});
-function pay(m){if(!cart.length)return;$('#pos-msg').innerHTML=`<span class="up">✓ Paid by ${m} on register ${reg}.</span> Receipt printed, stock updated, sent to QuickBooks.`;cart=[];ticket()}
-$('#pay-card').onclick=()=>pay('card');$('#pay-cash').onclick=()=>pay('cash');$('#pay-clear').onclick=()=>{cart=[];$('#pos-msg').textContent='';ticket()};
-// ---------- quickbooks ----------
-const LOG=[['Invoice SO-1057 posted','Hotel Boutique Druif','11:02'],['Payment received','Botica Oranjestad','10:41'],['Kiosk register 2 · 14 receipts posted','','10:30'],['Stock updated · 645 items','','10:25'],['Customer added','Mini Market Brasil','09:48'],['Purchase order waiting for your OK','SunGuard Labs','09:12']];
-function qb(){$('#qblog').innerHTML=LOG.map(l=>`<li><span>${l[0]}${l[1]?` <span class="kd">· ${l[1]}</span>`:''}</span><span class="kd" style="margin:0">${l[2]}</span></li>`).join('')}
-function qbAge(t){$('#qb-age').textContent='QuickBooks data · '+t}
-$('#chip-sync').onclick=()=>{const b=$('#chip-sync');b.innerHTML='<span class="spin">⟳</span> Syncing';setTimeout(()=>{b.innerHTML='⟳ Sync now';qbAge('just now');$('#sync-side').textContent='QuickBooks synced just now'},1300)};
-$('#chip-check').onclick=()=>{const b=$('#chip-check');b.textContent='Checking…';setTimeout(()=>{b.textContent='✓ Matches QuickBooks · 0 differences'},1100)};
-$('#syncnow').onclick=()=>{const b=$('#syncnow');b.innerHTML='<span class="spin">⟳</span> Syncing';b.disabled=true;setTimeout(()=>{LOG.unshift(['Full sync complete · 0 errors','','just now']);qb();b.textContent='Sync now';b.disabled=false;$('#sync-side').textContent='QuickBooks synced just now';qbAge('just now')},1400)};
-// ---------- routing ----------
-const TITLES={overview:['Dashboard','Thursday 22 October 2026'],orders:['Warehouse orders','Tap a card to move it to the next step'],map:['Distribution map','Every pharmacy, supermarket and shop you deliver to'],inventory:['Inventory','Live stock across warehouse and kiosk'],customers:['Customers','Wholesale accounts'],kiosk:['Kiosk POS','Two registers, local and tourist prices'],quickbooks:['QuickBooks Online','Your books stay in QuickBooks']};
-function go(){let v=(location.hash||'#overview').slice(1);if(!TITLES[v])v='overview';
- document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
- document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
- $('#title').textContent=TITLES[v][0];$('#subtitle').textContent=TITLES[v][1]+' · '+CO[co].name;
- $('#side').classList.remove('open');
- ({overview,orders,map:()=>setTimeout(()=>{drawBig();big.setView(CO[co].center,CO[co].zoom)},30),inventory,customers,kiosk,quickbooks:qb})[v]();}
-window.addEventListener('hashchange',go);
-$('#menu').onclick=()=>$('#side').classList.toggle('open');
-$('#q').addEventListener('input',()=>{const v=(location.hash||'#overview').slice(1);if(v==='inventory')inventory();else if(v==='customers')customers();else if($('#q').value.length>1){location.hash=ITEMS.some(i=>i[0].toLowerCase().includes($('#q').value.toLowerCase()))?'inventory':'customers'}});
-document.querySelector('.co').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;co=b.dataset.co;document.querySelectorAll('.co button').forEach(x=>x.classList.toggle('on',x===b));mkOrders();orders();inventory();go()});
-mkOrders();orders();inventory();go();
+build('aw');build('cw');
+const D=()=>DATA[isl];
+
+/* ---------- routing ---------- */
+const TITLES={overview:['Today',''],inbox:['Order inbox','Email, WhatsApp, phone and merchandisers in one place'],orders:['Orders','From first message to signed delivery'],invoices:['Invoices','Wholesale invoices, delivery notes and payments'],customers:['Customers',''],map:['Routes & map','Every shop you deliver to'],inventory:['Inventory','Live stock, the same numbers your customers see'],purchase:['Purchase orders','What you buy from your suppliers, and when it lands'],kiosk:['Kiosk at the port','Two registers, tourist and local prices'],quickbooks:['QuickBooks sync','Two islands, two company files']};
+let cur='overview';
+function go(v){if(!TITLES[v])v='overview';cur=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('.nav a[data-v]').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  $('#title').textContent=TITLES[v][0];sub();render(v);closeSide();window.scrollTo(0,0)}
+function sub(){const s=TITLES[cur][1];$('#subtitle').textContent=(s?s+' · ':'')+I().company}
+window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
+function render(v){({overview,inbox,orders,invoices,customers,map:bigMap,inventory,purchase,kiosk,quickbooks}[v])()}
+function badges(){$('#b-inbox').textContent=D().msgs.filter(x=>!x.done).length;$('#b-orders').textContent=D().orders.filter(o=>o.status==='new').length;$('#b-low').textContent=D().stock.filter(p=>p.stock<p.min).length}
+function setIsl(k,quiet){isl=k;$$('.co button').forEach(x=>x.classList.toggle('on',x.dataset.co===k));$('#coNote').textContent='Separate QuickBooks file · '+I().cur+' ('+I().code+')';
+  const u=new URL(location);u.searchParams.set('island',k);history.replaceState(null,'',u);badges();sub();if(!quiet){render(cur);toast('Switched to '+I().company)}}
+$$('.co button').forEach(b=>b.onclick=()=>setIsl(b.dataset.co));
+setIsl(isl,true);
+const side=$('#side');function closeSide(){side.classList.remove('open');$('#menu').setAttribute('aria-expanded','false');if(!$('#drawer').classList.contains('on'))$('#scrim').classList.remove('on')}
+$('#menu').onclick=()=>{side.classList.add('open');$('#scrim').classList.add('on');$('#menu').setAttribute('aria-expanded','true')};
+$('#scrim').onclick=()=>{closeDrawer();closeSide()};
+$('#syncBtn').onclick=()=>{const b=$('#syncBtn');b.innerHTML='<span class="spin">⟳</span> <span class="syncl">Syncing</span>';setTimeout(()=>{b.innerHTML='✓ <span class="syncl">Synced just now</span>';$('#syncAgo').textContent='Last sync just now';toast('QuickBooks '+I().name+': 645 items and '+D().custs.length+' customers, up to date')},1100)};
+$('#q').addEventListener('keydown',e=>{if(e.key!=='Enter')return;const q=e.target.value.trim().toLowerCase();if(!q)return;
+  const c=D().custs.find(c=>c.name.toLowerCase().includes(q));if(c)return openCust(c);
+  const o=D().orders.find(o=>o.id.toLowerCase().includes(q));if(o)return openOrder(o);
+  const p=D().stock.find(p=>p.name.toLowerCase().includes(q));if(p){go('inventory');return toast(p.name+': '+p.stock+' cases in stock')}
+  toast('Nothing found for "'+q+'"')});
+
+/* ---------- drawer ---------- */
+function openDrawer(k,t,body,foot){$('#dK').textContent=k;$('#dT').textContent=t;$('#dB').innerHTML=body;$('#dF').innerHTML=foot||'';$('#drawer').classList.add('on');$('#drawer').setAttribute('aria-hidden','false');$('#scrim').classList.add('on');$('#dB').scrollTop=0}
+function closeDrawer(){$('#drawer').classList.remove('on');$('#drawer').setAttribute('aria-hidden','true');if(!side.classList.contains('open'))$('#scrim').classList.remove('on')}
+$('#dX').onclick=closeDrawer;document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDrawer();closeSide()}});
+const linesTable=(lines,c)=>`<div class="tw"><table><thead><tr><th>Product</th><th class="r">Cases</th><th class="r">Amount</th></tr></thead><tbody>${lines.map(l=>{const p=J.PRODUCTS[l.p];return `<tr><td>${esc(p.name)}<div class="muted" style="font-size:12px">${p.perCase} per case</div></td><td class="r">${l.cases}</td><td class="r">${m(priceFor(p,c)*l.cases,2)}</td></tr>`}).join('')}</tbody></table></div>`;
+const SIG=`<svg viewBox="0 0 180 50"><path d="M8 34c14-22 22-24 26-6 3 12 10 10 16-4 6-14 12-12 12 2 0 10 8 12 16-2 6-10 14-12 20 0 6 12 18 10 28-6" fill="none" stroke="#1d5b2c" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+const STEP={new:0,pick:1,route:2,done:3},SN={new:'New',pick:'Picking',route:'On the truck',done:'Delivered'};
+function openOrder(o){const st=STEP[o.status];
+  openDrawer('Order · via '+o.via,o.id,`<div class="steps">${[0,1,2,3].map(i=>`<span class="${i<=st?'on':''}"></span>`).join('')}</div>
+  <dl class="kvs"><dt>Customer</dt><dd>${esc(o.cust.name)}</dd><dt>Area</dt><dd>${esc(o.cust.area)}, ${I().name}</dd><dt>Status</dt><dd>${SN[o.status]}</dd><dt>Came in</dt><dd>${o.when} · ${o.via}</dd><dt>Merchandiser</dt><dd>${o.rep}</dd>${o.po?`<dt>Their PO</dt><dd>${o.po}</dd>`:''}<dt>Price list</dt><dd>${o.cust.tier}</dd></dl>
+  ${linesTable(o.lines,o.cust)}<div style="display:flex;justify-content:space-between;font:800 18px var(--display);margin-top:12px"><span>Total</span><span>${m(o.total,2)}</span></div>
+  ${o.status==='done'?`<div class="sig"><div class="kl">Signed delivery note</div>${SIG}<div class="muted" style="font-size:12px">Signed on the merchandiser's tablet, with a photo of the shelf</div></div>`:''}`,
+  o.status!=='done'?`<button class="btn solid" id="adv">Move to ${SN[Object.keys(STEP)[st+1]]}</button><button class="btn ghost" id="dc">Close</button>`:`<button class="btn solid" id="toInv">See the invoice</button>`);
+  const a=$('#adv');if(a)a.onclick=()=>{o.status=Object.keys(STEP)[st+1];if(o.status==='done'){D().inv.unshift({no:'INV-'+(isl==='aw'?26145:31069)+D().inv.length,cust:o.cust,lines:o.lines,total:o.total,date:new Date(J.TODAY),due:new Date(J.TODAY.getTime()+(o.cust.terms==='Net 30'?30:0)*864e5),status:o.cust.terms==='Net 30'?'open':'paid',pod:true,qb:true,order:o.id});toast('Delivered. The invoice is made in QuickBooks '+I().name)}else toast(o.id+' moved to '+SN[o.status]);badges();render(cur);openOrder(o)};
+  const dc=$('#dc');if(dc)dc.onclick=closeDrawer;const ti=$('#toInv');if(ti)ti.onclick=()=>{closeDrawer();location.hash='invoices'}}
+function openCust(c){const ords=D().orders.filter(o=>o.cust.id===c.id),inv=D().inv.filter(x=>x.cust.id===c.id);
+  openDrawer(J.TYPES[c.t][0]+' · '+c.area+', '+I().name,c.name,`<dl class="kvs"><dt>Contact</dt><dd>${esc(c.contact)}</dd><dt>Price list</dt><dd>${c.tier}${c.tier!=='C'?' ('+Math.round((1-J.TIER[c.tier])*100)+'% off list)':' (list price)'}</dd><dt>Terms</dt><dd>${c.terms}</dd><dt>Merchandiser</dt><dd>${c.rep}</dd><dt>Usually orders by</dt><dd>${c.via}</dd><dt>Last 30 days</dt><dd>${m(c.rev30)}</dd><dt>This year</dt><dd>${m(c.ytd)}</dd><dt>Balance</dt><dd>${c.bal?m(c.bal,2):'Nothing open'}</dd></dl>
+  ${!c.active?`<div class="bubble" style="background:var(--warn-bg)">No order in ${c.last} days. The next merchandiser visit is a good moment to check in.</div>`:''}
+  <div class="kl" style="margin:6px 0">Open orders</div>${ords.length?'<ul class="att">'+ords.map(o=>`<li style="cursor:pointer" data-o="${o.id}"><div class="t"><b>${o.id}</b><span>${SN[o.status]} · ${o.when}</span></div><b>${m(o.total)}</b></li>`).join('')+'</ul>':`<p class="muted">No open orders right now.</p>`}
+  <div class="kl" style="margin:12px 0 6px">Invoices</div>${inv.length?'<ul class="att">'+inv.map(x=>`<li><div class="t"><b>${x.no}</b><span>${x.date.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span></div>${pillInv(x.status)} <b style="margin-left:8px">${m(x.total)}</b></li>`).join('')+'</ul>':`<p class="muted">All paid up.</p>`}`,
+  `<a class="btn solid" href="/portal/?c=${c.id}&mode=customer" target="_blank" rel="noopener">See their portal ↗</a><a class="btn" href="/portal/?c=${c.id}" target="_blank" rel="noopener">Order for them ↗</a>`);
+  $$('#dB li[data-o]').forEach(li=>li.onclick=()=>openOrder(D().orders.find(o=>o.id===li.dataset.o)))}
+const pillInv=s=>({paid:'<span class="pill p-paid">Paid</span>',open:'<span class="pill p-open">Open</span>',over:'<span class="pill p-over">Overdue</span>'}[s]);
+
+/* ---------- views ---------- */
+let charts={},mini,big;
+function kpi(l,v,d){return `<div class="card"><div class="kl">${l}</div><div class="kv">${v}</div><div class="kd">${d}</div></div>`}
+function tiles(map){L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map)}
+function markers(map,keep,rad){const pts=[...D().custs,...J.SITES.filter(s=>s.island===isl)];const ls=[];pts.filter(keep).forEach(p=>{const col=J.TYPES[p.t][2];const mk=p.t==='jeg'?L.circleMarker([p.lat,p.lng],{radius:rad+4,color:'#fff',weight:2,fillColor:col,fillOpacity:1}):L.circleMarker([p.lat,p.lng],{radius:rad,color:'#fff',weight:1.5,fillColor:col,fillOpacity:p.active?.95:.35});
+  mk.bindPopup(`<b>${esc(p.name)}</b><br>${J.TYPES[p.t][0]} · ${p.area}${p.rev30!==undefined?'<br>Last 30 days: '+m(p.rev30)+(p.active?'':'<br><i>No order in '+p.last+' days</i>'):''}`);mk.addTo(map);ls.push(mk)});return ls}
+
+function overview(){const d=D(),k=isl;const h=new Date().getHours();
+  $('#hi').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', Giandric';
+  const newO=d.orders.filter(o=>o.status==='new').length,low=d.stock.filter(p=>p.stock<p.min).length,unread=d.msgs.filter(x=>!x.done).length;
+  $('#hiSub').textContent=`${unread} messages with orders in the inbox, ${newO} orders to pick and ${low} products running low. This is ${I().company} today.`;
+  const month=k==='aw'?184260:96410,prev=k==='aw'?163900:91280;
+  $('#mSales').textContent=m(month);$('#mDelta').textContent='▲ '+Math.round((month/prev-1)*100)+'% vs September';
+  $('#mSplit').innerHTML=k==='aw'?`<div>Wholesale<b>${m(month-21480)}</b></div><div>Kiosk at the port<b>${m(21480)}</b></div><div>Shops ordering<b>${d.custs.filter(c=>c.active).length} of ${d.custs.length}</b></div>`:`<div>Wholesale<b>${m(month)}</b></div><div>Shops ordering<b>${d.custs.filter(c=>c.active).length} of ${d.custs.length}</b></div><div>Currency<b>Cg (XCG)</b></div>`;
+  const openInv=d.inv.filter(x=>x.status!=='paid'),over=d.inv.filter(x=>x.status==='over');
+  $('#kpis').innerHTML=kpi('Orders today',d.orders.filter(o=>/^\d|Just/.test(o.when)).length,'<span class="up">'+d.orders.filter(o=>o.via==='Portal').length+'</span> placed in the portal by the shops')+kpi('To deliver',d.orders.filter(o=>o.status==='route'||o.status==='pick').length,I().reps.length+' merchandisers on the road')+kpi('Open invoices',m(openInv.reduce((a,x)=>a+x.total,0)),over.length?'<span class="dn">'+over.length+' overdue</span>':'none overdue')+kpi('Stock value',m(d.stock.reduce((a,p)=>a+p.stock*p.perCase*p.unit,0)*(k==='aw'?27:16)),'645 items in QuickBooks');
+  const att=[];if(unread)att.push(['📥','#e7f0fa',unread+' messages with orders','WhatsApp, email and phone, ready to turn into orders','#inbox']);
+  d.stock.filter(p=>p.stock===0).slice(0,2).forEach(p=>att.push(['⛔','#fbe9e7',p.name+' is out of stock','Shows as "out" in the portal · '+p.supplier,'#purchase']));
+  d.stock.filter(p=>p.stock>0&&p.stock<p.min).slice(0,2).forEach(p=>att.push(['⚠️','#fdf1e2',p.name+': '+p.stock+' cases left','Below your minimum of '+p.min,'#inventory']));
+  if(over.length)att.push(['💸','#fbe9e7',over.length+' invoices overdue',m(over.reduce((a,x)=>a+x.total,0))+' to collect','#invoices']);
+  const quiet=d.custs.filter(c=>!c.active);if(quiet.length)att.push(['💤','#eef0ee',quiet.length+' shops gone quiet','No order in 30+ days','#customers']);
+  const arr=d.pos.find(p=>p.status==='water');if(arr)att.push(['🚢','#eef4ee','Container from '+arr.sup.name+' lands '+arr.eta.toLocaleDateString('en-GB',{day:'numeric',month:'short'}),arr.no,'#purchase']);
+  $('#att').innerHTML=att.slice(0,6).map(a=>`<li style="cursor:pointer" data-h="${a[4]}"><span class="ic" style="background:${a[1]}">${a[0]}</span><div class="t"><b>${esc(a[2])}</b><span>${esc(a[3])}</span></div></li>`).join('');
+  $$('#att li').forEach(li=>li.onclick=()=>location.hash=li.dataset.h);
+  $('#daysNote').textContent=k==='aw'?'last 14 days · wholesale and kiosk':'last 14 days · wholesale';
+  J.reseed(k==='aw'?7:9);const days=[],w=[],ks=[];for(let i=13;i>=0;i--){const dt=new Date(J.TODAY);dt.setDate(dt.getDate()-i);const sun=dt.getDay()===0;days.push(dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric'}));w.push(sun?0:Math.round((k==='aw'?6200:3400)+J.rnd()*(k==='aw'?4200:2400)));ks.push(k==='aw'?Math.round(400+J.rnd()*1400):0)}
+  charts.d&&charts.d.destroy();const ds=[{label:'Wholesale',data:w,backgroundColor:'#2f7a42',borderRadius:6}];if(k==='aw')ds.push({label:'Kiosk',data:ks,backgroundColor:'#c9d65a',borderRadius:6});
+  charts.d=new Chart($('#cDays'),{type:'bar',data:{labels:days,datasets:ds},options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{family:'Inter'}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+m(c.raw)}}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10},maxRotation:0,autoSkip:true}},y:{stacked:true,grid:{color:'#eef1ee'},ticks:{callback:v=>v>=1000?(v/1000)+'k':v,font:{size:11}}}}}});
+  const cs={sun:0,gum:0,ess:0,snk:0};d.stock.forEach(p=>cs[p.cat]+=p.unit*p.perCase*(p.min*3+p.i%5));
+  charts.c&&charts.c.destroy();charts.c=new Chart($('#cCat'),{type:'doughnut',data:{labels:Object.keys(cs).map(x=>J.CATS[x]),datasets:[{data:Object.values(cs).map(Math.round),backgroundColor:['#1d5b2c','#c9d65a','#a8c3a8','#4f9a62'],borderWidth:2,borderColor:'#fff'}]},options:{maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:window.innerWidth<560?'bottom':'right',labels:{boxWidth:10,font:{family:'Inter',size:12}}},tooltip:{callbacks:{label:c=>c.label+': '+m(c.raw)}}}}});
+  $('#topC').innerHTML=[...d.custs].sort((a,b)=>b.rev30-a.rev30).slice(0,6).map(c=>`<tr class="click" data-c="${c.id}"><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${c.area}</div></td><td class="hide-s">${J.TYPES[c.t][0]}</td><td class="r">${m(c.rev30)}</td></tr>`).join('');
+  $('#best').innerHTML=[...d.stock].sort((a,b)=>(b.min*3+b.i%5)-(a.min*3+a.i%5)).slice(0,6).map(p=>{const s=J.stockState(p);return `<tr><td>${esc(p.name)}</td><td class="r">${p.min*3+p.i%5}</td><td class="r"><span class="pill p-${s[0]}">${p.stock}</span></td></tr>`}).join('');
+  $$('#topC tr').forEach(t=>t.onclick=()=>openCust(d.custs.find(c=>c.id===t.dataset.c)));
+  setTimeout(()=>{if(mini){mini.remove()}mini=L.map('minimap',{scrollWheelZoom:false,zoomControl:false}).setView(I().center,I().zoom-(window.innerWidth<600?1:0));tiles(mini);markers(mini,()=>true,4)},30)}
+
+const CH={wa:['ch-wa','WA','WhatsApp'],em:['ch-em','@','Email'],ph:['ch-ph','☎','Phone'],me:['ch-me','M','Merchandiser']};
+function inbox(){const d=D();let fl=inbox.f||'all';const list=d.msgs.filter(x=>fl==='all'||x.ch===fl);
+  $('#inboxCount').textContent=d.msgs.filter(x=>!x.done).length+' waiting · '+d.msgs.filter(x=>x.done).length+' done today';
+  $('#msgs').innerHTML=list.map(x=>`<li data-i="${x.id}" class="${x.done?'done':''}"><span class="ch ${CH[x.ch][0]}">${CH[x.ch][1]}</span><div class="t"><b>${esc(x.from.name)}</b><p>${esc(x.text.split('\n')[0])}</p></div><span class="tm">${x.done?'✓ ':''}${x.time}</span></li>`).join('')||'<li class="empty">Nothing here</li>';
+  $$('#msgs li[data-i]').forEach(li=>li.onclick=()=>{inbox.sel=+li.dataset.i;inbox();if(window.innerWidth<1180)$('#msgView').scrollIntoView({behavior:'smooth'})});
+  const x=list.find(x=>x.id===inbox.sel)||list.find(x=>!x.done)||list[0];if(!x){$('#msgView').innerHTML='<p class="empty">No messages</p>';return}inbox.sel=x.id;
+  $$('#msgs li').forEach(li=>li.classList.toggle('on',+li.dataset.i===x.id));
+  const tot=x.lines.reduce((a,l)=>a+priceFor(J.PRODUCTS[l.p],x.from)*l.cases,0);
+  $('#msgView').innerHTML=`<div class="kl">${CH[x.ch][2]} · ${x.time}</div><h2 style="margin:4px 0 0">${esc(x.from.name)}</h2><div class="muted">${esc(x.subject)} · ${J.TYPES[x.from.t][0]}, ${x.from.area} · price list ${x.from.tier}</div>
+  <div class="bubble ${x.ch==='wa'?'wa':''}">${esc(x.text)}</div>
+  <div class="kl" style="margin-bottom:4px">We read it as</div><ul class="parse">${x.lines.map(l=>{const p=J.PRODUCTS[l.p],st=d.stock[l.p];return `<li><span>${l.cases} × ${esc(p.name)} ${st.stock<l.cases?'<span class="pill p-out">only '+st.stock+' in stock</span>':'<span class="pill p-in">in stock</span>'}</span><b>${m(priceFor(p,x.from)*l.cases,2)}</b></li>`}).join('')}</ul>
+  <div style="display:flex;justify-content:space-between;font:800 17px var(--display);margin-bottom:14px"><span>Order total</span><span>${m(tot,2)}</span></div>
+  ${x.done?`<span class="pill p-done">✓ Turned into an order</span>`:`<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn solid" id="mk">Turn into order</button><button class="btn ghost" id="rp">Reply: "Got it, delivery tomorrow"</button></div>`}`;
+  const mk=$('#mk');if(mk)mk.onclick=()=>{const via={wa:'WhatsApp',em:'Email',ph:'Phone',me:'Merchandiser'}[x.ch];const o={id:'SO-'+(isl==='aw'?'2614':'3482')+(40+d.orders.length),cust:x.from,lines:x.lines,total:tot,status:'new',via,when:'Just now',rep:x.from.rep,po:x.ch==='em'?'PO 88213':'',fresh:1};d.orders.unshift(o);x.done=true;badges();inbox();toast(o.id+' made for '+x.from.name+'. It is on the Orders board.')};
+  const rp=$('#rp');if(rp)rp.onclick=()=>toast('Demo: reply drafted, nothing is sent')}
+$$('#inboxSeg button').forEach(b=>b.onclick=()=>{inbox.f=b.dataset.f;$$('#inboxSeg button').forEach(x=>x.classList.toggle('on',x===b));inbox.sel=null;inbox()});
+
+function orders(){const d=D(),fl=orders.f||'all';const cols=[['new','New'],['pick','Picking'],['route','On the truck'],['done','Delivered']];
+  $('#kan').innerHTML=cols.map(([k,n])=>{const os=d.orders.filter(o=>o.status===k&&(fl==='all'||o.via===fl));return `<div class="col"><h3>${n}<span class="muted">${os.length}</span></h3>${os.map(o=>`<div class="oc ${o.fresh?'fresh':''}" data-o="${o.id}" tabindex="0" role="button"><b>${esc(o.cust.name)}</b><div class="m">${o.id} · ${o.lines.reduce((a,l)=>a+l.cases,0)} cases · ${o.when}</div><div class="f"><span class="src">${o.via}</span><b>${m(o.total)}</b></div></div>`).join('')||'<div class="empty" style="padding:12px">Nothing here</div>'}</div>`}).join('');
+  d.orders.forEach(o=>delete o.fresh);
+  $$('.oc').forEach(c=>{c.onclick=()=>openOrder(d.orders.find(o=>o.id===c.dataset.o));c.onkeydown=e=>{if(e.key==='Enter')c.click()}})}
+$$('#ordSrc button').forEach(b=>b.onclick=()=>{orders.f=b.dataset.f;$$('#ordSrc button').forEach(x=>x.classList.toggle('on',x===b));orders()});
+
+function invoices(){const d=D(),fl=invoices.f||'all';const sum=s=>d.inv.filter(x=>x.status===s).reduce((a,x)=>a+x.total,0);
+  $('#invK').innerHTML=kpi('Open',m(sum('open')),d.inv.filter(x=>x.status==='open').length+' invoices')+kpi('Overdue','<span class="dn">'+m(sum('over'))+'</span>',d.inv.filter(x=>x.status==='over').length+' invoices · reminders ready')+kpi('Paid this month',m(sum('paid')),d.inv.filter(x=>x.status==='paid').length+' invoices')+kpi('Delivery notes signed',d.inv.filter(x=>x.pod).length+' / '+d.inv.length,'Signed on the merchandiser tablet');
+  const fd=x=>x.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  $('#invT').innerHTML=d.inv.filter(x=>fl==='all'||x.status===fl).map(x=>`<tr class="click" data-n="${x.no}"><td><b>${x.no}</b></td><td>${esc(x.cust.name)}</td><td class="hide-s">${fd(x.date)}</td><td class="hide-s">${x.cust.terms==='Net 30'?fd(x.due):'On delivery'}</td><td class="r"><b>${m(x.total,2)}</b></td><td>${pillInv(x.status)}</td><td>${x.pod?'<span class="pill p-done">✓ Signed</span>':'<span class="pill p-grey">Waiting</span>'}</td><td>${x.qb?'<span class="pill p-paid">✓ Sent</span>':'<span class="pill p-open">Queued</span>'}</td></tr>`).join('');
+  $$('#invT tr').forEach(t=>t.onclick=()=>openInv(d.inv.find(x=>x.no===t.dataset.n)))}
+function openInv(x){openDrawer('Invoice · '+I().company,x.no,`<dl class="kvs"><dt>Customer</dt><dd>${esc(x.cust.name)}</dd><dt>Order</dt><dd>${x.order}</dd><dt>Date</dt><dd>${x.date.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</dd><dt>Terms</dt><dd>${x.cust.terms}</dd><dt>Status</dt><dd>${pillInv(x.status)}</dd><dt>QuickBooks</dt><dd>${x.qb?'Sent to the '+I().name+' file':'In the queue, goes with the next sync'}</dd></dl>
+  ${linesTable(x.lines,x.cust)}<div style="display:flex;justify-content:space-between;font:800 18px var(--display);margin-top:12px"><span>Total</span><span>${m(x.total,2)}</span></div>
+  ${x.pod?`<div class="sig"><div class="kl">Signed delivery note</div>${SIG}<div class="muted" style="font-size:12px">Received by ${esc(x.cust.contact)} · signed on the tablet</div></div>`:''}`,
+  `${x.status!=='paid'?'<button class="btn solid" id="ipay">Mark as paid</button><button class="btn" id="irem">Send reminder</button>':''}<button class="btn ghost" id="ipdf">Download PDF</button>`);
+  const p=$('#ipay');if(p)p.onclick=()=>{x.status='paid';x.qb=true;invoices();closeDrawer();toast(x.no+' marked paid. The payment is in QuickBooks.')};
+  const rm=$('#irem');if(rm)rm.onclick=()=>toast('Demo: reminder drafted, nothing is sent');$('#ipdf').onclick=()=>toast('Demo: in the live version the PDF comes from QuickBooks')}
+$$('#invSeg button').forEach(b=>b.onclick=()=>{invoices.f=b.dataset.f;$$('#invSeg button').forEach(x=>x.classList.toggle('on',x===b));invoices()});
+
+function customers(){const d=D(),fl=customers.f||'all';const list=d.custs.filter(c=>fl==='all'||(fl==='quiet'?!c.active:c.t===fl)).sort((a,b)=>b.rev30-a.rev30);
+  TITLES.customers[1]=d.custs.length+' shops in '+I().name;sub();
+  $('#custCount').textContent=list.length+' shown';
+  $('#custT').innerHTML=list.map(c=>`<tr class="click" data-c="${c.id}"><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${J.TYPES[c.t][0]} · ${esc(c.contact)}</div></td><td class="hide-s">${c.area}</td><td><span class="pill p-grey">${c.tier}</span></td><td class="hide-s">${c.rep}</td><td class="r">${c.rev30?m(c.rev30):'<span class="muted">0</span>'}</td><td class="r">${c.active?c.last+' d ago':'<span class="pill p-low">'+c.last+' d</span>'}</td><td class="r">${c.bal?m(c.bal):'<span class="muted">0</span>'}</td></tr>`).join('');
+  $$('#custT tr').forEach(t=>t.onclick=()=>openCust(d.custs.find(c=>c.id===t.dataset.c)))}
+$$('#custSeg button').forEach(b=>b.onclick=()=>{customers.f=b.dataset.f;$$('#custSeg button').forEach(x=>x.classList.toggle('on',x===b));customers()});
+
+let layer=[],off=new Set(),routeLine;
+function bigMap(){$('#legend').innerHTML=Object.entries(J.TYPES).map(([k,v])=>`<button data-t="${k}" aria-pressed="${!off.has(k)}"><i style="background:${v[2]}"></i>${v[1]} <span class="muted">${k==='jeg'?J.SITES.filter(s=>s.island===isl).length:D().custs.filter(c=>c.t===k).length}</span></button>`).join('');
+  $$('#legend button').forEach(b=>b.onclick=()=>{const t=b.dataset.t;off.has(t)?off.delete(t):off.add(t);bigMap()});
+  setTimeout(()=>{if(!big){big=L.map('bigmap',{scrollWheelZoom:false});tiles(big)}big.invalidateSize();if(bigMap.isl!==isl){big.setView(I().center,I().zoom);bigMap.isl=isl}
+   layer.forEach(l=>l.remove());layer=markers(big,p=>!off.has(p.t),6);route()},30)}
+function route(){const reps=I().reps;bigMap.rep=reps.includes(bigMap.rep)?bigMap.rep:reps[0];
+  $('#repSeg').innerHTML=reps.map(r=>`<button class="${r===bigMap.rep?'on':''}" data-r="${r}">${r}</button>`).join('');
+  $$('#repSeg button').forEach(b=>b.onclick=()=>{bigMap.rep=b.dataset.r;route()});
+  const wh=J.SITES.find(s=>s.island===isl&&s.id.startsWith('wh'));let stops=D().custs.filter(c=>c.rep===bigMap.rep&&c.active).slice(0,8);
+  const ord=[];let at=wh;while(stops.length){stops.sort((a,b)=>Math.hypot(a.lat-at.lat,a.lng-at.lng)-Math.hypot(b.lat-at.lat,b.lng-at.lng));at=stops.shift();ord.push(at)}
+  routeLine&&routeLine.remove();routeLine=L.polyline([[wh.lat,wh.lng],...ord.map(p=>[p.lat,p.lng]),[wh.lat,wh.lng]],{color:'#1d5b2c',weight:3,opacity:.75,dashArray:'6 6'}).addTo(big);
+  let t=8*60;$('#route').innerHTML=`<li><span><b>Start</b> · ${wh.name}</span><span class="muted">08:00</span></li>`+ord.map((p,i)=>{t+=18+(i%3)*6;return `<li data-c="${p.id}"><span><b>${i+1}.</b> ${esc(p.name)}<div class="muted" style="font-size:12px">${p.area}${D().orders.find(o=>o.cust.id===p.id&&o.status!=='done')?' · delivery and shelf check':' · shelf check'}</div></span><span class="muted">${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}</span></li>`}).join('');
+  $$('#route li[data-c]').forEach(li=>li.onclick=()=>{const c=D().custs.find(c=>c.id===li.dataset.c);big.setView([c.lat,c.lng],15);openCust(c)})}
+
+function inventory(){const d=D(),fl=inventory.f||'all';const low=d.stock.filter(p=>p.stock>0&&p.stock<p.min),out=d.stock.filter(p=>p.stock===0);
+  $('#invKpi').innerHTML=kpi('Items in QuickBooks','645','24 shown in this demo')+kpi('Low stock','<span style="color:var(--warn)">'+low.length+'</span>','Below your minimum')+kpi('Out of stock','<span class="dn">'+out.length+'</span>','Shows as "out" in the portal')+kpi('Cases in warehouse',d.stock.reduce((a,p)=>a+p.stock,0).toLocaleString('en-US'),I().name+' warehouse');
+  const list=d.stock.filter(p=>fl==='all'||(fl==='low'?p.stock<p.min:p.cat===fl));
+  $('#stkT').innerHTML=list.map(p=>{const s=J.stockState(p),pct=Math.max(3,Math.min(100,p.stock/(p.min*3)*100));return `<tr><td><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${p.sku} · ${p.perCase} per case</div></td><td class="hide-s">${p.supplier}</td><td class="r"><b>${p.stock}</b></td><td><div class="bar"><span class="${s[0]==='in'?'':s[0]}" style="width:${p.stock?pct:0}%"></span></div><span class="pill p-${s[0]}" style="margin-top:4px">${s[0]==='in'?'OK':s[0]==='low'?'Low':'Out'}</span></td><td class="r hide-s">${m(p.unit,2)}</td><td class="r hide-s">${m(p.srp,2)}</td><td class="r">${p.stock<p.min?`<button class="btn sm" data-re="${p.i}">${p.ordered?'✓ On a PO':'Reorder'}</button>`:''}</td></tr>`}).join('');
+  $$('[data-re]').forEach(b=>b.onclick=()=>{const p=d.stock[+b.dataset.re];if(p.ordered){location.hash='purchase';return}p.ordered=1;const po=d.pos.find(x=>x.sup.name===p.supplier);if(po){if(!po.lines.find(l=>l.p===p.i)){po.lines.push({p:p.i,cases:p.min*3});po.amt+=J.PRODUCTS[p.i].unit*J.PRODUCTS[p.i].perCase*p.min*3*.62}if(po.status==='arrived')po.status='draft'}b.textContent='✓ On a PO';toast(p.min*3+' cases added to a purchase order for '+p.supplier)})}
+$$('#stkSeg button').forEach(b=>b.onclick=()=>{inventory.f=b.dataset.f;$$('#stkSeg button').forEach(x=>x.classList.toggle('on',x===b));inventory()});
+
+const PS={draft:['p-grey','Draft'],sent:['p-open','Sent'],confirmed:['p-pick','Confirmed'],water:['p-route','On the water'],arrived:['p-done','Arrived']};
+const usd=(n,d=0)=>'$ '+n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+function purchase(){const d=D();const fd=x=>x.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  const openPO=d.pos.filter(p=>p.status!=='arrived');
+  $('#poNote').textContent=d.pos.length+' suppliers ship to '+I().name;
+  $('#poK').innerHTML=kpi('Open purchase orders',openPO.length,usd(openPO.reduce((a,p)=>a+p.amt,0))+' on order')+kpi('On the water',d.pos.filter(p=>p.status==='water').length,'containers heading to '+I().name)+kpi('Drafts to approve',d.pos.filter(p=>p.status==='draft').length,'made from low stock')+kpi('Suppliers',J.SUPPLIERS.length,'USA, Netherlands, Colombia, Panama, local');
+  $('#poT').innerHTML=d.pos.map(p=>`<tr class="click" data-p="${p.no}"><td><b>${p.no}</b></td><td>${p.sup.name}<div class="muted" style="font-size:12px">${p.sup.from}</div></td><td class="hide-s">${p.container||p.sup.ship}</td><td class="r">${usd(p.amt)}</td><td><span class="pill ${PS[p.status][0]}">${PS[p.status][1]}</span></td><td class="hide-s">${p.status==='arrived'?'Landed '+fd(p.eta):fd(p.eta)}</td></tr>`).join('');
+  $$('#poT tr').forEach(t=>t.onclick=()=>openPO(d.pos.find(p=>p.no===t.dataset.p)));
+  const w=d.pos.filter(p=>p.container&&['sent','confirmed','water'].includes(p.status));
+  $('#ctn').innerHTML=w.length?w.map(p=>{const st=['sent','confirmed','water','arrived'].indexOf(p.status);return `<div style="padding:10px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between;gap:8px"><b>${p.container}</b><span class="muted">ETA ${fd(p.eta)}</span></div><div class="muted" style="font-size:12px">${p.sup.name} · ${p.sup.from} to ${I().name}</div><div class="ship">${['Ordered','Loaded','At sea','In port'].map((s,i)=>`<span class="${i<=st?'on':''}" title="${s}"></span>`).join('')}</div><div class="muted" style="font-size:11.5px;display:flex;justify-content:space-between"><span>Ordered</span><span>Loaded</span><span>At sea</span><span>In port</span></div></div>`}).join(''):'<p class="empty">No containers on the way</p>';
+  $('#supT').innerHTML=J.SUPPLIERS.map(s=>`<tr><td><b>${s.name}</b></td><td>${s.from}</td><td class="hide-s">${s.cats}</td><td>${s.lead}</td><td class="hide-s">${s.terms}</td><td class="hide-s">${s.ship}</td></tr>`).join('')}
+function openPO(p){openDrawer('Purchase order · '+I().company,p.no,`<dl class="kvs"><dt>Supplier</dt><dd>${p.sup.name}</dd><dt>From</dt><dd>${p.sup.from}</dd><dt>Status</dt><dd><span class="pill ${PS[p.status][0]}">${PS[p.status][1]}</span></dd><dt>Shipping</dt><dd>${p.container||p.sup.ship}</dd><dt>Terms</dt><dd>${p.sup.terms}</dd><dt>ETA</dt><dd>${p.eta.toLocaleDateString('en-GB',{day:'numeric',month:'long'})}</dd></dl>
+  <div class="tw"><table><thead><tr><th>Product</th><th class="r">Cases</th><th class="r">Cost (USD)</th></tr></thead><tbody>${p.lines.map(l=>{const x=J.PRODUCTS[l.p];return `<tr><td>${esc(x.name)}</td><td class="r">${l.cases}</td><td class="r">${usd(x.unit*x.perCase*l.cases*.62,2)}</td></tr>`}).join('')}</tbody></table></div>
+  <div style="display:flex;justify-content:space-between;font:800 17px var(--display);margin:12px 0"><span>Total</span><span>${usd(p.amt,2)}</span></div>
+  <p class="muted" style="font-size:12.5px">When the shipment is received, stock goes up in QuickBooks and the portal shows it as in stock right away.</p>`,
+  p.status==='draft'?'<button class="btn solid" id="poA">Approve and send</button>':['water','confirmed','sent'].includes(p.status)?'<button class="btn solid" id="poR">Receive into stock</button>':'');
+  const a=$('#poA');if(a)a.onclick=()=>{p.status='sent';purchase();closeDrawer();toast(p.no+' approved. Demo: nothing is sent to '+p.sup.name)};
+  const r=$('#poR');if(r)r.onclick=()=>{p.status='arrived';p.lines.forEach(l=>{D().stock[l.p].stock+=l.cases;D().stock[l.p].ordered=0});badges();purchase();closeDrawer();toast('Received. Stock is updated in QuickBooks and in the portal.')}}
+
+function kiosk(){const s=DATA.aw.ksales;const tot=s.reduce((a,x)=>a+x.usd,0),tour=s.filter(x=>x.tour);
+  $('#kK').innerHTML=(isl==='cw'?'<div class="card" style="grid-column:1/-1;background:var(--sage-soft)">The kiosk is in Aruba, so its sales go to the Aruba file. Curaçao can get its own register the same way.</div>':'')+kpi('Sales today',usd(tot),'≈ Afl. '+Math.round(tot*J.USD).toLocaleString('en-US')+' · '+s.length+' sales')+kpi('Tourist prices',Math.round(tour.length/s.length*100)+'%','of sales today')+kpi('Register 1',usd(s.filter(x=>x.reg===1).reduce((a,x)=>a+x.usd,0)),'Shanella at the till')+kpi('Register 2',usd(s.filter(x=>x.reg===2).reduce((a,x)=>a+x.usd,0)),'Ricardo at the till');
+  const ships=[['Thu 22','Celebrity Summit',2218,'$ 3,410'],['Fri 23','Carnival Horizon',3960,'$ 5,880 expected'],['Sat 24','No ship','',"$ 640 expected"],['Sun 25','Allure of the Seas',5484,'$ 7,200 expected'],['Mon 26','MSC Seaview',4132,'$ 5,950 expected'],['Tue 27','Rotterdam',2650,'$ 3,800 expected']];
+  $('#shipT').innerHTML=ships.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td class="r">${r[2]?r[2].toLocaleString('en-US'):'<span class="muted">0</span>'}</td><td class="r">${r[3]}</td></tr>`).join('');
+  $('#kSales').innerHTML=s.map(x=>`<tr><td>${x.time}</td><td>Register ${x.reg}</td><td>${x.tour?'<span class="pill p-route">Tourist</span>':'<span class="pill p-done">Local</span>'}</td><td class="r">${x.items}</td><td class="r">${usd(x.usd,2)} <span class="muted">${x.cash?'cash':'card'}</span></td></tr>`).join('')}
+
+const LOG=[['Invoice INV-26144 made','2 min ago'],['Stock updated · 645 items','2 min ago'],['Kiosk sales · registers 1 and 2','6 min ago'],['Payment received · Botica Sol','18 min ago'],['Price list B updated','1 h ago'],['Purchase order received · Candy Island','Yesterday']];
+function quickbooks(){$('#books').innerHTML=['aw','cw'].map(k=>{const x=J.ISLANDS[k],d=DATA[k];return `<div class="book ${k===isl?'on':''}" data-k="${k}" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font:700 15px var(--display)">${x.company}</b><span class="qb">QB</span></div><div class="muted" style="margin:4px 0 10px">Own company file · ${x.cur} (${x.code})</div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="pill p-done">✓ Connected</span><span class="muted" style="font-size:12px">${d.custs.length} customers · 645 items</span></div></div>`}).join('');
+  $$('.book').forEach(b=>b.onclick=()=>{if(b.dataset.k!==isl)setIsl(b.dataset.k)});
+  $('#health').innerHTML=[['Items and stock','645 match','ok'],['Customers',D().custs.length+' match','ok'],['Price lists A, B, C','3 match','ok'],['Invoices this month',D().inv.length+' match','ok'],['Kiosk sales today',isl==='aw'?DATA.aw.ksales.length+' posted':'No kiosk here','ok'],['Waiting to sync',D().inv.filter(x=>!x.qb).length+' invoices',D().inv.some(x=>!x.qb)?'wait':'ok']].map(r=>`<tr><td>${r[0]}</td><td class="r">${r[2]==='ok'?'<span class="pill p-done">✓ '+r[1]+'</span>':'<span class="pill p-open">'+r[1]+'</span>'}</td></tr>`).join('');
+  $('#log').innerHTML=LOG.map(l=>`<li><span>${l[0]}</span><span class="muted">${l[1]}</span></li>`).join('')}
+$('#checkBtn').onclick=()=>{const b=$('#checkBtn');b.innerHTML='<span class="spin">⟳</span> Checking';setTimeout(()=>{b.textContent='✓ All good';D().inv.forEach(x=>x.qb=true);LOG.unshift(['Full check · no differences','just now']);quickbooks();toast('Checked: this system and QuickBooks '+I().name+' agree')},1300)};
+
+badges();go(location.hash.slice(1)||'overview');
 </script>
 </body></html>
