@@ -4,7 +4,7 @@
 const W=window.JEG={};
 let s=17;const rnd=()=>(s=(s*9301+49297)%233280)/233280;W.reseed=n=>{s=n};W.rnd=rnd;
 
-W.OWNER={first:'Giandric',full:'Giandric Tromp',initials:'GT',company:'JEG Trading'};
+W.OWNER={first:'Giandrik',full:'Giandrik Tromp',initials:'GT',company:'JEG Trading'};
 W.TODAY=new Date(2026,9,22);
 W.TODAY_LABEL='Thursday 22 October 2026';
 W.ISLANDS={aw:{name:'Aruba',company:'JEG Trading Aruba',cur:'Afl.',code:'AWG',center:[12.515,-69.975],zoom:12,reps:['Ricardo','Shanella','Jurgen']},
@@ -41,7 +41,7 @@ W.CUSTOMERS.forEach((c,i)=>{if(c.bal&&i%3===0)c.overdue=Math.round(c.bal*.6)});
 W.SITES=[{id:'wh-aw',t:'jeg',name:'JEG Warehouse Aruba',area:'Oranjestad',lat:12.5290,lng:-70.0115,island:'aw',active:1},
  {id:'kiosk',t:'jeg',name:'JEG Kiosk · Cruise port',area:'Oranjestad',lat:12.5190,lng:-70.0375,island:'aw',active:1},
  {id:'wh-cw',t:'jeg',name:'JEG Warehouse Curaçao',area:'Saliña',lat:12.1180,lng:-68.9050,island:'cw',active:1}];
-// One wholesale price for every customer (Giandric, 22 Oct). The kiosk has a local and a tourist retail price.
+// One wholesale price for every customer (Giandrik, 22 Oct). The kiosk has a local and a tourist retail price.
 
 W.SUPPLIERS=[
  {name:'SunGuard Labs',from:'Miami, USA',cats:'Sun care',lead:'14 days',terms:'Net 45',ship:'40ft container, monthly'},
