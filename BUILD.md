@@ -28,6 +28,24 @@ OYV-2026-020 ($1,500/mo x 3, plus about $100/mo running cost after go-live).
   customers AND merchandisers (on a tablet at the customer) can see stock and order.
 - Contact: +297 586 8181, jegtradingaruba@gmail.com
 
+## Confirmed by Giandric in writing (22 Oct 2026)
+- 645 active items from 9 suppliers (the "about 900" was the earlier estimate).
+- Aruba: one wholesale warehouse plus a retail kiosk (2 cash registers).
+  Curaçao: one wholesale warehouse, wholesale only. Separate entity, no stock moves.
+- Currencies: Aruba AWG and USD. Curaçao XCG only.
+- Sells cases and single units, but registers stock in UNITS: a case and a unit
+  each have their own UPC. Expiry/batch tracking not asked for.
+- About 60 customers, all on the SAME wholesale price (no price lists). Kiosk
+  adds a local retail price and a tourist retail price.
+- Orders today: email, WhatsApp, phone, and merchandiser purchase orders.
+- Documents: quotes, sales orders, delivery notes, invoices, purchase orders,
+  and sales receipts at the kiosk. Only the SIGNED INVOICE is emailed.
+- Stations: 2 to 3 invoicing stations at the warehouse, 2 kiosk registers.
+- QuickBooks Online is a must (today: QuickBooks Premier Retail 2015).
+- Users and roles are defined in QuickBooks and the POS.
+- Priority: the portal connected to QuickBooks, also used by merchandisers at
+  the customer to show live inventory.
+
 ## Brand
 - Dark green `#1d5b2c` (from the logo), deeper sidebar green `#123d1d`,
   mid green `#2f7a42`, `#4f9a62`, sage `#a8c3a8`, sage soft `#eef4ee`.
@@ -38,8 +56,8 @@ OYV-2026-020 ($1,500/mo x 3, plus about $100/mo running cost after go-live).
 ## The three parts (all on one Vercel link)
 
 ### 1. `/` Website
-Simple public site: hero "Your shelves, always stocked.", stats (645 items,
-9 suppliers, 60+ customers, 2 islands), product categories, "Order online" in
+Simple public site: hero "Your shelves, always stocked.", stats (645 active items,
+9 suppliers, 60 wholesale customers, 2 islands), product categories, "Order online" in
 3 steps, Aruba and Curaçao, contact. "Customer login" opens `/portal/`.
 
 ### 2. `/portal/` Wholesale portal (employees open it WITH the client)

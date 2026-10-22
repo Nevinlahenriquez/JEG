@@ -31,7 +31,7 @@ const CONTACTS=['Maria','José','Anouk','Ramon','Shirley','Edwin','Natasha','Kev
 function mk(list,island){W.reseed(island==='aw'?41:73);return list.map((r,i)=>{const [name,t,area]=r,c=A[area],big=t==='super'?1:t==='hotel'?.7:t==='pharmacy'?.5:.32;
  const rev30=Math.round((1800+rnd()*6800)*big*(island==='aw'?1:.8));const active=rnd()>.16;
  return {id:island+'-'+(i+1),name,t,area,island,lat:c[0]+(rnd()-.5)*.006,lng:c[1]+(rnd()-.5)*.006,
-  tier:t==='super'?'A':t==='hotel'?(rnd()>.5?'A':'B'):t==='pharmacy'?(rnd()>.4?'B':'A'):'C',
+  _r:rnd(),
   rev30:active?rev30:0,ytd:Math.round(rev30*(8.5+rnd()*2)),last:active?1+Math.floor(rnd()*26):34+Math.floor(rnd()*30),
   via:VIA[Math.floor(rnd()*VIA.length)],rep:W.ISLANDS[island].reps[i%W.ISLANDS[island].reps.length],
   bal:rnd()>.72?Math.round(300+rnd()*3400):0,overdue:0,active,contact:CONTACTS[i%CONTACTS.length],
@@ -41,7 +41,7 @@ W.CUSTOMERS.forEach((c,i)=>{if(c.bal&&i%3===0)c.overdue=Math.round(c.bal*.6)});
 W.SITES=[{id:'wh-aw',t:'jeg',name:'JEG Warehouse Aruba',area:'Oranjestad',lat:12.5290,lng:-70.0115,island:'aw',active:1},
  {id:'kiosk',t:'jeg',name:'JEG Kiosk · Cruise port',area:'Oranjestad',lat:12.5190,lng:-70.0375,island:'aw',active:1},
  {id:'wh-cw',t:'jeg',name:'JEG Warehouse Curaçao',area:'Saliña',lat:12.1180,lng:-68.9050,island:'cw',active:1}];
-W.TIER={A:.94,B:.97,C:1};
+// One wholesale price for every customer (Giandric, 22 Oct). The kiosk has a local and a tourist retail price.
 
 W.SUPPLIERS=[
  {name:'SunGuard Labs',from:'Miami, USA',cats:'Sun care',lead:'14 days',terms:'Net 45',ship:'40ft container, monthly'},
@@ -82,13 +82,16 @@ const P=[
 ['Coconut Water 330 ml','Aqua Aruba','snk','can','#6ab04c',24,1.45,3.25,17,8,'Aqua Aruba',4]];
 W.CATS={sun:'Sun care',gum:'Gum & candy',ess:'Everyday essentials',snk:'Snacks & drinks'};
 W.PRODUCTS=P.map((p,i)=>({i,name:p[0],brand:p[1],cat:p[2],shape:p[3],color:p[4],perCase:p[5],unit:p[6],srp:p[7],stock:p[8],min:p[9],supplier:p[10],usd:p[11],
- upc:'0 '+(41100+i*731)+' '+(10000+i*2371)+' '+(i%10),sku:'JEG-'+String(1001+i*7)}));
+ upc:'0 '+(41100+i*731)+' '+(10000+i*2371)+' '+(i%10),caseUpc:'1 '+(41100+i*731)+' '+(10000+i*2371)+' '+((i+3)%10),sku:'JEG-'+String(1001+i*7)}));
 W.PROMO=new Set([0,8,19]);
 // Curaçao carries a smaller stock; same rule the dashboard uses.
 W.stockFor=(p,isl)=>isl==='cw'?Math.max(0,Math.round(p.stock*.55+(p.i%3))*(p.stock?1:0)):p.stock;
 W.minFor=(p,isl)=>isl==='cw'?Math.max(4,Math.round(p.min*.6)):p.min;
 W.USD=1.79; // Afl. per US dollar
-W.stockState=p=>p.stock===0?['out','Out of stock']:p.stock<p.min?['low','Low · '+p.stock+' cases']:['in','In stock · '+p.stock+' cases'];
+// Stock is registered in units: a case and a single unit each have their own UPC.
+W.units=(p,cases)=>(cases===undefined?p.stock:cases)*p.perCase;
+W.u=n=>Number(n).toLocaleString('en-US')+' units';
+W.stockState=p=>p.stock===0?['out','Out of stock']:p.stock<p.min?['low','Low · '+W.u(W.units(p))]:['in','In stock · '+W.u(W.units(p))];
 
 W.shape=function(t,c){const m={
 bottle:`<rect x="38" y="8" width="24" height="14" rx="3" fill="#333"/><rect x="28" y="20" width="44" height="78" rx="14" fill="${c}"/><rect x="34" y="44" width="32" height="30" rx="4" fill="#fff" opacity=".9"/><text x="50" y="63" text-anchor="middle" font-size="11" font-weight="800" fill="${c}" font-family="Montserrat,sans-serif">SPF</text>`,

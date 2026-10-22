@@ -311,7 +311,7 @@ button.chip{cursor:pointer}
     </div>
     <div class="g c11 mt">
       <div class="card"><h2>Top customers <small>last 30 days</small></h2><div class="tw"><table><thead><tr><th>Customer</th><th class="hide-s">Type</th><th class="r">Sales</th></tr></thead><tbody id="topC"></tbody></table></div></div>
-      <div class="card"><h2>Best sellers <small>cases, last 30 days</small></h2><div class="tw"><table><thead><tr><th>Product</th><th class="r">Cases</th><th class="r">Stock</th></tr></thead><tbody id="best"></tbody></table></div></div>
+      <div class="card"><h2>Best sellers <small>cases, last 30 days</small></h2><div class="tw"><table><thead><tr><th>Product</th><th class="r">Cases sold</th><th class="r">Units in stock</th></tr></thead><tbody id="best"></tbody></table></div></div>
     </div>
   </section>
 
@@ -331,14 +331,14 @@ button.chip{cursor:pointer}
   <section class="view" id="v-invoices">
     <div class="g k4" id="invK"></div>
     <div class="card mt">
-      <div class="toolbar"><div class="seg" id="invSeg"><button data-f="all" class="on">All</button><button data-f="open">Open</button><button data-f="over">Overdue</button><button data-f="paid">Paid</button></div><span class="muted">The invoice is made in QuickBooks the moment an order is delivered.</span></div>
-      <div class="tw"><table><thead><tr><th>Invoice</th><th>Customer</th><th class="hide-s">Date</th><th class="hide-s">Due</th><th class="r">Amount</th><th>Status</th><th>Delivery note</th><th>QuickBooks</th></tr></thead><tbody id="invT"></tbody></table></div>
+      <div class="toolbar"><div class="seg" id="invSeg"><button data-f="all" class="on">All</button><button data-f="open">Open</button><button data-f="over">Overdue</button><button data-f="paid">Paid</button></div><span class="muted">The invoice is made in QuickBooks on delivery. Only the signed invoice is emailed to the customer.</span></div>
+      <div class="tw"><table><thead><tr><th>Invoice</th><th>Customer</th><th class="hide-s">Date</th><th class="hide-s">Due</th><th class="r">Amount</th><th>Status</th><th>Signed</th><th>QuickBooks</th></tr></thead><tbody id="invT"></tbody></table></div>
     </div>
   </section>
 
   <section class="view" id="v-customers">
     <div class="toolbar"><div class="seg" id="custSeg"><button data-f="all" class="on">All</button><button data-f="pharmacy">Pharmacies</button><button data-f="super">Supermarkets</button><button data-f="hotel">Hotel shops</button><button data-f="mini">Mini markets</button><button data-f="quiet">Gone quiet</button></div><span class="muted" id="custCount"></span></div>
-    <div class="card"><div class="tw"><table><thead><tr><th>Customer</th><th class="hide-s">Area</th><th>Price list</th><th class="hide-s">Merchandiser</th><th class="r">Last 30 days</th><th class="r">Last order</th><th class="r">Balance</th></tr></thead><tbody id="custT"></tbody></table></div></div>
+    <div class="card"><div class="tw"><table><thead><tr><th>Customer</th><th class="hide-s">Area</th><th>Terms</th><th class="hide-s">Merchandiser</th><th class="r">Last 30 days</th><th class="r">Last order</th><th class="r">Balance</th></tr></thead><tbody id="custT"></tbody></table></div></div>
   </section>
 
   <section class="view" id="v-map">
@@ -353,14 +353,14 @@ button.chip{cursor:pointer}
     <div class="g k4" id="invKpi"></div>
     <div class="card mt">
       <div class="toolbar"><div class="seg" id="stkSeg"><button data-f="all" class="on">All</button><button data-f="sun">Sun care</button><button data-f="gum">Gum &amp; candy</button><button data-f="ess">Essentials</button><button data-f="snk">Snacks &amp; drinks</button><button data-f="low">Low or out</button></div><span class="muted">Live from QuickBooks · the portal shows the same numbers</span></div>
-      <div class="tw"><table><thead><tr><th>Product</th><th class="hide-s">Supplier</th><th class="r">Cases</th><th>Level</th><th class="r hide-s">Wholesale / unit</th><th class="r hide-s">Shelf price</th><th></th></tr></thead><tbody id="stkT"></tbody></table></div>
+      <div class="tw"><table><thead><tr><th>Product</th><th class="hide-s">Supplier</th><th class="r">Units</th><th>Level</th><th class="r hide-s">Wholesale / unit</th><th class="r hide-s">Shelf price</th><th></th></tr></thead><tbody id="stkT"></tbody></table></div>
     </div>
   </section>
 
   <section class="view" id="v-purchase">
     <div class="g k4" id="poK"></div>
     <div class="g c21 mt">
-      <div class="card"><h2>Purchase orders <small id="poNote"></small></h2><div class="tw"><table><thead><tr><th>PO</th><th>Supplier</th><th class="hide-s">Shipping</th><th class="r">Amount (USD)</th><th>Status</th><th class="hide-s">ETA</th></tr></thead><tbody id="poT"></tbody></table></div></div>
+      <div class="card"><h2>Purchase orders <small id="poNote"></small></h2><div class="tw"><table><thead><tr><th>PO</th><th>Supplier</th><th class="hide-s">Shipping</th><th class="r" id="poCurH">Amount</th><th>Status</th><th class="hide-s">ETA</th></tr></thead><tbody id="poT"></tbody></table></div></div>
       <div class="card"><h2>Containers on the way</h2><div id="ctn"></div></div>
     </div>
     <div class="card mt"><h2>Your 9 suppliers</h2><div class="tw"><table><thead><tr><th>Supplier</th><th>From</th><th class="hide-s">Products</th><th>Lead time</th><th class="hide-s">Terms</th><th class="hide-s">Shipping</th></tr></thead><tbody id="supT"></tbody></table></div></div>
@@ -382,15 +382,16 @@ button.chip{cursor:pointer}
     <div class="books" id="books"></div>
     <div class="card mt"><h2>How it flows</h2>
       <div class="flow">
-        <div class="fbox"><b>This system</b><ul><li>Portal and merchandiser orders</li><li>The order inbox</li><li>Kiosk sales, both registers</li><li>Signed delivery notes</li></ul></div>
+        <div class="fbox"><b>This system</b><ul><li>Portal and merchandiser orders</li><li>The order inbox</li><li>Kiosk sales, both registers</li><li>Signed invoices from delivery</li></ul></div>
         <div class="arrows">⇄</div>
-        <div class="fbox"><b><span class="qb">QuickBooks</span></b><ul><li>Items and stock (the source of truth)</li><li>Customers and price lists</li><li>Invoices and payments</li><li>Aruba and Curaçao as two company files</li></ul></div>
+        <div class="fbox"><b><span class="qb">QuickBooks</span></b><ul><li>Items and stock (the source of truth)</li><li>Customers, the wholesale price, and the kiosk's local and tourist prices</li><li>Users and roles (set in QuickBooks and the POS)</li><li>Invoices and payments</li><li>Aruba and Curaçao as two company files</li></ul></div>
       </div>
     </div>
     <div class="g c11 mt">
       <div class="card"><h2>Sync health <button class="btn sm" id="checkBtn">Check against QuickBooks</button></h2><div class="tw"><table><tbody id="health"></tbody></table></div></div>
       <div class="card"><h2>Sync log</h2><ul class="log" id="log"></ul></div>
     </div>
+    <div class="card mt"><h2>Documents, stations and users <small id="docIsl"></small></h2><div class="g c11" id="docs"></div></div>
   </section>
 </main>
 </div>
@@ -418,7 +419,8 @@ function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clea
 
 /* ---------- data per island ---------- */
 const DATA={};
-function priceFor(p,c){return p.unit*p.perCase*J.TIER[c.tier]}
+function priceFor(p,c){return p.unit*p.perCase} // one wholesale price for every customer
+const UN=(p,c)=>J.u((c===undefined?p.stock:c)*p.perCase);
 function build(k){
   J.reseed(k==='aw'?101:211);const r=J.rnd;
   const custs=J.CUSTOMERS.filter(c=>c.island===k);
@@ -458,7 +460,7 @@ build('aw');build('cw');
 const D=()=>DATA[isl];
 
 /* ---------- routing ---------- */
-const TITLES={overview:['Today',''],inbox:['Order inbox','Email, WhatsApp, phone and merchandisers in one place'],orders:['Orders','From first message to signed delivery'],invoices:['Invoices','Wholesale invoices, delivery notes and payments'],customers:['Customers',''],map:['Routes & map','Every shop you deliver to'],inventory:['Inventory','Live stock, the same numbers your customers see'],purchase:['Purchase orders','What you buy from your suppliers, and when it lands'],kiosk:['Kiosk at the port','Two registers, tourist and local prices'],quickbooks:['QuickBooks sync','Two islands, two company files']};
+const TITLES={overview:['Today',''],inbox:['Order inbox','Email, WhatsApp, phone and merchandisers in one place'],orders:['Orders','From first message to signed delivery'],invoices:['Invoices','Quotes, sales orders, delivery notes, signed invoices and payments'],customers:['Customers',''],map:['Routes & map','Every shop you deliver to'],inventory:['Inventory','Live stock, the same numbers your customers see'],purchase:['Purchase orders','What you buy from your suppliers, and when it lands'],kiosk:['Kiosk at the port','Two registers, tourist and local prices'],quickbooks:['QuickBooks sync','Two islands, two company files']};
 let cur='overview';
 function go(v){if(!TITLES[v])v='overview';cur=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('.nav a[data-v]').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
   $('#title').textContent=TITLES[v][0];sub();render(v);closeSide();window.scrollTo(0,0)}
@@ -477,7 +479,7 @@ $('#syncBtn').onclick=()=>{const b=$('#syncBtn');b.innerHTML='<span class="spin"
 $('#q').addEventListener('keydown',e=>{if(e.key!=='Enter')return;const q=e.target.value.trim().toLowerCase();if(!q)return;
   const c=D().custs.find(c=>c.name.toLowerCase().includes(q));if(c)return openCust(c);
   const o=D().orders.find(o=>o.id.toLowerCase().includes(q));if(o)return openOrder(o);
-  const p=D().stock.find(p=>p.name.toLowerCase().includes(q));if(p){go('inventory');return toast(p.name+': '+p.stock+' cases in stock')}
+  const p=D().stock.find(p=>p.name.toLowerCase().includes(q));if(p){go('inventory');return toast(p.name+': '+UN(p)+' in stock')}
   toast('Nothing found for "'+q+'"')});
 
 /* ---------- drawer ---------- */
@@ -489,14 +491,14 @@ const SIG=`<svg viewBox="0 0 180 50"><path d="M8 34c14-22 22-24 26-6 3 12 10 10 
 const STEP={new:0,pick:1,route:2,done:3},SN={new:'New',pick:'Picking',route:'On the truck',done:'Delivered'};
 function openOrder(o){const st=STEP[o.status];
   openDrawer('Order · via '+o.via,o.id,`<div class="steps">${[0,1,2,3].map(i=>`<span class="${i<=st?'on':''}"></span>`).join('')}</div>
-  <dl class="kvs"><dt>Customer</dt><dd>${esc(o.cust.name)}</dd><dt>Area</dt><dd>${esc(o.cust.area)}, ${I().name}</dd><dt>Status</dt><dd>${SN[o.status]}</dd><dt>Came in</dt><dd>${o.when} · ${o.via}</dd><dt>Merchandiser</dt><dd>${o.rep}</dd>${o.po?`<dt>Their PO</dt><dd>${o.po}</dd>`:''}<dt>Price list</dt><dd>${o.cust.tier}</dd></dl>
+  <dl class="kvs"><dt>Customer</dt><dd>${esc(o.cust.name)}</dd><dt>Area</dt><dd>${esc(o.cust.area)}, ${I().name}</dd><dt>Status</dt><dd>${SN[o.status]}</dd><dt>Came in</dt><dd>${o.when} · ${o.via}</dd><dt>Merchandiser</dt><dd>${o.rep}</dd>${o.po?`<dt>Their PO</dt><dd>${o.po}</dd>`:''}<dt>Price</dt><dd>Wholesale, same for every customer</dd></dl>
   ${linesTable(o.lines,o.cust)}<div style="display:flex;justify-content:space-between;font:800 18px var(--display);margin-top:12px"><span>Total</span><span>${m(o.total,2)}</span></div>
-  ${o.status==='done'?`<div class="sig"><div class="kl">Signed delivery note</div>${SIG}<div class="muted" style="font-size:12px">Signed on the merchandiser's tablet, with a photo of the shelf</div></div>`:''}`,
+  ${o.status==='done'?`<div class="sig"><div class="kl">Signed invoice</div>${SIG}<div class="muted" style="font-size:12px">Signed on delivery on the tablet, then emailed to the customer</div></div>`:''}`,
   o.status!=='done'?`<button class="btn solid" id="adv">Move to ${SN[Object.keys(STEP)[st+1]]}</button><button class="btn ghost" id="dc">Close</button>`:`<button class="btn solid" id="toInv">See the invoice</button>`);
   const a=$('#adv');if(a)a.onclick=()=>{o.status=Object.keys(STEP)[st+1];if(o.status==='done'){D().inv.unshift({no:'INV-'+(isl==='aw'?26145:31069)+D().inv.length,cust:o.cust,lines:o.lines,total:o.total,date:new Date(J.TODAY),due:new Date(J.TODAY.getTime()+(o.cust.terms==='Net 30'?30:0)*864e5),status:o.cust.terms==='Net 30'?'open':'paid',pod:true,qb:true,order:o.id});toast('Delivered. The invoice is made in QuickBooks '+I().name)}else toast(o.id+' moved to '+SN[o.status]);badges();render(cur);openOrder(o)};
   const dc=$('#dc');if(dc)dc.onclick=closeDrawer;const ti=$('#toInv');if(ti)ti.onclick=()=>{closeDrawer();location.hash='invoices'}}
 function openCust(c){const ords=D().orders.filter(o=>o.cust.id===c.id),inv=D().inv.filter(x=>x.cust.id===c.id);
-  openDrawer(J.TYPES[c.t][0]+' · '+c.area+', '+I().name,c.name,`<dl class="kvs"><dt>Contact</dt><dd>${esc(c.contact)}</dd><dt>Price list</dt><dd>${c.tier}${c.tier!=='C'?' ('+Math.round((1-J.TIER[c.tier])*100)+'% off list)':' (list price)'}</dd><dt>Terms</dt><dd>${c.terms}</dd><dt>Merchandiser</dt><dd>${c.rep}</dd><dt>Usually orders by</dt><dd>${c.via}</dd><dt>Last 30 days</dt><dd>${m(c.rev30)}</dd><dt>This year</dt><dd>${m(c.ytd)}</dd><dt>Balance</dt><dd>${c.bal?m(c.bal,2):'Nothing open'}</dd></dl>
+  openDrawer(J.TYPES[c.t][0]+' · '+c.area+', '+I().name,c.name,`<dl class="kvs"><dt>Contact</dt><dd>${esc(c.contact)}</dd><dt>Price</dt><dd>Wholesale, same for every customer</dd><dt>Terms</dt><dd>${c.terms}</dd><dt>Merchandiser</dt><dd>${c.rep}</dd><dt>Usually orders by</dt><dd>${c.via}</dd><dt>Last 30 days</dt><dd>${m(c.rev30)}</dd><dt>This year</dt><dd>${m(c.ytd)}</dd><dt>Balance</dt><dd>${c.bal?m(c.bal,2):'Nothing open'}</dd></dl>
   ${!c.active?`<div class="bubble" style="background:var(--warn-bg)">No order in ${c.last} days. The next merchandiser visit is a good moment to check in.</div>`:''}
   <div class="kl" style="margin:6px 0">Open orders</div>${ords.length?'<ul class="att">'+ords.map(o=>`<li style="cursor:pointer" data-o="${o.id}"><div class="t"><b>${o.id}</b><span>${SN[o.status]} · ${o.when}</span></div><b>${m(o.total)}</b></li>`).join('')+'</ul>':`<p class="muted">No open orders right now.</p>`}
   <div class="kl" style="margin:12px 0 6px">Invoices</div>${inv.length?'<ul class="att">'+inv.map(x=>`<li><div class="t"><b>${x.no}</b><span>${x.date.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span></div>${pillInv(x.status)} <b style="margin-left:8px">${m(x.total)}</b></li>`).join('')+'</ul>':`<p class="muted">All paid up.</p>`}`,
@@ -522,7 +524,7 @@ function overview(){const d=D(),k=isl;const h=new Date().getHours();
   $('#kpis').innerHTML=kpi('Orders today',d.orders.filter(o=>/^\d|Just/.test(o.when)).length,'<span class="up">'+d.orders.filter(o=>o.via==='Portal').length+'</span> placed in the portal by the shops')+kpi('To deliver',d.orders.filter(o=>o.status==='route'||o.status==='pick').length,I().reps.length+' merchandisers on the road')+kpi('Open invoices',m(openInv.reduce((a,x)=>a+x.total,0)),over.length?'<span class="dn">'+over.length+' overdue</span>':'none overdue')+kpi('Stock value',m(d.stock.reduce((a,p)=>a+p.stock*p.perCase*p.unit,0)*(k==='aw'?27:16)),'645 items in QuickBooks');
   const att=[];if(unread)att.push(['📥','#e7f0fa',unread+' messages with orders','WhatsApp, email and phone, ready to turn into orders','#inbox']);
   d.stock.filter(p=>p.stock===0).slice(0,2).forEach(p=>att.push(['⛔','#fbe9e7',p.name+' is out of stock','Shows as "out" in the portal · '+p.supplier,'#purchase']));
-  d.stock.filter(p=>p.stock>0&&p.stock<p.min).slice(0,2).forEach(p=>att.push(['⚠️','#fdf1e2',p.name+': '+p.stock+' cases left','Below your minimum of '+p.min,'#inventory']));
+  d.stock.filter(p=>p.stock>0&&p.stock<p.min).slice(0,2).forEach(p=>att.push(['⚠️','#fdf1e2',p.name+': '+UN(p)+' left','Below your minimum of '+UN(p,p.min),'#inventory']));
   if(over.length)att.push(['💸','#fbe9e7',over.length+' invoices overdue',m(over.reduce((a,x)=>a+x.total,0))+' to collect','#invoices']);
   const quiet=d.custs.filter(c=>!c.active);if(quiet.length)att.push(['💤','#eef0ee',quiet.length+' shops gone quiet','No order in 30+ days','#customers']);
   const arr=d.pos.find(p=>p.status==='water');if(arr)att.push(['🚢','#eef4ee','Container from '+arr.sup.name+' lands '+arr.eta.toLocaleDateString('en-GB',{day:'numeric',month:'short'}),arr.no,'#purchase']);
@@ -535,7 +537,7 @@ function overview(){const d=D(),k=isl;const h=new Date().getHours();
   const cs={sun:0,gum:0,ess:0,snk:0};d.stock.forEach(p=>cs[p.cat]+=p.unit*p.perCase*(p.min*3+p.i%5));
   charts.c&&charts.c.destroy();charts.c=new Chart($('#cCat'),{type:'doughnut',data:{labels:Object.keys(cs).map(x=>J.CATS[x]),datasets:[{data:Object.values(cs).map(Math.round),backgroundColor:['#1d5b2c','#c9d65a','#a8c3a8','#4f9a62'],borderWidth:2,borderColor:'#fff'}]},options:{maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:window.innerWidth<560?'bottom':'right',labels:{boxWidth:10,font:{family:'Inter',size:12}}},tooltip:{callbacks:{label:c=>c.label+': '+m(c.raw)}}}}});
   $('#topC').innerHTML=[...d.custs].sort((a,b)=>b.rev30-a.rev30).slice(0,6).map(c=>`<tr class="click" data-c="${c.id}"><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${c.area}</div></td><td class="hide-s">${J.TYPES[c.t][0]}</td><td class="r">${m(c.rev30)}</td></tr>`).join('');
-  $('#best').innerHTML=[...d.stock].sort((a,b)=>(b.min*3+b.i%5)-(a.min*3+a.i%5)).slice(0,6).map(p=>{const s=J.stockState(p);return `<tr><td>${esc(p.name)}</td><td class="r">${p.min*3+p.i%5}</td><td class="r"><span class="pill p-${s[0]}">${p.stock}</span></td></tr>`}).join('');
+  $('#best').innerHTML=[...d.stock].sort((a,b)=>(b.min*3+b.i%5)-(a.min*3+a.i%5)).slice(0,6).map(p=>{const s=J.stockState(p);return `<tr><td>${esc(p.name)}</td><td class="r">${p.min*3+p.i%5}</td><td class="r"><span class="pill p-${s[0]}">${(p.stock*p.perCase).toLocaleString('en-US')}</span></td></tr>`}).join('');
   $$('#topC tr').forEach(t=>t.onclick=()=>openCust(d.custs.find(c=>c.id===t.dataset.c)));
   setTimeout(()=>{if(mini){mini.remove()}mini=L.map('minimap',{scrollWheelZoom:false,zoomControl:false}).setView(I().center,I().zoom-(window.innerWidth<600?1:0));tiles(mini);markers(mini,()=>true,4)},30)}
 
@@ -547,9 +549,9 @@ function inbox(){const d=D();let fl=inbox.f||'all';const list=d.msgs.filter(x=>f
   const x=list.find(x=>x.id===inbox.sel)||list.find(x=>!x.done)||list[0];if(!x){$('#msgView').innerHTML='<p class="empty">No messages</p>';return}inbox.sel=x.id;
   $$('#msgs li').forEach(li=>li.classList.toggle('on',+li.dataset.i===x.id));
   const tot=x.lines.reduce((a,l)=>a+priceFor(J.PRODUCTS[l.p],x.from)*l.cases,0);
-  $('#msgView').innerHTML=`<div class="kl">${CH[x.ch][2]} · ${x.time}</div><h2 style="margin:4px 0 0">${esc(x.from.name)}</h2><div class="muted">${esc(x.subject)} · ${J.TYPES[x.from.t][0]}, ${x.from.area} · price list ${x.from.tier}</div>
+  $('#msgView').innerHTML=`<div class="kl">${CH[x.ch][2]} · ${x.time}</div><h2 style="margin:4px 0 0">${esc(x.from.name)}</h2><div class="muted">${esc(x.subject)} · ${J.TYPES[x.from.t][0]}, ${x.from.area}</div>
   <div class="bubble ${x.ch==='wa'?'wa':''}">${esc(x.text)}</div>
-  <div class="kl" style="margin-bottom:4px">We read it as</div><ul class="parse">${x.lines.map(l=>{const p=J.PRODUCTS[l.p],st=d.stock[l.p];return `<li><span>${l.cases} × ${esc(p.name)} ${st.stock<l.cases?'<span class="pill p-out">only '+st.stock+' in stock</span>':'<span class="pill p-in">in stock</span>'}</span><b>${m(priceFor(p,x.from)*l.cases,2)}</b></li>`}).join('')}</ul>
+  <div class="kl" style="margin-bottom:4px">We read it as</div><ul class="parse">${x.lines.map(l=>{const p=J.PRODUCTS[l.p],st=d.stock[l.p];return `<li><span>${l.cases} × ${esc(p.name)} ${st.stock<l.cases?'<span class="pill p-out">only '+UN(st)+' in stock</span>':'<span class="pill p-in">in stock</span>'}</span><b>${m(priceFor(p,x.from)*l.cases,2)}</b></li>`}).join('')}</ul>
   <div style="display:flex;justify-content:space-between;font:800 17px var(--display);margin-bottom:14px"><span>Order total</span><span>${m(tot,2)}</span></div>
   ${x.done?`<span class="pill p-done">✓ Turned into an order</span>`:`<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn solid" id="mk">Turn into order</button><button class="btn ghost" id="rp">Reply: "Got it, delivery tomorrow"</button></div>`}`;
   const mk=$('#mk');if(mk)mk.onclick=()=>{const via={wa:'WhatsApp',em:'Email',ph:'Phone',me:'Merchandiser'}[x.ch];const o={id:'SO-'+(isl==='aw'?'2614':'3482')+(40+d.orders.length),cust:x.from,lines:x.lines,total:tot,status:'new',via,when:'Just now',rep:x.from.rep,po:x.ch==='em'?'PO 88213':'',fresh:1};d.orders.unshift(o);x.done=true;badges();inbox();toast(o.id+' made for '+x.from.name+'. It is on the Orders board.')};
@@ -563,13 +565,13 @@ function orders(){const d=D(),fl=orders.f||'all';const cols=[['new','New'],['pic
 $$('#ordSrc button').forEach(b=>b.onclick=()=>{orders.f=b.dataset.f;$$('#ordSrc button').forEach(x=>x.classList.toggle('on',x===b));orders()});
 
 function invoices(){const d=D(),fl=invoices.f||'all';const sum=s=>d.inv.filter(x=>x.status===s).reduce((a,x)=>a+x.total,0);
-  $('#invK').innerHTML=kpi('Open',m(sum('open')),d.inv.filter(x=>x.status==='open').length+' invoices')+kpi('Overdue','<span class="dn">'+m(sum('over'))+'</span>',d.inv.filter(x=>x.status==='over').length+' invoices · reminders ready')+kpi('Paid this month',m(sum('paid')),d.inv.filter(x=>x.status==='paid').length+' invoices')+kpi('Delivery notes signed',d.inv.filter(x=>x.pod).length+' / '+d.inv.length,'Signed on the merchandiser tablet');
+  $('#invK').innerHTML=kpi('Open',m(sum('open')),d.inv.filter(x=>x.status==='open').length+' invoices')+kpi('Overdue','<span class="dn">'+m(sum('over'))+'</span>',d.inv.filter(x=>x.status==='over').length+' invoices · reminders ready')+kpi('Paid this month',m(sum('paid')),d.inv.filter(x=>x.status==='paid').length+' invoices')+kpi('Invoices signed',d.inv.filter(x=>x.pod).length+' / '+d.inv.length,'Signed on delivery, then emailed');
   const fd=x=>x.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   $('#invT').innerHTML=d.inv.filter(x=>fl==='all'||x.status===fl).map(x=>`<tr class="click" data-n="${x.no}"><td><b>${x.no}</b></td><td>${esc(x.cust.name)}</td><td class="hide-s">${fd(x.date)}</td><td class="hide-s">${x.cust.terms==='Net 30'?fd(x.due):'On delivery'}</td><td class="r"><b>${m(x.total,2)}</b></td><td>${pillInv(x.status)}</td><td>${x.pod?'<span class="pill p-done">✓ Signed</span>':'<span class="pill p-grey">Waiting</span>'}</td><td>${x.qb?'<span class="pill p-paid">✓ Sent</span>':'<span class="pill p-open">Queued</span>'}</td></tr>`).join('');
   $$('#invT tr').forEach(t=>t.onclick=()=>openInv(d.inv.find(x=>x.no===t.dataset.n)))}
 function openInv(x){openDrawer('Invoice · '+I().company,x.no,`<dl class="kvs"><dt>Customer</dt><dd>${esc(x.cust.name)}</dd><dt>Order</dt><dd>${x.order}</dd><dt>Date</dt><dd>${x.date.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</dd><dt>Terms</dt><dd>${x.cust.terms}</dd><dt>Status</dt><dd>${pillInv(x.status)}</dd><dt>QuickBooks</dt><dd>${x.qb?'Sent to the '+I().name+' file':'In the queue, goes with the next sync'}</dd></dl>
   ${linesTable(x.lines,x.cust)}<div style="display:flex;justify-content:space-between;font:800 18px var(--display);margin-top:12px"><span>Total</span><span>${m(x.total,2)}</span></div>
-  ${x.pod?`<div class="sig"><div class="kl">Signed delivery note</div>${SIG}<div class="muted" style="font-size:12px">Received by ${esc(x.cust.contact)} · signed on the tablet</div></div>`:''}`,
+  ${x.pod?`<div class="sig"><div class="kl">Signed invoice</div>${SIG}<div class="muted" style="font-size:12px">Received by ${esc(x.cust.contact)} · signed on the tablet · emailed as PDF</div></div>`:''}`,
   `${x.status!=='paid'?'<button class="btn solid" id="ipay">Mark as paid</button><button class="btn" id="irem">Send reminder</button>':''}<button class="btn ghost" id="ipdf">Download PDF</button>`);
   const p=$('#ipay');if(p)p.onclick=()=>{x.status='paid';x.qb=true;invoices();closeDrawer();toast(x.no+' marked paid. The payment is in QuickBooks.')};
   const rm=$('#irem');if(rm)rm.onclick=()=>toast('Demo: reminder drafted, nothing is sent');$('#ipdf').onclick=()=>toast('Demo: in the live version the PDF comes from QuickBooks')}
@@ -578,7 +580,7 @@ $$('#invSeg button').forEach(b=>b.onclick=()=>{invoices.f=b.dataset.f;$$('#invSe
 function customers(){const d=D(),fl=customers.f||'all';const list=d.custs.filter(c=>fl==='all'||(fl==='quiet'?!c.active:c.t===fl)).sort((a,b)=>b.rev30-a.rev30);
   TITLES.customers[1]=d.custs.length+' shops in '+I().name;sub();
   $('#custCount').textContent=list.length+' shown';
-  $('#custT').innerHTML=list.map(c=>`<tr class="click" data-c="${c.id}"><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${J.TYPES[c.t][0]} · ${esc(c.contact)}</div></td><td class="hide-s">${c.area}</td><td><span class="pill p-grey">${c.tier}</span></td><td class="hide-s">${c.rep}</td><td class="r">${c.rev30?m(c.rev30):'<span class="muted">0</span>'}</td><td class="r">${c.active?c.last+' d ago':'<span class="pill p-low">'+c.last+' d</span>'}</td><td class="r">${c.bal?m(c.bal):'<span class="muted">0</span>'}</td></tr>`).join('');
+  $('#custT').innerHTML=list.map(c=>`<tr class="click" data-c="${c.id}"><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${J.TYPES[c.t][0]} · ${esc(c.contact)}</div></td><td class="hide-s">${c.area}</td><td><span class="pill p-grey">${c.terms}</span></td><td class="hide-s">${c.rep}</td><td class="r">${c.rev30?m(c.rev30):'<span class="muted">0</span>'}</td><td class="r">${c.active?c.last+' d ago':'<span class="pill p-low">'+c.last+' d</span>'}</td><td class="r">${c.bal?m(c.bal):'<span class="muted">0</span>'}</td></tr>`).join('');
   $$('#custT tr').forEach(t=>t.onclick=()=>openCust(d.custs.find(c=>c.id===t.dataset.c)))}
 $$('#custSeg button').forEach(b=>b.onclick=()=>{customers.f=b.dataset.f;$$('#custSeg button').forEach(x=>x.classList.toggle('on',x===b));customers()});
 
@@ -597,41 +599,47 @@ function route(){const reps=I().reps;bigMap.rep=reps.includes(bigMap.rep)?bigMap
   $$('#route li[data-c]').forEach(li=>li.onclick=()=>{const c=D().custs.find(c=>c.id===li.dataset.c);big.setView([c.lat,c.lng],15);openCust(c)})}
 
 function inventory(){const d=D(),fl=inventory.f||'all';const low=d.stock.filter(p=>p.stock>0&&p.stock<p.min),out=d.stock.filter(p=>p.stock===0);
-  $('#invKpi').innerHTML=kpi('Items in QuickBooks','645','24 shown in this demo')+kpi('Low stock','<span style="color:var(--warn)">'+low.length+'</span>','Below your minimum')+kpi('Out of stock','<span class="dn">'+out.length+'</span>','Shows as "out" in the portal')+kpi('Cases in warehouse',d.stock.reduce((a,p)=>a+p.stock,0).toLocaleString('en-US'),I().name+' warehouse');
+  $('#invKpi').innerHTML=kpi('Active items in QuickBooks','645','24 shown in this demo')+kpi('Low stock','<span style="color:var(--warn)">'+low.length+'</span>','Below your minimum')+kpi('Out of stock','<span class="dn">'+out.length+'</span>','Shows as "out" in the portal')+kpi('Units in warehouse',d.stock.reduce((a,p)=>a+p.stock*p.perCase,0).toLocaleString('en-US'),I().name+' warehouse · counted by unit');
   const list=d.stock.filter(p=>fl==='all'||(fl==='low'?p.stock<p.min:p.cat===fl));
-  $('#stkT').innerHTML=list.map(p=>{const s=J.stockState(p),pct=Math.max(3,Math.min(100,p.stock/(p.min*3)*100));return `<tr><td><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${p.sku} · ${p.perCase} per case</div></td><td class="hide-s">${p.supplier}</td><td class="r"><b>${p.stock}</b></td><td><div class="bar"><span class="${s[0]==='in'?'':s[0]}" style="width:${p.stock?pct:0}%"></span></div><span class="pill p-${s[0]}" style="margin-top:4px">${s[0]==='in'?'OK':s[0]==='low'?'Low':'Out'}</span></td><td class="r hide-s">${m(p.unit,2)}</td><td class="r hide-s">${m(p.srp,2)}</td><td class="r">${p.stock<p.min?`<button class="btn sm" data-re="${p.i}">${p.ordered?'✓ On a PO':'Reorder'}</button>`:''}</td></tr>`}).join('');
+  $('#stkT').innerHTML=list.map(p=>{const s=J.stockState(p),pct=Math.max(3,Math.min(100,p.stock/(p.min*3)*100));return `<tr><td><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">Unit UPC ${p.upc} · Case UPC ${p.caseUpc} · ${p.perCase} per case</div></td><td class="hide-s">${p.supplier}</td><td class="r"><b>${(p.stock*p.perCase).toLocaleString('en-US')}</b><div class="muted" style="font-size:12px">${p.stock} cases</div></td><td><div class="bar"><span class="${s[0]==='in'?'':s[0]}" style="width:${p.stock?pct:0}%"></span></div><span class="pill p-${s[0]}" style="margin-top:4px">${s[0]==='in'?'OK':s[0]==='low'?'Low':'Out'}</span></td><td class="r hide-s">${m(p.unit,2)}</td><td class="r hide-s">${m(p.srp,2)}</td><td class="r">${p.stock<p.min?`<button class="btn sm" data-re="${p.i}">${p.ordered?'✓ On a PO':'Reorder'}</button>`:''}</td></tr>`}).join('');
   $$('[data-re]').forEach(b=>b.onclick=()=>{const p=d.stock[+b.dataset.re];if(p.ordered){location.hash='purchase';return}p.ordered=1;const po=d.pos.find(x=>x.sup.name===p.supplier);if(po){if(!po.lines.find(l=>l.p===p.i)){po.lines.push({p:p.i,cases:p.min*3});po.amt+=J.PRODUCTS[p.i].unit*J.PRODUCTS[p.i].perCase*p.min*3*.62}if(po.status==='arrived')po.status='draft'}b.textContent='✓ On a PO';toast(p.min*3+' cases added to a purchase order for '+p.supplier)})}
 $$('#stkSeg button').forEach(b=>b.onclick=()=>{inventory.f=b.dataset.f;$$('#stkSeg button').forEach(x=>x.classList.toggle('on',x===b));inventory()});
 
 const PS={draft:['p-grey','Draft'],sent:['p-open','Sent'],confirmed:['p-pick','Confirmed'],water:['p-route','On the water'],arrived:['p-done','Arrived']};
 const usd=(n,d=0)=>'$ '+n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+// Aruba buys and books in USD and Afl.; Curaçao runs in XCG only, so its POs show in Cg.
+const poM=(n,d=0)=>isl==='cw'?J.fmt(n*J.USD,'Cg',d):usd(n,d);
 function purchase(){const d=D();const fd=x=>x.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   const openPO=d.pos.filter(p=>p.status!=='arrived');
   $('#poNote').textContent=d.pos.length+' suppliers ship to '+I().name;
-  $('#poK').innerHTML=kpi('Open purchase orders',openPO.length,usd(openPO.reduce((a,p)=>a+p.amt,0))+' on order')+kpi('On the water',d.pos.filter(p=>p.status==='water').length,'containers heading to '+I().name)+kpi('Drafts to approve',d.pos.filter(p=>p.status==='draft').length,'made from low stock')+kpi('Suppliers',J.SUPPLIERS.length,'USA, Netherlands, Colombia, Panama, local');
-  $('#poT').innerHTML=d.pos.map(p=>`<tr class="click" data-p="${p.no}"><td><b>${p.no}</b></td><td>${p.sup.name}<div class="muted" style="font-size:12px">${p.sup.from}</div></td><td class="hide-s">${p.container||p.sup.ship}</td><td class="r">${usd(p.amt)}</td><td><span class="pill ${PS[p.status][0]}">${PS[p.status][1]}</span></td><td class="hide-s">${p.status==='arrived'?'Landed '+fd(p.eta):fd(p.eta)}</td></tr>`).join('');
+  $('#poK').innerHTML=kpi('Open purchase orders',openPO.length,poM(openPO.reduce((a,p)=>a+p.amt,0))+' on order')+kpi('On the water',d.pos.filter(p=>p.status==='water').length,'containers heading to '+I().name)+kpi('Drafts to approve',d.pos.filter(p=>p.status==='draft').length,'made from low stock')+kpi('Suppliers',J.SUPPLIERS.length,'USA, Netherlands, Colombia, Panama, local');
+  $('#poT').innerHTML=d.pos.map(p=>`<tr class="click" data-p="${p.no}"><td><b>${p.no}</b></td><td>${p.sup.name}<div class="muted" style="font-size:12px">${p.sup.from}</div></td><td class="hide-s">${p.container||p.sup.ship}</td><td class="r">${poM(p.amt)}</td><td><span class="pill ${PS[p.status][0]}">${PS[p.status][1]}</span></td><td class="hide-s">${p.status==='arrived'?'Landed '+fd(p.eta):fd(p.eta)}</td></tr>`).join('');
   $$('#poT tr').forEach(t=>t.onclick=()=>openPO(d.pos.find(p=>p.no===t.dataset.p)));
   const w=d.pos.filter(p=>p.container&&['sent','confirmed','water'].includes(p.status));
   $('#ctn').innerHTML=w.length?w.map(p=>{const st=['sent','confirmed','water','arrived'].indexOf(p.status);return `<div style="padding:10px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between;gap:8px"><b>${p.container}</b><span class="muted">ETA ${fd(p.eta)}</span></div><div class="muted" style="font-size:12px">${p.sup.name} · ${p.sup.from} to ${I().name}</div><div class="ship">${['Ordered','Loaded','At sea','In port'].map((s,i)=>`<span class="${i<=st?'on':''}" title="${s}"></span>`).join('')}</div><div class="muted" style="font-size:11.5px;display:flex;justify-content:space-between"><span>Ordered</span><span>Loaded</span><span>At sea</span><span>In port</span></div></div>`}).join(''):'<p class="empty">No containers on the way</p>';
   $('#supT').innerHTML=J.SUPPLIERS.map(s=>`<tr><td><b>${s.name}</b></td><td>${s.from}</td><td class="hide-s">${s.cats}</td><td>${s.lead}</td><td class="hide-s">${s.terms}</td><td class="hide-s">${s.ship}</td></tr>`).join('')}
 function openPO(p){openDrawer('Purchase order · '+I().company,p.no,`<dl class="kvs"><dt>Supplier</dt><dd>${p.sup.name}</dd><dt>From</dt><dd>${p.sup.from}</dd><dt>Status</dt><dd><span class="pill ${PS[p.status][0]}">${PS[p.status][1]}</span></dd><dt>Shipping</dt><dd>${p.container||p.sup.ship}</dd><dt>Terms</dt><dd>${p.sup.terms}</dd><dt>ETA</dt><dd>${p.eta.toLocaleDateString('en-GB',{day:'numeric',month:'long'})}</dd></dl>
-  <div class="tw"><table><thead><tr><th>Product</th><th class="r">Cases</th><th class="r">Cost (USD)</th></tr></thead><tbody>${p.lines.map(l=>{const x=J.PRODUCTS[l.p];return `<tr><td>${esc(x.name)}</td><td class="r">${l.cases}</td><td class="r">${usd(x.unit*x.perCase*l.cases*.62,2)}</td></tr>`}).join('')}</tbody></table></div>
-  <div style="display:flex;justify-content:space-between;font:800 17px var(--display);margin:12px 0"><span>Total</span><span>${usd(p.amt,2)}</span></div>
+  <div class="tw"><table><thead><tr><th>Product</th><th class="r">Cases</th><th class="r">Cost (${isl==='cw'?'Cg':'USD'})</th></tr></thead><tbody>${p.lines.map(l=>{const x=J.PRODUCTS[l.p];return `<tr><td>${esc(x.name)}</td><td class="r">${l.cases}</td><td class="r">${poM(x.unit*x.perCase*l.cases*.62,2)}</td></tr>`}).join('')}</tbody></table></div>
+  <div style="display:flex;justify-content:space-between;font:800 17px var(--display);margin:12px 0"><span>Total</span><span>${poM(p.amt,2)}</span></div>
   <p class="muted" style="font-size:12.5px">When the shipment is received, stock goes up in QuickBooks and the portal shows it as in stock right away.</p>`,
   p.status==='draft'?'<button class="btn solid" id="poA">Approve and send</button>':['water','confirmed','sent'].includes(p.status)?'<button class="btn solid" id="poR">Receive into stock</button>':'');
   const a=$('#poA');if(a)a.onclick=()=>{p.status='sent';purchase();closeDrawer();toast(p.no+' approved. Demo: nothing is sent to '+p.sup.name)};
   const r=$('#poR');if(r)r.onclick=()=>{p.status='arrived';p.lines.forEach(l=>{D().stock[l.p].stock+=l.cases;D().stock[l.p].ordered=0});badges();purchase();closeDrawer();toast('Received. Stock is updated in QuickBooks and in the portal.')}}
 
 function kiosk(){const s=DATA.aw.ksales;const tot=s.reduce((a,x)=>a+x.usd,0),tour=s.filter(x=>x.tour);
-  $('#kK').innerHTML=(isl==='cw'?'<div class="card" style="grid-column:1/-1;background:var(--sage-soft)">The kiosk is in Aruba, so its sales go to the Aruba file. Curaçao can get its own register the same way.</div>':'')+kpi('Sales today',usd(tot),'≈ Afl. '+Math.round(tot*J.USD).toLocaleString('en-US')+' · '+s.length+' sales')+kpi('Tourist prices',Math.round(tour.length/s.length*100)+'%','of sales today')+kpi('Register 1',usd(s.filter(x=>x.reg===1).reduce((a,x)=>a+x.usd,0)),'Shanella at the till')+kpi('Register 2',usd(s.filter(x=>x.reg===2).reduce((a,x)=>a+x.usd,0)),'Ricardo at the till');
+  $('#kK').innerHTML=(isl==='cw'?'<div class="card" style="grid-column:1/-1;background:var(--sage-soft)">The kiosk is in Aruba, so its sales go to the Aruba file. Curaçao is wholesale only.</div>':'')+kpi('Sales today',usd(tot),'≈ Afl. '+Math.round(tot*J.USD).toLocaleString('en-US')+' · '+s.length+' sales')+kpi('Tourist prices',Math.round(tour.length/s.length*100)+'%','of sales today')+kpi('Register 1',usd(s.filter(x=>x.reg===1).reduce((a,x)=>a+x.usd,0)),'Shanella at the till')+kpi('Register 2',usd(s.filter(x=>x.reg===2).reduce((a,x)=>a+x.usd,0)),'Ricardo at the till');
   const ships=[['Thu 22','Celebrity Summit',2218,'$ 3,410'],['Fri 23','Carnival Horizon',3960,'$ 5,880 expected'],['Sat 24','No ship','',"$ 640 expected"],['Sun 25','Allure of the Seas',5484,'$ 7,200 expected'],['Mon 26','MSC Seaview',4132,'$ 5,950 expected'],['Tue 27','Rotterdam',2650,'$ 3,800 expected']];
   $('#shipT').innerHTML=ships.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td class="r">${r[2]?r[2].toLocaleString('en-US'):'<span class="muted">0</span>'}</td><td class="r">${r[3]}</td></tr>`).join('');
   $('#kSales').innerHTML=s.map(x=>`<tr><td>${x.time}</td><td>Register ${x.reg}</td><td>${x.tour?'<span class="pill p-route">Tourist</span>':'<span class="pill p-done">Local</span>'}</td><td class="r">${x.items}</td><td class="r">${usd(x.usd,2)} <span class="muted">${x.cash?'cash':'card'}</span></td></tr>`).join('')}
 
-const LOG=[['Invoice INV-26144 made','2 min ago'],['Stock updated · 645 items','2 min ago'],['Kiosk sales · registers 1 and 2','6 min ago'],['Payment received · Botica Sol','18 min ago'],['Price list B updated','1 h ago'],['Purchase order received · Candy Island','Yesterday']];
-function quickbooks(){$('#books').innerHTML=['aw','cw'].map(k=>{const x=J.ISLANDS[k],d=DATA[k];return `<div class="book ${k===isl?'on':''}" data-k="${k}" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font:700 15px var(--display)">${x.company}</b><span class="qb">QB</span></div><div class="muted" style="margin:4px 0 10px">Own company file · ${x.cur} (${x.code})</div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="pill p-done">✓ Connected</span><span class="muted" style="font-size:12px">${d.custs.length} customers · 645 items</span></div></div>`}).join('');
+const LOG=[['Invoice INV-26144 made','2 min ago'],['Stock updated · 645 items','2 min ago'],['Kiosk sales · registers 1 and 2','6 min ago'],['Payment received · Botica Sol','18 min ago'],['Kiosk tourist prices updated','1 h ago'],['Purchase order received · Candy Island','Yesterday']];
+function docs(){const aw=isl==='aw';$('#docIsl').textContent=I().company;
+ const D=[['Quote','Before a customer commits'],['Sales order','From the portal, inbox or merchandiser'],['Delivery note','Goes with the driver'],['Invoice','Signed on delivery, the only document emailed to the customer'],['Purchase order','To your suppliers'+(aw?', in USD':', in Cg')]];if(aw)D.push(['Sales receipt','Every kiosk sale, printed or by email']);
+ const S=aw?[['Warehouse invoicing','3 stations'],['Kiosk at the port','2 cash registers']]:[['Warehouse invoicing','Stations as you need them'],['Retail','None, Curaçao is wholesale only']];
+ $('#docs').innerHTML=`<div><div class="kl" style="margin-bottom:6px">Documents</div><ul class="log">${D.map(([a,b])=>`<li><span><b>${a}</b> · ${b}</span></li>`).join('')}</ul></div><div><div class="kl" style="margin-bottom:6px">Stations</div><ul class="log">${S.map(([a,b])=>`<li><span><b>${a}</b> · ${b}</span></li>`).join('')}</ul><div class="kl" style="margin:14px 0 6px">Users and roles</div><p class="muted" style="margin:0;font-size:13.5px">Who can do what is set in QuickBooks Online and the POS. This system reads those roles, so there is no second list to keep up to date.</p><div class="kl" style="margin:14px 0 6px">Currency</div><p class="muted" style="margin:0;font-size:13.5px">${aw?'Afl. and USD':'Cg (XCG) only'}</p></div>`}
+function quickbooks(){docs();$('#books').innerHTML=['aw','cw'].map(k=>{const x=J.ISLANDS[k],d=DATA[k];return `<div class="book ${k===isl?'on':''}" data-k="${k}" style="cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font:700 15px var(--display)">${x.company}</b><span class="qb">QB</span></div><div class="muted" style="margin:4px 0 10px">Own company file · ${x.cur} (${x.code})</div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="pill p-done">✓ Connected</span><span class="muted" style="font-size:12px">${d.custs.length} customers · 645 items</span></div></div>`}).join('');
   $$('.book').forEach(b=>b.onclick=()=>{if(b.dataset.k!==isl)setIsl(b.dataset.k)});
-  $('#health').innerHTML=[['Items and stock','645 match','ok'],['Customers',D().custs.length+' match','ok'],['Price lists A, B, C','3 match','ok'],['Invoices this month',D().inv.length+' match','ok'],['Kiosk sales today',isl==='aw'?DATA.aw.ksales.length+' posted':'No kiosk here','ok'],['Waiting to sync',D().inv.filter(x=>!x.qb).length+' invoices',D().inv.some(x=>!x.qb)?'wait':'ok']].map(r=>`<tr><td>${r[0]}</td><td class="r">${r[2]==='ok'?'<span class="pill p-done">✓ '+r[1]+'</span>':'<span class="pill p-open">'+r[1]+'</span>'}</td></tr>`).join('');
+  $('#health').innerHTML=[['Items and stock','645 match','ok'],['Customers',D().custs.length+' match','ok'],['Prices: wholesale, local, tourist','3 match','ok'],['Invoices this month',D().inv.length+' match','ok'],['Kiosk sales today',isl==='aw'?DATA.aw.ksales.length+' posted':'No kiosk here','ok'],['Waiting to sync',D().inv.filter(x=>!x.qb).length+' invoices',D().inv.some(x=>!x.qb)?'wait':'ok']].map(r=>`<tr><td>${r[0]}</td><td class="r">${r[2]==='ok'?'<span class="pill p-done">✓ '+r[1]+'</span>':'<span class="pill p-open">'+r[1]+'</span>'}</td></tr>`).join('');
   $('#log').innerHTML=LOG.map(l=>`<li><span>${l[0]}</span><span class="muted">${l[1]}</span></li>`).join('')}
 $('#checkBtn').onclick=()=>{const b=$('#checkBtn');b.innerHTML='<span class="spin">⟳</span> Checking';setTimeout(()=>{b.textContent='✓ All good';D().inv.forEach(x=>x.qb=true);LOG.unshift(['Full check · no differences','just now']);quickbooks();toast('Checked: this system and QuickBooks '+I().name+' agree')},1300)};
 
@@ -669,9 +677,9 @@ function answer(raw){const q=raw.toLowerCase(),d=D(),act=d.custs.filter(c=>c.act
   return {h:`Unpaid invoices: <b>${m(sum(op,x=>x.total)+sum(ov,x=>x.total))}</b> across ${op.length+ov.length} invoices, of which <b>${m(sum(ov,x=>x.total))}</b> is overdue (${ov.length}).<br>Biggest balances:`+li(top.map(c=>`${esc(c.name)}, ${esc(c.area)}: ${m(c.bal)}${c.overdue?' · '+m(c.overdue)+' overdue':''}`)),src:`Invoices · ${d.inv.length} this month`,acts:[['Open invoices',()=>go('invoices')],...top.slice(0,2).map(c=>['Open '+c.name,()=>openCust(c)])]}}
  if(has(q,'out of stock','sold out')){const o=d.stock.filter(p=>p.stock===0);return {h:o.length?`Out of stock right now:`+li(o.map(p=>`${esc(p.name)} · ${esc(p.supplier)}`)):'Nothing is out of stock right now.',src:'Inventory',acts:[['Open inventory',()=>go('inventory')]]}}
  if(has(q,'low','running out','reorder','re-order','stock','restock','inventory')&&!J.PRODUCTS.some(p=>q.includes(p.name.toLowerCase()))){const lo=d.stock.filter(p=>p.stock<p.min).sort((a,b)=>a.stock/a.min-b.stock/b.min);
-  return {h:`${lo.length} lines are under their minimum:`+li(lo.slice(0,6).map(p=>`${esc(p.name)}: ${p.stock} cases, minimum ${p.min} · ${esc(p.supplier)}`))+`Suggested: order ${sum(lo,p=>p.min*3-p.stock)} cases across ${new Set(lo.map(p=>p.supplier)).size} suppliers.`,src:'Inventory, live from QuickBooks',acts:[['Open inventory',()=>go('inventory')],['Draft purchase orders',()=>go('purchase')]]}}
+  return {h:`${lo.length} lines are under their minimum:`+li(lo.slice(0,6).map(p=>`${esc(p.name)}: ${UN(p)}, minimum ${UN(p,p.min)} · ${esc(p.supplier)}`))+`Suggested: order ${sum(lo,p=>p.min*3-p.stock)} cases across ${new Set(lo.map(p=>p.supplier)).size} suppliers.`,src:'Inventory, live from QuickBooks',acts:[['Open inventory',()=>go('inventory')],['Draft purchase orders',()=>go('purchase')]]}}
  const prod=J.PRODUCTS.find(p=>q.includes(p.name.toLowerCase())||q.includes(p.name.toLowerCase().split(' ').slice(0,2).join(' ')));
- if(prod){const s=d.stock[prod.i];return {h:`<b>${esc(prod.name)}</b> (${esc(prod.brand)}): ${s.stock} cases on hand, minimum ${s.min}. ${prod.perCase} units a case, shelf price ${m(prod.srp)}. Supplier: ${esc(prod.supplier)}.${s.stock<s.min?' <b>Below minimum, time to reorder.</b>':''}`,src:'Inventory',acts:[['Open inventory',()=>go('inventory')]]}}
+ if(prod){const s=d.stock[prod.i];return {h:`<b>${esc(prod.name)}</b> (${esc(prod.brand)}): ${UN(s)} on hand (${s.stock} cases), minimum ${UN(s,s.min)}. ${prod.perCase} units a case, each with its own UPC, shelf price ${m(prod.srp)}. Supplier: ${esc(prod.supplier)}.${s.stock<s.min?' <b>Below minimum, time to reorder.</b>':''}`,src:'Inventory',acts:[['Open inventory',()=>go('inventory')]]}}
  if(has(q,'kiosk','cruise','port','tourist','register','pos')){const s=DATA.aw.ksales,tot=sum(s,x=>x.usd),t=s.filter(x=>x.tour);
   return {h:`Kiosk at the cruise port, today so far: <b>$${tot.toFixed(2)}</b> from ${s.length} sales (${J.fmt(tot*J.USD,'Afl.')}). ${t.length} were tourists, ${s.length-t.length} locals. ${s.filter(x=>x.cash).length} paid cash. Register 1: ${s.filter(x=>x.reg===1).length} sales, register 2: ${s.filter(x=>x.reg===2).length}.`+(isl==='cw'?'<br>The kiosk is in Aruba.':''),src:'Kiosk POS · 2 registers',acts:[['Open kiosk',()=>go('kiosk')],['Open the POS',()=>location.href='/pos/']]}}
  if(has(q,'water','container','shipment','arriv','eta','purchase order','supplier')){const w=d.pos.filter(p=>p.status==='water'),c=d.pos.filter(p=>p.status==='confirmed'||p.status==='sent');
@@ -683,7 +691,7 @@ function answer(raw){const q=raw.toLowerCase(),d=D(),act=d.custs.filter(c=>c.act
  const rep=I().reps.find(r=>q.includes(r.toLowerCase()));
  if(rep){const cs=act.filter(c=>c.rep===rep);return {h:`<b>${esc(rep)}</b> looks after ${cs.length} active shops, ${m(sum(cs,c=>c.rev30),0)} in the last 30 days. Biggest: ${cs.sort((a,b)=>b.rev30-a.rev30).slice(0,3).map(c=>esc(c.name)).join(', ')}.`,src:'Customers by rep',acts:[['Plan the route',()=>go('map')]]}}
  const cust=d.custs.find(c=>q.includes(c.name.toLowerCase()))||d.custs.find(c=>c.name.split(' ').slice(1).some(w=>w.length>3&&q.includes(w.toLowerCase())));
- if(cust)return {h:`<b>${esc(cust.name)}</b>, ${esc(cust.area)} · ${J.TYPES[cust.t][0]}, price list ${cust.tier}, ${esc(cust.terms)}.`+li([`Last 30 days: ${m(cust.rev30)}`,`This year: ${m(cust.ytd,0)}`,`Last order: ${cust.last} days ago, usually via ${esc(cust.via)}`,`Balance: ${cust.bal?m(cust.bal):'nothing open'}`,`Rep: ${esc(cust.rep)} · contact ${esc(cust.contact)}`]),src:'Customer file',acts:[['Open '+cust.name,()=>openCust(cust)]]};
+ if(cust)return {h:`<b>${esc(cust.name)}</b>, ${esc(cust.area)} · ${J.TYPES[cust.t][0]}, wholesale price, ${esc(cust.terms)}.`+li([`Last 30 days: ${m(cust.rev30)}`,`This year: ${m(cust.ytd,0)}`,`Last order: ${cust.last} days ago, usually via ${esc(cust.via)}`,`Balance: ${cust.bal?m(cust.bal):'nothing open'}`,`Rep: ${esc(cust.rep)} · contact ${esc(cust.contact)}`]),src:'Customer file',acts:[['Open '+cust.name,()=>openCust(cust)]]};
  if(has(q,'top','best','biggest','largest')&&has(q,'customer','shop','client','store')){const t=[...act].sort((a,b)=>b.rev30-a.rev30).slice(0,5);return {h:`Top shops, last 30 days:`+li(t.map(c=>`${esc(c.name)}, ${esc(c.area)}: ${m(c.rev30,0)}`)),src:'Customers',acts:[['Open customers',()=>go('customers')]]}}
  if(has(q,'sell','sold','sales','revenue','turnover','omzet','bende','month','30 days','how are we doing')){const r=sum(d.custs,c=>c.rev30);const byT=Object.keys(J.TYPES).filter(t=>t!=='jeg').map(t=>[J.TYPES[t][1],sum(d.custs.filter(c=>c.t===t),c=>c.rev30)]).sort((a,b)=>b[1]-a[1]);const t=[...act].sort((a,b)=>b.rev30-a.rev30).slice(0,3);
   const mo=isl==='aw'?184260:96410,pv=isl==='aw'?163900:91280,ks=isl==='aw'?21480:0;

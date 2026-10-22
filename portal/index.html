@@ -61,6 +61,10 @@ header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0
 .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:4px;flex-wrap:wrap}
 .pr b{font:800 17px var(--display)}.pr span{font-size:12px;color:var(--muted)}
 .srp{font-size:12px;color:var(--muted)}
+.upc{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.01em}
+.um{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;margin:8px 0 2px;gap:2px}
+.um button{border:0;background:none;font:600 12px Inter,sans-serif;padding:5px 12px;border-radius:999px;color:var(--muted);cursor:pointer;min-height:30px}
+.um button.on{background:var(--green,#1d5b2c);color:#fff}
 .add{display:flex;gap:8px;margin-top:auto;padding-top:10px}
 .step{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}
 .step button{border:0;background:#f4f6f3;width:38px;height:42px;font-size:18px;cursor:pointer}
@@ -155,15 +159,15 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
   <div class="grid" id="grid"></div>
  </section>
  <section id="t-hist" hidden><div class="sec"><h2>Order history <span class="note" id="histNote"></span></h2><div class="hist" id="hist"></div></div></section>
- <section id="t-inv" hidden><div class="sec"><h2>Invoices <span class="note">From QuickBooks · signed delivery note attached</span></h2><div class="tw"><table><thead><tr><th>Invoice</th><th>Date</th><th class="r">Amount</th><th>Status</th></tr></thead><tbody id="invs"></tbody></table></div></div></section>
+ <section id="t-inv" hidden><div class="sec"><h2>Invoices <span class="note">From QuickBooks · the signed invoice is emailed to you</span></h2><div class="tw"><table><thead><tr><th>Invoice</th><th>Date</th><th class="r">Amount</th><th>Status</th></tr></thead><tbody id="invs"></tbody></table></div></div></section>
 </main>
 <div class="scrim" id="scrim"></div>
 <aside class="cart" id="cart" aria-label="Order">
  <button class="sheetx" id="sheetx" aria-label="Close order">×</button>
  <h2>Order</h2><div class="note" id="cartFor"></div>
  <ul id="lines"></ul>
- <div class="tot"><span>Cases</span><span id="cases">0</span></div>
- <div class="tot"><span>You save (price list and promos)</span><span id="save">0</span></div>
+ <div class="tot"><span>Units</span><span id="cases">0</span></div>
+ <div class="tot"><span>You save (promos)</span><span id="save">0</span></div>
  <div class="tot big"><span>Total</span><span id="tot">0</span></div>
  <label for="deliv">Delivery</label>
  <select id="deliv"><option>Friday 23 Oct · morning route</option><option>Friday 23 Oct · afternoon route</option><option>Monday 26 Oct · morning route</option><option>Pick up at the warehouse</option></select>
@@ -173,11 +177,11 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
  <p class="note" id="placeNote"></p>
 </aside>
 </div>
-<button class="bar" id="bar"><span class="t"><small id="barS">No cases yet</small><b id="barT">0</b></span><span class="v">View order</span></button>
+<button class="bar" id="bar"><span class="t"><small id="barS">Nothing added yet</small><b id="barT">0</b></span><span class="v">View order</span></button>
 
 <div class="done" id="done" role="dialog" aria-modal="true" aria-labelledby="dh"><div class="dbox">
  <div class="ck">✓</div><h3 id="dh">Order placed</h3><p id="dmsg" style="color:var(--muted);margin:0 0 10px"></p>
- <ol><li>It shows up in JEG's order inbox as <b>New</b>.</li><li>The warehouse picks it and the stock goes down in QuickBooks.</li><li>On delivery the shop signs on the tablet and the invoice is sent.</li></ol>
+ <ol><li>It shows up in JEG's order inbox as <b>New</b>.</li><li>The warehouse picks it and the stock goes down in QuickBooks.</li><li>On delivery the shop signs the invoice on the tablet and the signed invoice is emailed.</li></ol>
  <p class="note">Demo only. No real order was made.</p>
  <button class="btn solid" id="dclose">Done</button>
 </div></div>
@@ -193,13 +197,15 @@ let cust=SHOPS.find(c=>c.id===QS.get('c'))||SHOPS.find(c=>c.island===(QS.get('is
 const isl=()=>cust.island,cur=()=>J.ISLANDS[isl()].cur;
 const fmt=(n,d=2)=>J.fmt(n,cur(),d);
 const stock=p=>J.stockFor(p,isl()),minS=p=>J.minFor(p,isl());
-const unit=p=>p.unit*J.TIER[cust.tier]*(J.PROMO.has(p.i)?.92:1);
+const unit=p=>p.unit*(J.PROMO.has(p.i)?.92:1);
+const csz=p=>p.perCase,inUnits=p=>stock(p)*p.perCase,qm={};
+const split=(p,n)=>{const c=Math.floor(n/p.perCase),u=n%p.perCase;return [c?c+(c>1?' cases':' case'):'',u?u+(u>1?' units':' unit'):''].filter(Boolean).join(' + ')||'0'};
 const dLabel=(d,o)=>d.toLocaleDateString('en-GB',o||{day:'numeric',month:'short'});
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove('on'),2600)}
 
 function ordersFor(c){J.reseed(1000+parseInt(c.id.split('-')[1])*13+(c.island==='cw'?500:0));const r=J.rnd,out=[];let d=new Date(J.TODAY);
  for(let k=0;k<7;k++){d=new Date(d);d.setDate(d.getDate()-(k?5+Math.floor(r()*8):1));const n=2+Math.floor(r()*4),s=new Set();while(s.size<n)s.add(Math.floor(r()*J.PRODUCTS.length));
-  const lines=[...s].map(i=>({p:i,cases:1+Math.floor(r()*4)}));const tot=lines.reduce((a,l)=>a+J.PRODUCTS[l.p].unit*J.TIER[c.tier]*J.PRODUCTS[l.p].perCase*l.cases,0);
+  const lines=[...s].map(i=>({p:i,cases:1+Math.floor(r()*4)}));const tot=lines.reduce((a,l)=>a+J.PRODUCTS[l.p].unit*J.PRODUCTS[l.p].perCase*l.cases,0);
   out.push({no:'SO-'+(c.island==='aw'?'26':'34')+String(1380-k*37-Math.floor(r()*9)),date:d,lines,tot,via:k===0?'Portal':['Portal','Merchandiser','WhatsApp','Portal','Phone'][Math.floor(r()*5)],st:k===0?'route':'done',inv:'INV-'+((c.island==='aw'?26110:31030)-k*4-Math.floor(r()*3)),paid:k>1||c.terms==='COD'})}
  return out}
 
@@ -209,31 +215,31 @@ function renderWho(){const w=$('#who');
   $('#cust').onchange=e=>{cust=SHOPS.find(c=>c.id===e.target.value);cart={};qty={};syncUrl();all();toast('Now ordering for '+cust.name)};
  }else{w.innerHTML=`<span class="me"><span class="av">${cust.contact.slice(0,1)}${cust.name.split(' ').pop().slice(0,1)}</span><span>${cust.contact}<br><span class="note" style="font-weight:500">${cust.name}</span></span></span>`}}
 function renderAcct(){const h=ordersFor(cust),isRep=mode==='rep',I=J.ISLANDS[isl()];
- $('#acct').innerHTML=`<div><h1>${isRep?cust.name:'Welcome back, '+cust.contact}</h1><div class="m">${isRep?J.TYPES[cust.t][0]+' · '+cust.area+', '+I.name+' · price list '+cust.tier+' · '+cust.terms:cust.name+' · your prices and live stock from JEG Trading '+I.name}</div></div>
+ $('#acct').innerHTML=`<div><h1>${isRep?cust.name:'Welcome back, '+cust.contact}</h1><div class="m">${isRep?J.TYPES[cust.t][0]+' · '+cust.area+', '+I.name+' · wholesale price · '+cust.terms:cust.name+' · live stock and wholesale prices from JEG Trading '+I.name}</div></div>
  <div class="st"><div>Last order<b>${dLabel(h[0].date)}</b></div><div>This year<b>${fmt(cust.ytd,0)}</b></div><div>Open balance<b>${cust.bal?fmt(cust.bal,0):'None'}</b></div>${isRep?'<div>Next visit<b>Fri 23 Oct</b></div>':''}</div>`;
  $('#againTitle').textContent=isRep?'Shelf check: what they usually order':'Order again';
  const seen={};h.forEach(o=>o.lines.forEach(l=>{seen[l.p]=(seen[l.p]||0)+l.cases}));
  $('#again').innerHTML=Object.entries(seen).sort((a,b)=>b[1]-a[1]).slice(0,7).map(([i,n])=>{const p=J.PRODUCTS[i],s=stock(p);return `<button data-i="${i}" ${s?'':'disabled style="opacity:.55"'}><b>${p.name}</b>${s?'Usually '+Math.max(1,Math.round(n/3))+' cases · '+fmt(unit(p)*p.perCase)+' a case':'Out of stock, back soon'}</button>`}).join('');
  $('#cartFor').textContent='For '+cust.name+(isRep?' · placed by '+cust.rep:'');
- $('#placeNote').textContent=isRep?'The order lands in JEG\'s order inbox right away, marked as a merchandiser order. The invoice is made in QuickBooks '+I.name+' when it is delivered.':'Your order goes straight to JEG Trading. You get the invoice by email when it is delivered.'}
+ $('#placeNote').textContent=isRep?'The order lands in JEG\'s order inbox right away, marked as a merchandiser order. The invoice is made in QuickBooks '+I.name+' when it is delivered.':'Your order goes straight to JEG Trading. You sign on delivery and get the signed invoice by email.'}
 function renderCats(){$('#cats').innerHTML=[['all','All products'],...Object.entries(J.CATS)].map(([k,n])=>`<button data-c="${k}" class="${cat===k?'on':''}">${n} <span style="opacity:.6">${k==='all'?J.PRODUCTS.length:J.PRODUCTS.filter(p=>p.cat===k).length}</span></button>`).join('')}
 function renderGrid(){const q=$('#q').value.toLowerCase().trim(),only=$('#instock').checked;
  const list=J.PRODUCTS.filter(p=>(cat==='all'||p.cat===cat)&&(!only||stock(p)>0)&&(!q||(p.name+' '+p.brand+' '+p.upc+' '+p.sku).toLowerCase().includes(q)));
- $('#grid').innerHTML=list.length?list.map(p=>{const s=stock(p),st=s===0?['b-out','Out of stock']:s<minS(p)?['b-low','Low · '+s+' cases']:['b-in','In stock · '+s+' cases'];qty[p.i]=qty[p.i]||1;const u=unit(p);
+ $('#grid').innerHTML=list.length?list.map(p=>{const s=stock(p),su=J.u(inUnits(p)),st=s===0?['b-out','Out of stock']:s<minS(p)?['b-low','Low · '+su]:['b-in','In stock · '+su];qty[p.i]=qty[p.i]||1;qm[p.i]=qm[p.i]||'case';const u=unit(p),byC=qm[p.i]==='case';
  return `<div class="p"><div class="img" style="background:${p.color}1a">${J.shape(p.shape,p.color)}<span class="badge ${st[0]}">${st[1]}</span>${J.PROMO.has(p.i)?'<span class="promo">8% OFF</span>':''}</div>
- <div class="bd"><div class="nm">${p.name}</div><div class="br">${p.brand} · ${p.perCase} a case</div>
+ <div class="bd"><div class="nm">${p.name}</div><div class="br">${p.brand} · ${p.perCase} units a case</div><div class="upc">Unit UPC ${p.upc} · Case UPC ${p.caseUpc}</div>
  <div class="pr"><b>${fmt(u*p.perCase)}</b><span>${fmt(u)} a unit</span></div><div class="srp">Shelf price ${fmt(p.srp)}</div>
- <div class="add"><div class="step"><button data-m="${p.i}" aria-label="Fewer cases">−</button><input value="${qty[p.i]}" data-q="${p.i}" inputmode="numeric" aria-label="Cases"><button data-p="${p.i}" aria-label="More cases">+</button></div><button class="go${cart[p.i]?' ok':''}" data-a="${p.i}" ${s?'':'disabled'}>${!s?'Back soon':cart[p.i]?'✓ '+cart[p.i]+' in order':'Add cases'}</button></div></div></div>`}).join(''):'<p class="note">No products match.</p>'}
-function totals(){let t=0,list=0,cs=0;for(const i in cart){const p=J.PRODUCTS[i];t+=unit(p)*p.perCase*cart[i];list+=p.unit*p.perCase*cart[i];cs+=cart[i]}return {t,save:list-t,cs}}
+ <div class="um" role="group" aria-label="Order by"><button data-um="${p.i}" data-k="case" class="${byC?'on':''}">Cases</button><button data-um="${p.i}" data-k="unit" class="${byC?'':'on'}">Units</button></div><div class="add"><div class="step"><button data-m="${p.i}" aria-label="Less">−</button><input value="${qty[p.i]}" data-q="${p.i}" inputmode="numeric" aria-label="${byC?'Cases':'Units'}"><button data-p="${p.i}" aria-label="More">+</button></div><button class="go${cart[p.i]?' ok':''}" data-a="${p.i}" ${s?'':'disabled'}>${!s?'Back soon':cart[p.i]?'✓ '+split(p,cart[p.i]):byC?'Add cases':'Add units'}</button></div></div></div>`}).join(''):'<p class="note">No products match.</p>'}
+function totals(){let t=0,list=0,cs=0;for(const i in cart){const p=J.PRODUCTS[i];t+=unit(p)*cart[i];list+=p.unit*cart[i];cs+=cart[i]}return {t,save:list-t,cs}}
 function renderCart(){const ids=Object.keys(cart),{t,save,cs}=totals();
- $('#lines').innerHTML=ids.length?ids.map(i=>{const p=J.PRODUCTS[i];return `<li><span><b>${p.name}</b><br><span class="note">${cart[i]} × ${p.perCase} units</span></span><span style="text-align:right">${fmt(unit(p)*p.perCase*cart[i])}</span><button class="x" data-r="${i}">Remove</button></li>`}).join(''):'<li class="empty">Nothing added yet</li>';
- $('#tot').textContent=fmt(t);$('#save').textContent=fmt(save);$('#cases').textContent=cs;$('#cc').textContent=cs;$('#place').disabled=!ids.length;
- $('#barS').textContent=cs?cs+' cases · '+ids.length+' products':'No cases yet';$('#barT').textContent=fmt(t)}
+ $('#lines').innerHTML=ids.length?ids.map(i=>{const p=J.PRODUCTS[i];return `<li><span><b>${p.name}</b><br><span class="note">${cart[i]>=p.perCase?split(p,cart[i])+' · ':''}${J.u(cart[i])}</span></span><span style="text-align:right">${fmt(unit(p)*cart[i])}</span><button class="x" data-r="${i}">Remove</button></li>`}).join(''):'<li class="empty">Nothing added yet</li>';
+ $('#tot').textContent=fmt(t);$('#save').textContent=fmt(save);$('#cases').textContent=cs.toLocaleString('en-US');$('#cc').textContent=ids.length;$('#place').disabled=!ids.length;
+ $('#barS').textContent=cs?J.u(cs)+' · '+ids.length+' products':'Nothing added yet';$('#barT').textContent=fmt(t)}
 function renderHist(){const h=ordersFor(cust);$('#histNote').textContent=h.length+' recent orders';
  $('#hist').innerHTML=h.map((o,k)=>`<div class="ord"><div class="top"><b>${o.no}</b><span class="pill ${o.st==='done'?'p-done':'p-route'}">${o.st==='done'?'Delivered':'On the truck'}</span></div>
  <div class="meta">${dLabel(o.date,{weekday:'short',day:'numeric',month:'short'})} · via ${o.via} · ${o.lines.reduce((a,l)=>a+l.cases,0)} cases · <b style="color:var(--ink)">${fmt(o.tot)}</b></div>
  <div class="items">${o.lines.map(l=>l.cases+' × '+J.PRODUCTS[l.p].name).join(' · ')}</div>
- <div class="acts"><button class="btn solid" data-re="${k}">Reorder</button>${o.st==='done'?`<button class="btn" data-pod="${k}">Signed delivery note</button>`:''}</div></div>`).join('')}
+ <div class="acts"><button class="btn solid" data-re="${k}">Reorder</button>${o.st==='done'?`<button class="btn" data-pod="${k}">Signed invoice</button>`:''}</div></div>`).join('')}
 function renderInv(){$('#invs').innerHTML=ordersFor(cust).filter(o=>o.st==='done').map(o=>`<tr><td><b>${o.inv}</b><div class="note">${o.no}</div></td><td>${dLabel(o.date)}</td><td class="r">${fmt(o.tot)}</td><td><span class="pill ${o.paid?'p-paid':'p-open'}">${o.paid?'Paid':'Open'}</span></td></tr>`).join('')}
 function setTab(t){tab=t;$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['shop','hist','inv'].forEach(k=>$('#t-'+k).hidden=k!==t);if(t==='hist')renderHist();if(t==='inv')renderInv()}
 function syncUrl(){const u=new URL(location);if(mode==='cust')u.searchParams.set('mode','customer');else u.searchParams.delete('mode');u.searchParams.set('c',cust.id);u.searchParams.delete('island');window.history.replaceState(null,'',u)}
@@ -245,16 +251,17 @@ $('#q').oninput=renderGrid;$('#instock').onchange=renderGrid;
 $('#grid').onclick=e=>{const t=e.target.closest('button');if(!t)return;let i;
  if((i=t.dataset.m)!==undefined){qty[i]=Math.max(1,(qty[i]||1)-1);renderGrid()}
  else if((i=t.dataset.p)!==undefined){qty[i]=(qty[i]||1)+1;renderGrid()}
- else if((i=t.dataset.a)!==undefined){const max=stock(J.PRODUCTS[i]),want=(cart[i]||0)+qty[i];cart[i]=Math.min(max,want);renderGrid();renderCart();toast(want>max?'Only '+max+' cases in stock':J.PRODUCTS[i].name+' added')}};
+ else if((i=t.dataset.a)!==undefined){const p=J.PRODUCTS[i],max=inUnits(p),want=(cart[i]||0)+qty[i]*(qm[i]==='unit'?1:p.perCase);cart[i]=Math.min(max,want);renderGrid();renderCart();toast(want>max?'Only '+J.u(max)+' in stock':p.name+' added')}
+ else if((i=t.dataset.um)!==undefined){qm[i]=t.dataset.k;qty[i]=1;renderGrid()}};
 $('#grid').onchange=e=>{const i=e.target.dataset.q;if(i!==undefined){qty[i]=Math.max(1,parseInt(e.target.value)||1);renderGrid()}};
-$('#again').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const i=+b.dataset.i;cart[i]=Math.min(stock(J.PRODUCTS[i]),(cart[i]||0)+1);renderGrid();renderCart();toast(J.PRODUCTS[i].name+' added')};
+$('#again').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const i=+b.dataset.i,p=J.PRODUCTS[i];cart[i]=Math.min(inUnits(p),(cart[i]||0)+p.perCase);renderGrid();renderCart();toast(J.PRODUCTS[i].name+' added')};
 $('#lines').onclick=e=>{const i=e.target.dataset.r;if(i===undefined)return;delete cart[i];renderGrid();renderCart()};
 const openCart=()=>{$('#cart').classList.add('open');$('#scrim').classList.add('on')},closeCart=()=>{$('#cart').classList.remove('open');$('#scrim').classList.remove('on')};
 $('#hist').onclick=e=>{const b=e.target.closest('button');if(!b)return;const h=ordersFor(cust);
- if(b.dataset.re!==undefined){let skip=0;h[+b.dataset.re].lines.forEach(l=>{const s=stock(J.PRODUCTS[l.p]);if(!s){skip++;return}cart[l.p]=Math.min(s,(cart[l.p]||0)+l.cases)});renderGrid();renderCart();setTab('shop');toast('Copied into a new order'+(skip?', '+skip+' out of stock item left out':''));if(innerWidth<1100)openCart()}
- else toast('Demo: the signed delivery note opens here as a PDF')};
+ if(b.dataset.re!==undefined){let skip=0;h[+b.dataset.re].lines.forEach(l=>{const p=J.PRODUCTS[l.p],s=inUnits(p);if(!s){skip++;return}cart[l.p]=Math.min(s,(cart[l.p]||0)+l.cases*p.perCase)});renderGrid();renderCart();setTab('shop');toast('Copied into a new order'+(skip?', '+skip+' out of stock item left out':''));if(innerWidth<1100)openCart()}
+ else toast('Demo: the signed invoice opens here as a PDF')};
 $('#cartbtn').onclick=openCart;$('#bar').onclick=openCart;$('#sheetx').onclick=closeCart;$('#scrim').onclick=closeCart;
-$('#place').onclick=()=>{const {t,cs}=totals();closeCart();$('#dmsg').textContent=`Order SO-${isl()==='aw'?'2614':'3482'}${60+Math.floor(Math.random()*30)} for ${cust.name}: ${cs} cases, ${fmt(t)}. ${$('#deliv').value}.${$('#po').value?' Your PO '+$('#po').value+'.':''}`;$('#done').classList.add('on');$('#dclose').focus()};
+$('#place').onclick=()=>{const {t,cs}=totals();closeCart();$('#dmsg').textContent=`Order SO-${isl()==='aw'?'2614':'3482'}${60+Math.floor(Math.random()*30)} for ${cust.name}: ${J.u(cs)}, ${fmt(t)}. ${$('#deliv').value}.${$('#po').value?' Your PO '+$('#po').value+'.':''}`;$('#done').classList.add('on');$('#dclose').focus()};
 $('#dclose').onclick=()=>{$('#done').classList.remove('on');cart={};$('#po').value='';renderGrid();renderCart()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#done').classList.remove('on');closeCart()}});
 all();
