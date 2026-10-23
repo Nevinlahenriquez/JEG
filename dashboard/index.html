@@ -272,7 +272,7 @@ button.chip{cursor:pointer}
     <div class="top-r">
       <input class="search" id="q" type="search" placeholder="Search a shop, order or product" aria-label="Search">
       <button class="chip" id="syncBtn" title="Pull the latest from QuickBooks">⟳ <span class="syncl">Sync QuickBooks</span></button>
-      <div class="user"><i>GT</i><span class="nm">Giandrik Tromp<small>Owner</small></span></div>
+      <div class="user"><i>GT</i><span class="nm">Giandric Tromp<small>Owner</small></span></div>
     </div>
   </div>
 
@@ -280,7 +280,7 @@ button.chip{cursor:pointer}
     <div class="hello">
       <div class="hero">
         <div>
-          <h2 class="hi" id="hi">Good morning, Giandrik</h2>
+          <h2 class="hi" id="hi">Good morning, Giandric</h2>
           <p id="hiSub"></p>
         </div>
         <div>
@@ -447,7 +447,7 @@ function build(k){
   const msgs=[
    {ch:'wa',from:pick('mini'),time:'07:58',text:"Bon dia! Pa mañan por fabor:\n3 case mint gum\n2 case awa\n1 case peanut bar\nDanki!",lines:[{p:8,cases:3},{p:19,cases:2},{p:22,cases:1}]},
    {ch:'em',from:pick('hotel'),time:'07:31',subject:'Order for Friday delivery',text:"Hi team,\n\nPlease send for Friday:\n- Sunscreen lotion SPF 50 x 4 cases\n- After-sun aloe gel x 2 cases\n- Lip balm x 1 case\n\nPO number 88213 attached.\n\nThanks,\nFront office shop",lines:[{p:0,cases:4},{p:4,cases:2},{p:6,cases:1}]},
-   {ch:'ph',from:pick('pharmacy'),time:'08:12',text:"Call taken by Giandrik, 3 min.\nNeeds 2 cases kids sunscreen stick, 2 cases insect repellent, 1 case pain relief. Asked if the SPF 70 is back in stock.",lines:[{p:2,cases:2},{p:14,cases:2},{p:17,cases:1}]},
+   {ch:'ph',from:pick('pharmacy'),time:'08:12',text:"Call taken by Giandric, 3 min.\nNeeds 2 cases kids sunscreen stick, 2 cases insect repellent, 1 case pain relief. Asked if the SPF 70 is back in stock.",lines:[{p:2,cases:2},{p:14,cases:2},{p:17,cases:1}]},
    {ch:'me',from:active[5],time:'08:40',text:"Shelf check done by "+J.ISLANDS[k].reps[0]+".\nLow on sunscreen spray and fruit gum. Suggested order below, the store manager agreed.",lines:[{p:1,cases:2},{p:9,cases:3},{p:12,cases:2}]},
    {ch:'wa',from:active[9],time:'09:05',text:"Hi, do you still have the sour gummies? If yes 4 cases, plus 2 energy drink",lines:[{p:13,cases:4},{p:20,cases:2}]},
    {ch:'em',from:pick('super'),time:'Yesterday',subject:'Weekly order',text:"Good afternoon,\n\nOur weekly order:\nBottled water 500 ml, 10 cases\nPlantain chips, 4 cases\nCoconut water, 3 cases\nHand sanitizer, 2 cases\n\nRegards, purchasing",lines:[{p:19,cases:10},{p:21,cases:4},{p:23,cases:3},{p:15,cases:2}]}];
@@ -514,7 +514,7 @@ function markers(map,keep,rad){const pts=[...D().custs,...J.SITES.filter(s=>s.is
   mk.bindPopup(`<b>${esc(p.name)}</b><br>${J.TYPES[p.t][0]} · ${p.area}${p.rev30!==undefined?'<br>Last 30 days: '+m(p.rev30)+(p.active?'':'<br><i>No order in '+p.last+' days</i>'):''}`);mk.addTo(map);ls.push(mk)});return ls}
 
 function overview(){const d=D(),k=isl;const h=new Date().getHours();
-  $('#hi').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', Giandrik';
+  $('#hi').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', Giandric';
   const newO=d.orders.filter(o=>o.status==='new').length,low=d.stock.filter(p=>p.stock<p.min).length,unread=d.msgs.filter(x=>!x.done).length;
   $('#hiSub').textContent=`${unread} messages with orders in the inbox, ${newO} orders to pick and ${low} products running low. This is ${I().company} today.`;
   const month=k==='aw'?184260:96410,prev=k==='aw'?163900:91280;

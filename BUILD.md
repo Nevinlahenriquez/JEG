@@ -1,6 +1,6 @@
 # JEG Trading demo: build brief
 
-A **demo** for Giandrik Tromp (JEG Trading Aruba) and his business partner, so they
+A **demo** for Giandric Tromp (JEG Trading Aruba) and his business partner, so they
 can see what their custom system will look like before signing proposal
 OYV-2026-020 ($1,500/mo x 3, plus about $100/mo running cost after go-live).
 
@@ -13,7 +13,7 @@ OYV-2026-020 ($1,500/mo x 3, plus about $100/mo running cost after go-live).
   chewing gum and candy, everyday essentials, kiosk snacks), their customers
   (pharmacies, supermarkets, hotel shops, mini markets across Aruba), Aruba and
   Curaçao as two companies. Currency "Afl." for Aruba, "Cg" (XCG) for Curaçao.
-- Do not send anything to Giandrik. Nevin sends the link himself.
+- Do not send anything to Giandric. Nevin sends the link himself.
 - Copy rules: no em dashes, plain words, no "agency".
 
 ## About JEG (from the discovery call)
@@ -28,7 +28,7 @@ OYV-2026-020 ($1,500/mo x 3, plus about $100/mo running cost after go-live).
   customers AND merchandisers (on a tablet at the customer) can see stock and order.
 - Contact: +297 586 8181, jegtradingaruba@gmail.com
 
-## Confirmed by Giandrik in writing (22 Oct 2026)
+## Confirmed by Giandric in writing (22 Oct 2026)
 - 645 active items from 9 suppliers (the "about 900" was the earlier estimate).
 - Aruba: one wholesale warehouse plus a retail kiosk (2 cash registers).
   Curaçao: one wholesale warehouse, wholesale only. Separate entity, no stock moves.
