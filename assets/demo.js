@@ -109,7 +109,7 @@ return `<svg viewBox="0 0 100 104" aria-hidden="true">${m}</svg>`};
 // Demo bar shown on every page, links the four parts together.
 W.demoBar=function(cur){const L=[['/','Website'],['/portal/','Wholesale portal'],['/dashboard/','Business dashboard'],['/pos/','Kiosk POS']];
  const d=document.createElement('div');d.className='jeg-demobar';
- d.innerHTML=`<span class="jd-tag">DEMO</span><span class="jd-txt">Preview built for ${W.OWNER.full}, JEG Trading · sample data · the final system is tailor-made to your business</span><nav>${L.map(([h,n])=>`<a href="${h}"${h===cur?' aria-current="page"':''}>${n}</a>`).join('')}</nav>`;
+ d.innerHTML=`<span class="jd-txt">Built for ${W.OWNER.full}, JEG Trading</span><nav>${L.map(([h,n])=>`<a href="${h}"${h===cur?' aria-current="page"':''}>${n}</a>`).join('')}</nav>`;
  document.body.prepend(d)};
 const css=document.createElement('style');css.textContent=`.jeg-demobar{background:#0e2c16;color:#cfe0cf;font:500 12.5px Inter,system-ui,sans-serif;display:flex;align-items:center;gap:12px;padding:7px max(14px,env(safe-area-inset-left,0px));flex-wrap:wrap;position:relative;z-index:60}
 .jeg-demobar .jd-tag{background:#e9f27a;color:#123d1d;font-weight:800;font-size:11px;letter-spacing:.08em;border-radius:6px;padding:2px 7px}
