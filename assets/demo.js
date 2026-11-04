@@ -126,10 +126,7 @@ document.head.appendChild(css);
  document.addEventListener('keydown',e=>{const k=(e.key||'').toLowerCase(),m=e.ctrlKey||e.metaKey;
   if(k==='f12'||(m&&e.shiftKey&&['i','j','c'].includes(k))||(m&&e.altKey&&['i','j','c','u'].includes(k))||(m&&['u','s','p'].includes(k))||(m&&k==='a'&&!ok(e.target))||(m&&k==='c'&&!ok(e.target))){e.preventDefault();e.stopPropagation()}},true);
  const g=document.createElement('style');g.textContent=`body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}img,svg{-webkit-user-drag:none;user-drag:none}
-.jeg-wm{position:fixed;inset:0;pointer-events:none;z-index:2147483000;background-image:url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="420" height="260"><text x="20" y="150" transform="rotate(-24 210 130)" font-family="Inter,Arial" font-size="15" font-weight="600" fill="#123d1d" fill-opacity=".045">PREVIEW · JEG Trading · Optimize Your Vibe</text></svg>')}")}
 @media print{body>*{display:none!important}body:after{content:"This preview cannot be printed. Ask Optimize Your Vibe for a copy.";display:block;padding:40px;font:600 16px Inter,Arial}}`;
  document.head.appendChild(g);
- const add=()=>{if(!document.querySelector('.jeg-wm')){const w=document.createElement('div');w.className='jeg-wm';w.setAttribute('aria-hidden','true');document.body.appendChild(w)}};
- document.body?add():document.addEventListener('DOMContentLoaded',add);
 })();
 })();
