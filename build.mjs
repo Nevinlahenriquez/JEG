@@ -2,7 +2,7 @@
 // A deterrent against casual copying, not a lock. The readable source stays here.
 import fs from 'node:fs';import path from 'node:path';
 import JO from 'javascript-obfuscator';import {minify} from 'html-minifier-terser';
-const OUT='dist',SKIP=new Set(['dist','node_modules','.git','.vercel']);
+const OUT='dist',SKIP=new Set(['dist','node_modules','.git','.vercel','api','db']); // api/ = server code, never copied into the public folder
 const obf=code=>JO.obfuscate(code,{compact:true,stringArray:true,stringArrayEncoding:['base64'],stringArrayThreshold:.75,splitStrings:true,splitStringsChunkLength:8,identifierNamesGenerator:'hexadecimal',renameGlobals:false,controlFlowFlattening:false,deadCodeInjection:false,selfDefending:false,disableConsoleOutput:true,transformObjectKeys:false}).getObfuscatedCode();
 fs.rmSync(OUT,{recursive:true,force:true});
 const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>SKIP.has(e.name)||e.name.startsWith('.')&&e.name!=='.well-known'?[]:e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);
